@@ -9,6 +9,9 @@ __TODO__
 
 ### IntelliJ IDEA
 
+To build the project in IntelliJ IDEA and to run static checks and tests,
+you need to import the Gradle script into IntellIJ IDEA:
+
 1. Open the "build.gradle" Gradle script file ("File | Open...").
 1. In the dialog that will appear, select "Open as Project".
 1. The project will open in IntelliJ IDEA.
