@@ -20,7 +20,7 @@ you need to import the Gradle script into IntellIJ IDEA:
 1. The Gradle panel will appear at the right.
 1. Click "Reimport Gradle Project" in the Gradle panel.
 1. Gradle will download all dependencies.
-1. Node you can run build tasks in the Gradle panel.
+1. Now you can run build tasks in the Gradle panel.
 1. For example, to build the project, select "Tasks | build | build".
 
 ### Command line
