@@ -1,0 +1,77 @@
+/**
+ * This Gradle build script is used to build the project, run static analysis,
+ * run tests, and measure code coverage.
+ */
+
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'checkstyle'
+    id 'pmd'
+}
+
+group 'patternika'
+version '1.0-SNAPSHOT'
+
+// To compile files that may contain non-English characters, UTF-8 must be used.
+// Java source code must be compatible with JDK 1.8.
+compileJava {
+    options.encoding    = "UTF-8"
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+compileTestJava {
+    options.encoding    = "UTF-8"
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+// Repositories with dependencies.
+repositories {
+    // Dependencies are taken from public repositories.
+    mavenCentral()
+}
+
+// JAR dependencies.
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jar {
+    archiveName 'patternika.jar'
+    manifest {
+        attributes 'Manifest-Version': '1.0'
+//      attributes 'Main-Class': 'org.cqfn.patternika.launcher.Main'
+    }
+}
+
+checkstyle {
+    // The build will be terminated if there are failing style checks.
+    ignoreFailures = false
+}
+
+pmd {
+    // The build should not be terminated if there are failing PMD checks.
+    ignoreFailures = true
+}
+
+test {
+    // The build should not be terminated if there are failing tests.
+    ignoreFailures = true
+}
+
+// JaCoCo version.
+jacoco {
+    toolVersion = "0.8.4"
+}
+
+// Enable JaCoCo to generate reports in XML format (might be needed for CI).
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+    }
+}
+
+// JavaDocs is always compiled with the build.
+build.dependsOn javadoc
