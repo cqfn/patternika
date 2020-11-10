@@ -1,7 +1,10 @@
-# Default ignored files
+# Target folders
 bin
 build
 target
+out
+
+# Default ignored files
 .*
 !.gitignore
 !.travis.yml
@@ -13,7 +16,7 @@ target
 # Log file
 *.log
 
-# Package Files #
+# Package files
 *.jar
 *.war
 *.nar
