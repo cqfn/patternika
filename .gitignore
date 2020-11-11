@@ -5,7 +5,6 @@ target
 out
 
 # Default ignored files
-.*
 !.gitignore
 !.travis.yml
 *.iml
