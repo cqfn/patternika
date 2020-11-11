@@ -95,16 +95,22 @@ jacocoTestReport {
     finalizedBy jacocoTestCoverageVerification
 }
 
+// Verification of code metrics that must satisfy limits.
 // See details here:
 // https://docs.gradle.org/current/userguide/jacoco_plugin.html#sec:jacoco_report_violation_rules
 jacocoTestCoverageVerification {
     // Needs JaCoCo report to be collected before checking metrics.
     dependsOn jacocoTestReport
+    // Rules.
     violationRules {
-        // Currently, there are no limits as there no tests yet.
         rule {
+            element = 'METHOD'
+            // Method complexity is limited to avoid creating too complex methods.
+            // See details here: https://en.wikipedia.org/wiki/Cyclomatic_complexity
             limit {
-                minimum = 0.0
+                counter = 'COMPLEXITY'
+                value = 'TOTALCOUNT'
+                maximum = 10
             }
         }
     }
