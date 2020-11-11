@@ -1,4 +1,6 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![GitHub](https://github.com/patternika/patternika/workflows/Java%20CI%20with%20Gradle/badge.svg)](
+  https://github.com/patternika/patternika/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
 ---
 
 # Patternika
