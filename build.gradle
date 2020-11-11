@@ -110,5 +110,5 @@ jacocoTestCoverageVerification {
     }
 }
 
-// JavaDocs is when the check is run.
+// JavaDocs must always be built when the check is run.
 check.dependsOn javadoc
