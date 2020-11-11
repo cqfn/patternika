@@ -3,6 +3,8 @@ bin
 build
 target
 out
+.idea
+.gradle
 
 # Default ignored files
 !.gitignore

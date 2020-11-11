@@ -1,5 +1,6 @@
 package org.cqfn.patternika.ast;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +29,17 @@ public class TestNode implements Node {
         this.type = Objects.requireNonNull(type);
         this.data = data;
         this.children = Objects.requireNonNull(children);
+    }
+
+    /**
+     * Secondary constructor.
+     *
+     * @param type Node type.
+     * @param data Node data.
+     * @param children Node... children.
+     */
+    public TestNode(final String type, final int data, final Node... children) {
+        this(type, data, Arrays.asList(children));
     }
 
     /**
