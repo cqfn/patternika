@@ -1,6 +1,22 @@
-/**
+/*
  * This Gradle build script is used to build the project, run static analysis,
  * run tests, and measure code coverage.
+ *
+ * It allows performing the following quality assurance activities:
+ *
+ * 1. Compile Java code.
+ * 2. Compile tests.
+ * 3. Build JavaDoc documentation.
+ * 4. Run Checkstyle (static checker).
+ * 5. Run PMD (static checker).
+ * 6. Run tests.
+ * 7. Measure code coverage with JaCoCo and build a report.
+ * 8. Check whether JaCoCo metrics (coverage and cyclomatic complexity) satisfy limits.
+ *
+ * If any of the steps fails, build is considered failed.
+ * All of these steps are run by the "build" task.
+ *
+ * Also, it is possible to run some of the steps individually by using corresponding tasks.
  */
 
 plugins {
@@ -75,6 +91,23 @@ jacocoTestReport {
     }
     // Tests are required to run before generating the report.
     dependsOn test
+    // After getting coverage, limits on coverage metrics are checked.
+    finalizedBy jacocoTestCoverageVerification
+}
+
+// See details here:
+// https://docs.gradle.org/current/userguide/jacoco_plugin.html#sec:jacoco_report_violation_rules
+jacocoTestCoverageVerification {
+    // Needs JaCoCo report to be collected before checking metrics.
+    dependsOn jacocoTestReport
+    violationRules {
+        // Currently, there are no limits as there no tests yet.
+        rule {
+            limit {
+                minimum = 0.0
+            }
+        }
+    }
 }
 
 // JavaDocs is always compiled with the build.
