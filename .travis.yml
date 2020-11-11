@@ -1,5 +1,8 @@
 language: java
-gradle assemble
+jdk:
+  - openjdk8
+
+# gradle assemble
 
 # gradle check
 
