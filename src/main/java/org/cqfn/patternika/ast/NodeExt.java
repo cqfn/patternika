@@ -13,7 +13,7 @@ import java.util.Objects;
  * <p>Objects of this class must be able to substitute Node objects in any logic
  * that deals with Node objects. All methods of the {@link Node} interface are
  * directly forwarded to the wrapped node. Except for {@link NodeExt#getChild} and
- * {@link NodeExt#equals}. These methods may require additional care.
+ * {@link NodeExt#matches}. These methods may require additional care.
  *
  * @since 2020/11/5
  */
@@ -92,20 +92,20 @@ public class NodeExt implements Node {
     }
 
     /**
-     * Checks whether the current node equals to the specified object.
+     * Checks whether the current node matches to the specified node.
      *
-     * <p>Two extended nodes are considered equal if their wrapped {@link Node} nodes are equal.
+     * <p>Two extended nodes are considered matching if their wrapped {@link Node} nodes match.
      * It is also possible to directly pass a {@link Node} object in this method.
-     * If the Node object is equal to the wrapped node, the objects are considered equal.
-     * However, in this case, equality is not symmetric ({@code a.equals(b) != b.equals(a)}).
+     * If the Node object matches the wrapped node, the objects are considered matching. However,
+     * this relation is not guaranteed to be symmetric ({@code a.matches(b) != b.matches(a)}).
      * This must be taken into account when using this method with {@link Node} and {@link NodeExt}
      * objects.
      *
-     * @param other Node to be checked for equality with the current node.
-     * @return {@code true} if the nodes are equal or {@code false} otherwise.
+     * @param other Node to be checked for match with the current node.
+     * @return {@code true} if the nodes match or {@code false} otherwise.
      */
     @Override
-    public boolean equals(final Node other) {
+    public boolean matches(final Node other) {
         if (other == null) {
             return false;
         }
@@ -113,7 +113,7 @@ public class NodeExt implements Node {
             return true;
         }
         final Node otherNode = other instanceof NodeExt ? ((NodeExt) other).node : other;
-        return node.equals(otherNode);
+        return node.matches(otherNode);
     }
 
     /**

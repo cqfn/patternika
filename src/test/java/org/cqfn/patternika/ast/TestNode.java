@@ -101,13 +101,13 @@ public class TestNode implements Node {
     }
 
     /**
-     * Checks whether the current node equals to the specified node.
+     * Checks whether the current node matches the specified node.
      *
-     * @param other Node to be checked for equality with the current node.
-     * @return {@code true} if the nodes are equal or {@code false} otherwise.
+     * @param other Node to be checked for match with the current node.
+     * @return {@code true} if the nodes match or {@code false} otherwise.
      */
     @Override
-    public boolean equals(final Node other) {
+    public boolean matches(final Node other) {
         if (other == null) {
             return false;
         }

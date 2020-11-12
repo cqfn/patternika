@@ -58,18 +58,16 @@ public interface Node {
     Node getChild(int index);
 
     /**
-     * Checks whether the current node equals to the specified node.
+     * Checks whether the current node matches the specified node.
      *
      * <p>This method is different from the standard {@link Object#equals(Object)}.
-     * The standard method has a requirement: {@link Object#equals} and {@link Object#hashCode}
-     * must be provided together and must have the same semantics.
-     * The current method does not have this requirement and uses a less strict
-     * equality criteria (compared to {@link Object#equals(Object)}).
-     * It compares only nodes without their children.
+     * The current method uses a less strict equality criteria:
+     * only node type and data must match. Everything else is not taken into account.
+     * Node children do not participate in the comparison.
      *
-     * @param other Node to be checked for equality with the current node.
-     * @return {@code true} if the nodes are equal or {@code false} otherwise.
+     * @param other Node to be checked for match with the current node.
+     * @return {@code true} if the nodes match or {@code false} otherwise.
      */
-    boolean equals(Node other);
+    boolean matches(Node other);
 
 }
