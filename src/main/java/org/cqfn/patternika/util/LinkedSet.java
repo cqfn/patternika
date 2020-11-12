@@ -214,9 +214,7 @@ public class LinkedSet<T> implements Collection<T> {
     public boolean addAll(final Collection<? extends T> collection) {
         boolean added = false;
         for (final T value : collection) {
-            if (add(value)) {
-                added = true;
-            }
+            added |= add(value);
         }
         return added;
     }
@@ -372,9 +370,7 @@ public class LinkedSet<T> implements Collection<T> {
     public boolean removeAll(final Collection<?> collection) {
         boolean removed = false;
         for (final Object value : collection) {
-            if (remove(value)) {
-                removed = true;
-            }
+            removed |= remove(value);
         }
         return removed;
     }

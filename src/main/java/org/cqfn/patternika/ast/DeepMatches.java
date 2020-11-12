@@ -34,11 +34,11 @@ public class DeepMatches implements BiPredicate<Node, Node> {
     }
 
     /**
-     * Tests two node trees for match.
+     * Checks whether two node trees match (recursively).
      *
-     * @param root1 First node tree.
-     * @param root2 Second node tree.
-     * @return {@code true} is the node trees match or {@code false} otherwise.
+     * @param root1 the first node tree.
+     * @param root2 the second node tree.
+     * @return {@code true} if the node trees match or {@code false} otherwise.
      */
     @Override
     public boolean test(final Node root1, final Node root2) {
@@ -54,6 +54,13 @@ public class DeepMatches implements BiPredicate<Node, Node> {
         return testChildren(root1, root2);
     }
 
+    /**
+     * Checks whether two nodes match (their children are not taken into account).
+     *
+     * @param node1 the first node.
+     * @param node2 the second node.
+     * @return {@code true} if the nodes match or {@code false} otherwise.
+     */
     private boolean testNodes(final Node node1, final Node node2) {
         if (node1 == node2) {
             return true;
@@ -64,15 +71,23 @@ public class DeepMatches implements BiPredicate<Node, Node> {
         return isMatch.test(node1, node2);
     }
 
+    /**
+     * Checks whether children of two nodes match.
+     *
+     * @param root1 the first node.
+     * @param root2 the second node.
+     * @return {@code true} if children of the nodes match or {@code false} otherwise.
+     */
     private boolean testChildren(final Node root1, final Node root2) {
         final int count1 = root1.getChildCount();
         final int count2 = root2.getChildCount();
-        if (count1 == count2) {
-            for (int index = 0; index < count1; ++index) {
-                // Children must match recursively.
-                if (!test(root1.getChild(index), root2.getChild(index))) {
-                    return false;
-                }
+        if (count1 != count2) {
+            return false;
+        }
+        for (int index = 0; index < count1; ++index) {
+            // Children must match recursively.
+            if (!test(root1.getChild(index), root2.getChild(index))) {
+                return false;
             }
         }
         return true;
