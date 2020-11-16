@@ -1,4 +1,4 @@
-package org.cqfn.patternika.parser;
+package org.cqfn.patternika.source;
 
 /**
  * Describes a fragment of source code.

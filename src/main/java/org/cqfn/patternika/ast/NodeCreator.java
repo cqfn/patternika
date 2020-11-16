@@ -1,6 +1,6 @@
 package org.cqfn.patternika.ast;
 
-import org.cqfn.patternika.parser.Fragment;
+import org.cqfn.patternika.source.Fragment;
 
 import java.util.List;
 
