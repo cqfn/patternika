@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import static org.cqfn.patternika.ast.Nodes.areTwoNodesDeepEqual;
 import static org.cqfn.patternika.ast.Nodes.nodeFlattenToList;
 
@@ -11,8 +12,8 @@ import static org.cqfn.patternika.ast.Nodes.nodeFlattenToList;
  * The purpose of this class is to return all possible matches between two nodes.
  * It contains just one public method {@link NodeMatcher#findAll()} that does all the job.
  *
- * <p> The solution doesn't rely only on method ${@link Object#equals(Object)} of nodes which are
- * encapsulated in the class, but also relies on method ${@link Object#equals(Object)} of their
+ * <p> The solution doesn't rely only on method {@link Object#equals(Object)} of nodes which are
+ * encapsulated in the class, but also relies on method {@link Object#equals(Object)} of their
  * child nodes.
  *
  * @since 2020/11/11
@@ -54,10 +55,9 @@ public class NodeMatcher {
                     nodeFromFirstList, nodeFromSecondList
                 );
                 if (nodesAreDeepEqual) {
-                    if (!allMatches.containsKey(nodeFromFirstList)) {
-                        allMatches.put(nodeFromFirstList, new ArrayList<>());
-                    }
-                    allMatches.get(nodeFromFirstList).add(nodeFromSecondList);
+                    final List<Node> matchedNodes =
+                            allMatches.computeIfAbsent(nodeFromFirstList, x -> new ArrayList<>());
+                    matchedNodes.add(nodeFromSecondList);
                 }
             }
         }
