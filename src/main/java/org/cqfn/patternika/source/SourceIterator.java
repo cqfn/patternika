@@ -1,51 +1,51 @@
 package org.cqfn.patternika.source;
 
 /**
- * An iterator for iterating over source code.
+ * An iterator for iterating over characters in source code.
  *
  * @since 2019/10/28
  */
 public interface SourceIterator {
 
     /**
-     * Returns the next character.
+     * Returns the next character and moves current position forward by one step.
      *
-     * @return next character or {@code '\0'} if the end of the source code is reached.
+     * @return next character or {@code '\0'} if the end is reached.
      */
     char nextChar();
 
     /**
-     * Gets a character at the specified offset.
+     * Gets a character at the current position.
      *
-     * @param offset the offset in the source code.
-     * @return character of {@code '\0'} if the offset is out of range.
-     */
-    char getChar(int offset);
-
-    /**
-     * Gets the first character in the source code.
-     *
-     * @return the first character or {@code '\0'} if the source code is empty.
+     * @return current character or {@code '\0'} if the current position is out of range.
      */
     default char getChar() {
         return getChar(0);
     }
 
     /**
-     * Returns a position for the given offset.
+     * Gets a character at the specified offset from the current position.
      *
-     * @param offset the offset in the source code.
-     * @return position.
+     * @param offset the offset from the current position.
+     * @return character or {@code '\0'} if the offset is out of range.
      */
-    Position getPosition(int offset);
+    char getChar(int offset);
 
     /**
-     * Returns the starting position for the source code.
+     * Returns the current position.
      *
      * @return position.
      */
     default Position getPosition() {
         return getPosition(0);
     }
+
+    /**
+     * Returns a position at the given offset from the current position.
+     *
+     * @param offset the offset from the current position.
+     * @return position.
+     */
+    Position getPosition(int offset);
 
 }
