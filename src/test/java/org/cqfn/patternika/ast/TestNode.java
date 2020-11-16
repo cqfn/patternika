@@ -1,15 +1,18 @@
 package org.cqfn.patternika.ast;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Node for testing tree processing logic.
  *
  * @since 2020/11/9
  */
-public class TestNode implements Node {
+public final class TestNode implements Node {
     /** Node type. */
     private final String type;
     /** Node data. */
@@ -28,6 +31,17 @@ public class TestNode implements Node {
         this.type = Objects.requireNonNull(type);
         this.data = data;
         this.children = Objects.requireNonNull(children);
+    }
+
+    /**
+     * Secondary constructor.
+     *
+     * @param type Node type.
+     * @param data Node data.
+     * @param children array of children.
+     */
+    public TestNode(final String type, final int data, final Node... children) {
+        this(type, data, Arrays.asList(children));
     }
 
     /**
@@ -117,4 +131,33 @@ public class TestNode implements Node {
         return getType().equals(other.getType()) && getData().equals(other.getData());
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final TestNode testNode = (TestNode) o;
+
+        return new EqualsBuilder()
+            .append(data, testNode.data)
+            .append(type, testNode.type)
+            .append(children.size(), testNode.children.size())
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        final int initialNonZeroOddNumber = 17;
+        final int multiplierNonZeroOddNumber = 37;
+        return new HashCodeBuilder(initialNonZeroOddNumber, multiplierNonZeroOddNumber)
+            .append(type)
+            .append(data)
+            .append(children.size())
+            .toHashCode();
+    }
 }
