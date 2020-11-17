@@ -107,6 +107,15 @@ public class Fragment {
     }
 
     /**
+     * Returns the fragment length.
+     *
+     * @return the fragment length or {@code -1} if there is no start or no end.
+     */
+    public int getLength() {
+        return start != null && end != null ? end.getIndex() - start.getIndex() : -1;
+    }
+
+    /**
      * Returns a fragment for the end position of the current fragment.
      *
      * @return start fragment or {@code null} if there is no start.
