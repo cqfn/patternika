@@ -33,4 +33,6 @@ You can run Gradle tasks from the command line using the following command:
 
 `gradlew` is a Gradle wrapper that knows how to find and, if necessary, download Gradle.
 
-Circle CI configured for this project
+## CI/CD
+
+GitHub Workflow and Circle CI are configured for this project.
