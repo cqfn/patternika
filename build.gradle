@@ -69,7 +69,7 @@ checkstyle {
 
 pmd {
     toolVersion = "6.29.0"
-    // The build should not be terminated if there are failing PMD checks.
+    // The build should not be terminated if there are failing PMD rules.
     ignoreFailures = true
     // Custom PMD rules to suppress irrelevant warnings.
     // In general, PMD produces a great number of false positives.
@@ -83,8 +83,8 @@ pmd {
 }
 
 test {
-    // The build should not be terminated if there are failing tests.
-    ignoreFailures = true
+    // The build will be terminated if there are failing tests.
+    ignoreFailures = false
     // JaCoCo report is always generated after tests run.
     finalizedBy jacocoTestReport
 }
