@@ -154,4 +154,40 @@ public class Fragment {
         return new Fragment(source, start, null);
     }
 
+    /**
+     * Textual representation of the fragment.
+     *
+     * @return text for the fragment or an empty string if the pattern has no start or end.
+     */
+    @Override
+    public String toString() {
+        return start != null && end != null ? source.getFragmentAsString(start, end) : "";
+    }
+
+    /**
+     * Merges two fragment and returns the result.
+     *
+     * @param first first fragment, not {@code null}.
+     * @param second second fragment, not {@code null}.
+     * @return merged fragment or
+     *         {@code null} if failed to merge (fragments have no start and no end).
+     * @throws IllegalArgumentException if the fragments to be merged have different sources.
+     */
+    public static Fragment merge(final Fragment first, final Fragment second) {
+        if (!first.source.equals(second.source)) {
+            throw new IllegalArgumentException("Fragments to be merged have different sources!");
+        }
+        final Position start = min(first.start, second.start);
+        final Position end = max(first.end, second.end);
+        return start == null && end == null ? null : new Fragment(first.source, start, end);
+    }
+
+    private static Position min(final Position first, final Position second) {
+        return second == null || first != null && first.compareTo(second) < 0 ? first : second;
+    }
+
+    private static Position max(final Position first, final Position second) {
+        return second == null || first != null && first.compareTo(second) > 0 ? first : second;
+    }
+
 }
