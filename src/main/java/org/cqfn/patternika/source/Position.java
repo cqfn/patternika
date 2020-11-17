@@ -1,14 +1,14 @@
 package org.cqfn.patternika.source;
 
 /**
- * Represents a position in source code.
+ * Represents a position in a source code.
  *
  * @since 2019/10/28
  **/
 public interface Position extends Comparable<Position> {
 
     /**
-     * Index of the position in source code.
+     * Index of the position (character index).
      *
      * @return index.
      */

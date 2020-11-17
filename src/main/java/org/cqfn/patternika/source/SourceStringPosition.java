@@ -6,7 +6,7 @@ package org.cqfn.patternika.source;
  * @since 2019/10/28
  */
 class SourceStringPosition implements Position {
-    /** Index of the position in source code. */
+    /** Index of the position (character index). */
     private final int index;
 
     /**

@@ -10,7 +10,7 @@ import java.util.Objects;
 class SourceStringIterator implements SourceIterator {
     /** Source code represented as a string. */
     private final String data;
-    /** Current position in source code. */
+    /** Current position. */
     private int index;
 
     /**
@@ -24,6 +24,11 @@ class SourceStringIterator implements SourceIterator {
     }
 
     @Override
+    public char nextChar() {
+        return index < data.length() ? data.charAt(index++) : 0;
+    }
+
+    @Override
     public char getChar() {
         return index < data.length() ? data.charAt(index) : 0;
     }
@@ -32,11 +37,6 @@ class SourceStringIterator implements SourceIterator {
     public char getChar(final int offset) {
         final int pos = index + offset;
         return pos < data.length() ? data.charAt(pos) : 0;
-    }
-
-    @Override
-    public char nextChar() {
-        return index < data.length() ? data.charAt(index++) : 0;
     }
 
     @Override
