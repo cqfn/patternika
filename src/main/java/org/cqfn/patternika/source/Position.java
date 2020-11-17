@@ -21,6 +21,7 @@ public interface Position extends Comparable<Position> {
      * @return a negative integer, zero, or a positive integer as this position
      *         is less than, equal to, or greater than the other position.
      */
+    @Override
     int compareTo(Position other);
 
     /**
@@ -28,6 +29,7 @@ public interface Position extends Comparable<Position> {
      *
      * @return textual representation.
      */
+    @Override
     String toString();
 
 }

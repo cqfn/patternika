@@ -68,8 +68,18 @@ checkstyle {
 }
 
 pmd {
+    toolVersion = "6.29.0"
     // The build should not be terminated if there are failing PMD checks.
     ignoreFailures = true
+    // Custom PMD rules to suppress irrelevant warnings.
+    // In general, PMD produces a great number of false positives.
+    // We need to provide a custom ruleset that enables relevant rules and excludes the irrelevant.
+    // See details here:
+    //    https://pmd.github.io/latest/pmd_rules_java.html
+    //    https://pmd.github.io/pmd-6.29.0/pmd_userdocs_suppressing_warnings.html
+    //    https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.PmdExtension.html
+    ruleSets = []
+    ruleSetFiles = files("config/pmd/ruleset.xml")
 }
 
 test {
