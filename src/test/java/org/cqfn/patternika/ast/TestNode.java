@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.cqfn.patternika.source.Fragment;
 
 /**
  * Node for testing tree processing logic.
@@ -81,6 +82,17 @@ public final class TestNode implements Node {
     @Override
     public String getData() {
         return Integer.toString(data);
+    }
+
+    /**
+     * Returns the fragment associated with the current node.
+     *
+     * @return {@code null} because test nodes do not have fragments.
+     */
+    @Override
+    public Fragment getFragment() {
+        // No fragment for a test node.
+        return null;
     }
 
     /**

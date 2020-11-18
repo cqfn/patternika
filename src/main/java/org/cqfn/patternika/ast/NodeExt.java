@@ -1,5 +1,7 @@
 package org.cqfn.patternika.ast;
 
+import org.cqfn.patternika.source.Fragment;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -134,6 +136,16 @@ public class NodeExt implements Node {
     @Override
     public String getData() {
         return node.getData();
+    }
+
+    /**
+     * Returns the fragment associated with the current node.
+     *
+     * @return the fragment, taken for the wrapped {@link Node} object.
+     */
+    @Override
+    public Fragment getFragment() {
+        return node.getFragment();
     }
 
     /**

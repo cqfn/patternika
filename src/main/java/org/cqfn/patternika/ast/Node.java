@@ -1,5 +1,7 @@
 package org.cqfn.patternika.ast;
 
+import org.cqfn.patternika.source.Fragment;
+
 /**
  * The interface describes an abstract syntax tree (AST) node.
  * This is a general interface for any kind of node and any language.
@@ -21,6 +23,13 @@ public interface Node {
      * @return Node data.
      */
     String getData();
+
+    /**
+     * Returns the fragment associated with the current node.
+     *
+     * @return the fragment.
+     */
+    Fragment getFragment();
 
     /**
      * Returns the number of children.
