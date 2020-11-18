@@ -36,3 +36,29 @@ You can run Gradle tasks from the command line using the following command:
 ## CI/CD
 
 GitHub Workflow and Circle CI are configured for this project.
+
+## Code Quality Policy
+
+Any committed code must pass the following automated checks. 
+
+### Tests
+
+Failing tests are unacceptable.
+
+### JaCoCo
+
+Method complexity greater than 10 is unacceptable.
+
+### Checkstyle
+
+Code style must comply with
+[Sun's Java Style](https://checkstyle.sourceforge.io/sun_style.html) conventions.
+Changes made to the conventions in this project:
+* line length limit is set to 100; 
+* constructor parameters are allowed to have the same names as fields;
+* magic numbers 0, 1, -1, 2, and 31 (for hashes) are allowed.
+
+### PMD
+
+Shows potential bugs and style violations. Some warnings might be irrelevant.
+The set of mandatory rules is to be reviewed. Currently, this is just a set of recommendations.
