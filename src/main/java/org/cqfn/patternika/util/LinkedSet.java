@@ -414,10 +414,10 @@ public class LinkedSet<T> implements Collection<T> {
     @Override
     public boolean retainAll(final Collection<?> collection) {
         boolean modified = false;
-        final Iterator<T> it = iterator();
-        while (it.hasNext()) {
-            if (!collection.contains(it.next())) {
-                it.remove();
+        final Iterator<T> iter = iterator();
+        while (iter.hasNext()) {
+            if (!collection.contains(iter.next())) {
+                iter.remove();
                 modified = true;
             }
         }
@@ -441,16 +441,16 @@ public class LinkedSet<T> implements Collection<T> {
      */
     @Override
     public String toString() {
-        final Iterator<T> it = iterator();
-        if (!it.hasNext()) {
+        final Iterator<T> iter = iterator();
+        if (!iter.hasNext()) {
             return "{}";
         }
         final StringBuilder sb = new StringBuilder();
         sb.append('{');
         for (;;) {
-            final T value = it.next();
+            final T value = iter.next();
             sb.append(value == this ? "(this Set)" : value);
-            if (!it.hasNext()) {
+            if (!iter.hasNext()) {
                 return sb.append('}').toString();
             }
             sb.append(',').append(' ');

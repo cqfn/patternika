@@ -50,9 +50,8 @@ class SourceFilePosition implements Position {
      */
     public static void checkType(final Position position) {
         if (!(position instanceof SourceFilePosition)) {
-            throw new IllegalArgumentException(
-                    "Illegal position type: " + position.getClass().getName()
-            );
+            final Class<?> clazz = position.getClass();
+            throw new IllegalArgumentException("Illegal position type: " + clazz);
         }
     }
 
