@@ -22,24 +22,26 @@ public class LinkedSet<T> implements Collection<T> {
     /** Maps values to their entries. */
     private final Map<T, Entry<T>> entries = new IdentityHashMap<>();
     /** First entry. */
-    private Entry<T> first = null;
+    private Entry<T> first;
     /** Lst entry. */
-    private Entry<T> last = null;
+    private Entry<T> last;
 
     /**
-     * Constructor.
+     * Main constructor (an empty set).
+     */
+    public LinkedSet() {
+        this.first = null;
+        this.last = null;
+    }
+
+    /**
+     * Additional constructor. Fills the set with values.
      *
      * @param values Values to be copied into the set.
      */
     public LinkedSet(final Iterable<T> values) {
+        this();
         values.forEach(this::add);
-    }
-
-    /**
-     * Default constructor for an empty set.
-     */
-    public LinkedSet() {
-        // Nothing.
     }
 
     /**
