@@ -14,6 +14,10 @@
     </description>
 
     <rule ref="category/java/bestpractices.xml" />
+    <rule ref="category/java/codestyle.xml" >
+        <exclude name="CommentDefaultAccessModifier"/>
+        <exclude name="OnlyOneReturn"/>
+    </rule>
     <rule ref="category/java/design.xml" />
     <rule ref="category/java/documentation.xml">
         <exclude name="CommentSize"/>
