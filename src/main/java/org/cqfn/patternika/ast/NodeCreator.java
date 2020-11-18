@@ -6,8 +6,8 @@ import java.util.List;
 
 /**
  * Interface for a function that creates a node.
- *
- * <p>Needed to link a node factory with factory methods of specific node classes.
+ * <p>
+ * Needed to link a node factory with factory methods of specific node classes.
  *
  * @since 2020/11/3
  */
@@ -17,11 +17,11 @@ public interface NodeCreator {
     /**
      * Creates a new node from the specified parameters.
      *
-     * @param children List of node children.
-     * @param data Node data.
-     * @param fragment Node parent.
-     * @return New node.
+     * @param fragment fragment associated with the node.
+     * @param data node data.
+     * @param children list of node children.
+     * @return new node.
      */
-    Node create(List<Node> children, String data, Fragment fragment);
+    Node create(Fragment fragment, String data, List<Node> children);
 
 }
