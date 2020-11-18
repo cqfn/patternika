@@ -49,6 +49,10 @@ Failing tests are unacceptable.
 
 Method complexity greater than 10 is unacceptable.
 
+### Javadoc
+
+Documentation must have a valid format and must be compiled to HTML without errors.
+
 ### Checkstyle
 
 Code style must comply with
