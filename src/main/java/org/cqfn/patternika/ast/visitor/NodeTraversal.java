@@ -1,6 +1,6 @@
 package org.cqfn.patternika.ast.visitor;
 
-import org.cqfn.patternika.ast.Children;
+import org.cqfn.patternika.ast.iterator.Children;
 import org.cqfn.patternika.ast.Node;
 
 import java.util.Objects;
