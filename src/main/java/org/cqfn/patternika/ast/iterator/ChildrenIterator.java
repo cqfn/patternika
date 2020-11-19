@@ -1,4 +1,6 @@
-package org.cqfn.patternika.ast;
+package org.cqfn.patternika.ast.iterator;
+
+import org.cqfn.patternika.ast.Node;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
