@@ -5,8 +5,7 @@
 
 # Patternika
 
-__TODO__
-
+These instructions will help you build and use Patternika project from source code.
 ## Using Gradle
 
 ### IntelliJ IDEA
@@ -14,16 +13,16 @@ __TODO__
 To build the project in IntelliJ IDEA and to run static checks and tests,
 you need to import the Gradle script into IntellIJ IDEA:
 
-1. Open the "build.gradle" Gradle script file ("File | Open...").
-1. In the dialog that will appear, select "Open as Project".
+1. Open the "build.gradle" Gradle script file `File > Open`.
+1. In the dialog that will appear, select `Open as Project`.
 1. The project will open in IntelliJ IDEA.
-1. Double-click the "build.gradle" file in the Project panel.
-1. Open the Gradle panel ("View | Tool Windows | Gradle").
+1. Double-click the `build.gradle` file in the Project panel.
+1. Open the Gradle panel `View > Tool Windows > Gradle`.
 1. The Gradle panel will appear at the right.
-1. Click "Reimport Gradle Project" in the Gradle panel.
+1. Click `Reimport Gradle Project` in the Gradle panel.
 1. Gradle will download all dependencies.
 1. Now you can run build tasks in the Gradle panel.
-1. For example, to build the project, select "Tasks | build | build".
+1. For example, to build the project, select `Tasks > build > build`.
 
 ### Command line
 
@@ -35,34 +34,13 @@ You can run Gradle tasks from the command line using the following command:
 
 ## CI/CD
 
-GitHub Workflow and Circle CI are configured for this project.
+GitHub Workflow and Circle CI are configured for this project. `ToDo`
 
-## Code Quality Policy
+## Contributing to this project
 
-Any committed code must pass the following automated checks. 
+Anyone and everyone is welcome to contribute. Please take a moment to
+review the [guidelines for contributing](CONTRIBUTING.md).
 
-### Tests
-
-Failing tests are unacceptable.
-
-### JaCoCo
-
-Method complexity greater than 10 is unacceptable.
-
-### Javadoc
-
-Documentation must have a valid format and must be compiled to HTML without errors.
-
-### Checkstyle
-
-Code style must comply with
-[Sun's Java Style](https://checkstyle.sourceforge.io/sun_style.html) conventions.
-Changes made to the conventions in this project:
-* line length limit is set to 100; 
-* constructor parameters are allowed to have the same names as fields;
-* magic numbers 0, 1, -1, 2, and 31 (for hashes) are allowed.
-
-### PMD
-
-Shows potential bugs and style violations. Some warnings might be irrelevant.
-The set of mandatory rules is to be reviewed. Currently, this is just a set of recommendations.
+* [Bug reports](CONTRIBUTING.md#bug-reports)
+* [Feature requests](CONTRIBUTING.md#feature-suggestions)
+* [Pull requests](CONTRIBUTING.md#pull-requests)
