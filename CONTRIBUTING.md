@@ -111,14 +111,14 @@ license your work under the same license as that used by the project.
 
 Any committed code must pass the following automated checks. 
 
-**Tests** &mdash; all tests should be passed without failures.
+**Tests** &mdash; all tests must pass without failures.
 
 **JaCoCo** &mdash; method complexity greater than 10 is unacceptable.
 
 **Javadoc** &mdash; documentation must have a valid format and must be compiled 
 to HTML without errors.
 
-**Checkstyle** &mdash; code style must comply with:
+**Checkstyle** &mdash; code style must comply with
 [Sun's Java Style](https://checkstyle.sourceforge.io/sun_style.html) conventions.
 Changes made to the conventions in this project:
 * line length limit is set to 100; 
