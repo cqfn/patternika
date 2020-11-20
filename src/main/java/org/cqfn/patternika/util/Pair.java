@@ -1,7 +1,7 @@
 package org.cqfn.patternika.util;
 
 /**
- * Simple pair in case someone needs to use (key, val) object without creating a map.
+ * Simple pair in case someone needs to use (key, val) objects without creating a map.
  *
  * @param <K> key type.
  * @param <V> value type.

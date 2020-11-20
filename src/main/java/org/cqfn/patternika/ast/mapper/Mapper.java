@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * Provides facilities for building mappings between elements of some common type.
  *
- * @param <T> Type of mapped elements.
+ * @param <T> the type of mapped elements.
  *
  * @since 2019/10/31
  */
@@ -61,10 +61,12 @@ public interface Mapper<T> {
      * NOTE: if there are any collisions between this and the given mapper,
      * the new mapper may not be balanced (a mapper is called 'balanced'
      * if the corresponding element for the corresponding element for some element
-     * is that element for any element). Deal with this.
+     * is that element for any element). Such collision are considered as errors.
      *
      * @param mapper the given mapper.
-     * @return       a new mapper with all the connections from this and the given one.
+     * @return a new mapper with all the connections from this and the given one.
+     * @throws IllegalArgumentException if mappings have a collision: the same element
+     *         has different mapping in this and the given mappers.
      */
     Mapper<T> merge(Mapper<T> mapper);
 
