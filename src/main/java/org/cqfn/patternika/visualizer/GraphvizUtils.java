@@ -28,7 +28,7 @@ public final class GraphvizUtils {
      */
     public static void fromDotFile(final String dotFilePath,
                                    final String targetImagePath) throws IOException {
-        try (final InputStream dot = GraphvizUtils.class.getResourceAsStream(dotFilePath)) {
+        try (InputStream dot = GraphvizUtils.class.getResourceAsStream(dotFilePath)) {
             final MutableGraph g = new Parser().read(dot);
             Graphviz.fromGraph(g).render(Format.PNG).toFile(new File(targetImagePath));
         }
@@ -36,6 +36,7 @@ public final class GraphvizUtils {
 
     /**
      * Generates graph from .dot content.
+     *
      * @param dotContent Dot content for graph generation.
      * @param targetImagePath Target image path for graph.
      * @throws IOException if I/O fails.
