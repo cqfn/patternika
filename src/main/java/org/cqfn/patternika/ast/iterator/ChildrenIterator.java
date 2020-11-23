@@ -15,10 +15,10 @@ import java.util.NoSuchElementException;
 public class ChildrenIterator<T extends Node> implements Iterator<T> {
     /** Parent node with children. */
     private final T parent;
-    /** Current child index for the iterator. */
+    /** Current index for the iterator. */
     private int index;
-    /** Max child index for the iterator. */
-    private final int maxIndex;
+    /** End index for the iterator. */
+    private final int endIndex;
 
     /**
      * Default constructor.
@@ -39,12 +39,12 @@ public class ChildrenIterator<T extends Node> implements Iterator<T> {
     public ChildrenIterator(final T parent, final int start, final int count) {
         this.parent = parent;
         this.index = start;
-        this.maxIndex = start + count;
+        this.endIndex = start + count;
         final int limit = parent.getChildCount();
         if (!(0 <= index && index < limit)) {
             throw new IndexOutOfBoundsException();
         }
-        if (!(0 <= maxIndex && maxIndex < limit)) {
+        if (!(0 <= endIndex && endIndex <= limit)) {
             throw new IndexOutOfBoundsException();
         }
     }
@@ -56,7 +56,7 @@ public class ChildrenIterator<T extends Node> implements Iterator<T> {
      */
     @Override
     public boolean hasNext() {
-        return index < maxIndex;
+        return index < endIndex;
     }
 
     /**
