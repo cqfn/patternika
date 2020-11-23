@@ -1,7 +1,6 @@
 package org.cqfn.patternika.ast;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -24,9 +23,9 @@ public final class TestNode implements Node {
     /**
      * Main constructor.
      *
-     * @param type Node type.
-     * @param data Node data.
-     * @param children Node children.
+     * @param type node type.
+     * @param data node data.
+     * @param children node children.
      */
     public TestNode(final String type, final int data, final List<Node> children) {
         this.type = Objects.requireNonNull(type);
@@ -37,8 +36,8 @@ public final class TestNode implements Node {
     /**
      * Secondary constructor.
      *
-     * @param type Node type.
-     * @param data Node data.
+     * @param type node type.
+     * @param data node data.
      * @param children array of children.
      */
     public TestNode(final String type, final int data, final Node... children) {
@@ -46,28 +45,29 @@ public final class TestNode implements Node {
     }
 
     /**
-     * Additional constructor for a leaf node (no children).
+     * Additional constructor with a default node type.
      *
-     * @param type Node type.
-     * @param data Node data.
+     * @param data node data.
+     * @param children array of children.
      */
-    public TestNode(final String type, final int data) {
-        this(type, data, Collections.emptyList());
+    public TestNode(final int data, final List<Node> children) {
+        this("TestNode", data, children);
     }
 
     /**
-     * Additional constructor for a leaf node with the "TestNode" type.
+     * Additional constructor with a default node type.
      *
-     * @param data Node data.
+     * @param data node data.
+     * @param children array of children.
      */
-    public TestNode(final int data) {
-        this("TestNode", data);
+    public TestNode(final int data, final Node... children) {
+        this(data, Arrays.asList(children));
     }
 
     /**
      * Returns node type identifier that uniquely identifies node type.
      *
-     * @return Node type identifier.
+     * @return node type identifier.
      */
     @Override
     public String getType() {
@@ -77,7 +77,7 @@ public final class TestNode implements Node {
     /**
      * Returns data associated with the node (in a textual format).
      *
-     * @return Node data.
+     * @return node data.
      */
     @Override
     public String getData() {
@@ -98,7 +98,7 @@ public final class TestNode implements Node {
     /**
      * Returns the number of children.
      *
-     * @return Child node count.
+     * @return child node count.
      */
     @Override
     public int getChildCount() {
@@ -108,7 +108,7 @@ public final class TestNode implements Node {
     /**
      * Returns the maximum possible number of children for this type of node.
      *
-     * @return Maximum possible child node count or {@code -1} if there is no limit on node count.
+     * @return maximum possible child node count or {@code -1} if there is no limit on node count.
      */
     @Override
     public int getMaxChildCount() {
@@ -118,8 +118,8 @@ public final class TestNode implements Node {
     /**
      * Gets a child by its index.
      *
-     * @param index Child index.
-     * @return Child node.
+     * @param index child index.
+     * @return child node.
      */
     @Override
     public Node getChild(final int index) {
@@ -129,7 +129,7 @@ public final class TestNode implements Node {
     /**
      * Checks whether the current node matches the specified node.
      *
-     * @param other Node to be checked for match with the current node.
+     * @param other node to be checked for match with the current node.
      * @return {@code true} if the nodes match or {@code false} otherwise.
      */
     @Override

@@ -12,6 +12,8 @@ import java.util.NoSuchElementException;
 
 /**
  * Tests for {@link Children} and {@link ChildrenIterator}.
+ *
+ * @since 2020/11/23
  */
 public class ChildrenTest {
     /** Default number of children to be used in tests. */
@@ -26,7 +28,7 @@ public class ChildrenTest {
     private static List<Node> createNodes(final int count) {
         final List<Node> result = new ArrayList<>();
         for (int index = 0; index < count; ++index) {
-            result.add(new TestNode("Test", index + 1));
+            result.add(new TestNode(index + 1));
         }
         return result;
     }
@@ -37,7 +39,7 @@ public class ChildrenTest {
     @Test
     public void testChildren() {
         final List<Node> childrenList = createNodes(CHILDREN_COUNT);
-        final Node root = new TestNode("RootTest", 0, childrenList);
+        final Node root = new TestNode(0, childrenList);
         final Children<Node> children = new Children<>(root);
         // Check iterator.
         final Iterator<Node> sourceIt = childrenList.iterator();
@@ -65,7 +67,7 @@ public class ChildrenTest {
     public void testChildrenNoElement() {
         final int childrenCount = 2;
         final List<Node> childrenList = createNodes(childrenCount);
-        final Node root = new TestNode("Test", 0, childrenList);
+        final Node root = new TestNode(0, childrenList);
         final Children<Node> children = new Children<>(root);
         final Iterator<Node> iterator = children.iterator();
         Assert.assertSame(childrenList.get(0), iterator.next());
@@ -79,7 +81,7 @@ public class ChildrenTest {
      */
     @Test(expected = IndexOutOfBoundsException.class)
     public void testChildrenIteratorBounds1() {
-        final Node root = new TestNode("RootTest", 0, createNodes(CHILDREN_COUNT));
+        final Node root = new TestNode(0, createNodes(CHILDREN_COUNT));
         new ChildrenIterator<>(root, -1, 1);
     }
 
@@ -88,7 +90,7 @@ public class ChildrenTest {
      */
     @Test(expected = IndexOutOfBoundsException.class)
     public void testChildrenIteratorBounds2() {
-        final Node root = new TestNode("RootTest", 0, createNodes(CHILDREN_COUNT));
+        final Node root = new TestNode(0, createNodes(CHILDREN_COUNT));
         new ChildrenIterator<>(root, CHILDREN_COUNT, 1);
     }
 
@@ -97,7 +99,7 @@ public class ChildrenTest {
      */
     @Test(expected = IndexOutOfBoundsException.class)
     public void testChildrenIteratorBounds3() {
-        final Node root = new TestNode("RootTest", 0, createNodes(CHILDREN_COUNT));
+        final Node root = new TestNode(0, createNodes(CHILDREN_COUNT));
         new ChildrenIterator<>(root, 0, -1);
     }
 
@@ -106,7 +108,7 @@ public class ChildrenTest {
      */
     @Test(expected = IndexOutOfBoundsException.class)
     public void testChildrenIteratorBounds4() {
-        final Node root = new TestNode("RootTest", 0, createNodes(CHILDREN_COUNT));
+        final Node root = new TestNode(0, createNodes(CHILDREN_COUNT));
         new ChildrenIterator<>(root, CHILDREN_COUNT - 1, 2);
     }
 
@@ -116,7 +118,7 @@ public class ChildrenTest {
      */
     @Test(expected = NoSuchElementException.class)
     public void testChildrenIteratorBounds5() {
-        final Node root = new TestNode("RootTest", 0, createNodes(CHILDREN_COUNT));
+        final Node root = new TestNode(0, createNodes(CHILDREN_COUNT));
         final Iterator<Node> iterator = new ChildrenIterator<>(root, 3, -1);
         iterator.next();
     }
