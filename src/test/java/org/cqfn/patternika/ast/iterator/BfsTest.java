@@ -5,11 +5,11 @@ import org.cqfn.patternika.ast.TestNode;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 /**
  * Tests for {@link Bfs} and {@link BfsIterator}.
@@ -71,10 +71,8 @@ public class BfsTest {
         final List<String> expectedData = Arrays.asList(
                 "0", "1", "2", "3", "11", "12", "13", "21", "22", "31", "32", "121", "211", "2111"
             );
-        final List<String> data = new ArrayList<>();
-        for (final Node node : new Bfs<>(root)) {
-            data.add(node.getData());
-        }
+        final List<Node> nodes = new Bfs<>((Node) root).toList();
+        final List<String> data = nodes.stream().map(Node::getData).collect(Collectors.toList());
         Assert.assertEquals("Wrong element order!", expectedData, data);
     }
 

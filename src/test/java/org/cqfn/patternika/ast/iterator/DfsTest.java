@@ -5,11 +5,11 @@ import org.cqfn.patternika.ast.TestNode;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 /**
  * Tests for {@link Dfs} and {@link DfsIterator}.
@@ -81,10 +81,8 @@ public class DfsTest {
                             "3",
                         "0"
                     );
-        final List<String> data = new ArrayList<>();
-        for (final Node node : new Dfs<>(root)) {
-            data.add(node.getData());
-        }
+        final List<Node> nodes = new Dfs<>((Node) root).toList();
+        final List<String> data = nodes.stream().map(Node::getData).collect(Collectors.toList());
         Assert.assertEquals("Wrong element order!", expectedData, data);
     }
 
