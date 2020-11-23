@@ -40,7 +40,8 @@ public class NodeIterable<T extends Node> implements Iterable<T> {
 
     /**
      * Returns an iterator over the node tree (iterator type is configurable).
-     *     * @return an iterator.
+     *
+     * @return an iterator.
      */
     @Override
     public Iterator<T> iterator() {
