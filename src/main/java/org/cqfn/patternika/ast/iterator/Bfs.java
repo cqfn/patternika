@@ -2,9 +2,6 @@ package org.cqfn.patternika.ast.iterator;
 
 import org.cqfn.patternika.ast.Node;
 
-import java.util.Iterator;
-import java.util.Objects;
-
 /**
  * Iterable for a node, which allows iterating over tree nodes
  * in a BFS (breadth-first search) manner.
@@ -13,27 +10,13 @@ import java.util.Objects;
  *
  * @since 2020/11/3
  */
-public class Bfs<T extends Node> implements Iterable<T> {
-    /** Node tree root. */
-    private final T root;
-
+public class Bfs<T extends Node> extends NodeIterable<T> {
     /**
      * Constructor.
      *
-     * @param root Node tree root.
+     * @param root the node tree root.
      */
     public Bfs(final T root) {
-        this.root = Objects.requireNonNull(root);
+        super(root, BfsIterator::new);
     }
-
-    /**
-     * Returns a BFS iterator over the tree nodes.
-     *
-     * @return Iterator.
-     */
-    @Override
-    public Iterator<T> iterator() {
-        return new BfsIterator<>(root);
-    }
-
 }
