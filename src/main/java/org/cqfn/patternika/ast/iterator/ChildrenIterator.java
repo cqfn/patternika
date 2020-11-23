@@ -26,27 +26,9 @@ public class ChildrenIterator<T extends Node> implements Iterator<T> {
      * @param parent Parent node.
      */
     public ChildrenIterator(final T parent) {
-        this(parent, 0, parent.getChildCount());
-    }
-
-    /**
-     * Main constructor.
-     *
-     * @param parent Parent node with children.
-     * @param start Index of the item, from which iteration starts.
-     * @param count Count of items to be iterated.
-     */
-    public ChildrenIterator(final T parent, final int start, final int count) {
         this.parent = parent;
-        this.index = start;
-        this.endIndex = start + count;
-        final int limit = parent.getChildCount();
-        if (!(0 <= index && index < limit)) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (!(0 <= endIndex && endIndex <= limit)) {
-            throw new IndexOutOfBoundsException();
-        }
+        this.index = 0;
+        this.endIndex = parent.getChildCount();
     }
 
     /**

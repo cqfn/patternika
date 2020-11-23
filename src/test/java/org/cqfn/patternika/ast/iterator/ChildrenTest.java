@@ -77,50 +77,13 @@ public class ChildrenTest {
     }
 
     /**
-     * Tests {@link ChildrenIterator} for bound violations.
+     * Tests {@link ChildrenIterator} - empty list of children.
      */
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testChildrenIteratorBounds1() {
-        final Node root = new TestNode(0, createNodes(CHILDREN_COUNT));
-        new ChildrenIterator<>(root, -1, 1);
-    }
-
-    /**
-     * Tests {@link ChildrenIterator} for bound violations.
-     */
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testChildrenIteratorBounds2() {
-        final Node root = new TestNode(0, createNodes(CHILDREN_COUNT));
-        new ChildrenIterator<>(root, CHILDREN_COUNT, 1);
-    }
-
-    /**
-     * Tests {@link ChildrenIterator} for bound violations.
-     */
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testChildrenIteratorBounds3() {
-        final Node root = new TestNode(0, createNodes(CHILDREN_COUNT));
-        new ChildrenIterator<>(root, 0, -1);
-    }
-
-    /**
-     * Tests {@link ChildrenIterator} for bound violations.
-     */
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testChildrenIteratorBounds4() {
-        final Node root = new TestNode(0, createNodes(CHILDREN_COUNT));
-        new ChildrenIterator<>(root, CHILDREN_COUNT - 1, 2);
-    }
-
-    /**
-     * Tests {@link ChildrenIterator} for bound violations.
-     * Covers the case when end is less than start.
-     */
-    @Test(expected = NoSuchElementException.class)
-    public void testChildrenIteratorBounds5() {
-        final Node root = new TestNode(0, createNodes(CHILDREN_COUNT));
-        final Iterator<Node> iterator = new ChildrenIterator<>(root, 3, -1);
-        iterator.next();
+    @Test
+    public void testChildrenEmpty() {
+        final Children<Node> children = new Children<>(new TestNode(0));
+        final Iterator<Node> iterator = children.iterator();
+        Assert.assertFalse(iterator.hasNext());
     }
 
 }
