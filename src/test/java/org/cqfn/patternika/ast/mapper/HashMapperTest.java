@@ -4,8 +4,8 @@ import org.cqfn.patternika.util.Pair;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -26,7 +26,7 @@ public class HashMapperTest {
      * and {@link HashMapper#contains(Object)} and {@link HashMapper#get(Object)} methods.
      */
     @Test
-    public void testContains() {
+    public void containsTest() {
         final List<String> list1 = Arrays.asList("one", "two", "three", "four");
         final List<String> list2 = Arrays.asList("1", "2", "3");
         final HashMapper<String> mapper1 = new HashMapper<>();
@@ -60,7 +60,7 @@ public class HashMapperTest {
      * {@link HashMapper#get(Object)} methods.
      */
     @Test
-    public void testConnect() {
+    public void connectTest() {
         final HashMapper<String> mapper = new HashMapper<>();
         // Connects elements and checks that the mapper contains all of them.
         mapper.connect("one", "1");
@@ -93,7 +93,7 @@ public class HashMapperTest {
      * Tests the {@link HashMapper#disconnect(Object)} method.
      */
     @Test
-    public void testDisconnect() {
+    public void disconnectTest() {
         final HashMapper<String> mapper = new HashMapper<>();
         // Connects elements and checks that the mapper contains all of them.
         mapper.connect("one", "1");
@@ -129,27 +129,113 @@ public class HashMapperTest {
     }
 
     /**
+     * Tests the {@link HashMapper#merge(Mapper)} method.
+     * Basic merge without conflicts (without overlapping and with overlapping).
+     */
+    @Test
+    public void mergeTest() {
+        // Merge without overlapping.
+        final int noOverlappingMiddle = 3;
+        mergeTest(noOverlappingMiddle, noOverlappingMiddle);
+        // Merge with overlapping.
+        final int overlappingStart = 2;
+        final int overlappingEnd = 4;
+        mergeTest(overlappingEnd, overlappingStart);
+    }
+
+    /**
+     * Tests the {@link HashMapper#merge(Mapper)} method with/without overlapping.
+     * Elements tp be mapped are taken from an array. Method parameters set positions
+     * to take elements for the first and for the second mappings to be merged.
+     *
+     * @param firstEnd end index for the elements of the first mapping.
+     * @param secondStart start index for the elements of the second mapping.
+     */
+    private void mergeTest(final int firstEnd, final int secondStart) {
+        final int firstStart = 0;
+        final int secondEnd = 6;
+        final List<String> keys = Arrays.asList("one", "two", "three", "four", "five", "six");
+        final List<String> values = Arrays.asList("1", "2", "3", "4", "5", "6");
+        final HashMapper<String> mapper1 = new HashMapper<>();
+        for (int index = firstStart; index < firstEnd; ++index) {
+            mapper1.connect(keys.get(index), values.get(index));
+        }
+        final HashMapper<String> mapper2 = new HashMapper<>();
+        for (int index = secondStart; index < secondEnd; ++index) {
+            mapper2.connect(keys.get(index), values.get(index));
+        }
+        // Merges two mappers and checks the result.
+        // Also, checks that original mappers are not modified.
+        final Mapper<String> merged = mapper1.merge(mapper2);
+        for (int index = firstStart; index < secondEnd; ++index) {
+            final String key = keys.get(index);
+            final String value = values.get(index);
+            assertEquals(value, merged.get(key));
+            assertEquals(key, merged.get(value));
+            if (index < firstEnd) {
+                assertEquals(value, mapper1.get(key));
+                assertEquals(key, mapper1.get(value));
+            }
+            if (index < secondStart) {
+                assertNull(mapper2.get(key));
+                assertNull(mapper2.get(value));
+            }
+            if (index >= secondStart) {
+                assertEquals(value, mapper2.get(key));
+                assertEquals(key, mapper2.get(value));
+            }
+            if (index >= firstEnd) {
+                assertNull(mapper1.get(key));
+                assertNull(mapper1.get(value));
+            }
+        }
+    }
+
+    /**
+     * Tests the {@link HashMapper#merge(Mapper)} method.
+     * Merge with conflicts must cause an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void mergeConflictTest() {
+        final HashMapper<String> mapper1 = new HashMapper<>();
+        mapper1.connect("one", "1");
+        mapper1.connect("two", "2");
+        mapper1.connect("three", "4"); // Merge conflict is here.
+        final HashMapper<String> mapper2 = new HashMapper<>();
+        mapper2.connect("four", "4");
+        mapper2.connect("five", "5");
+        mapper2.connect("six", "6");
+        mapper1.merge(mapper2);
+    }
+
+    /**
      * Tests the {@link HashMapper#redirect(Mapper)} method.
      */
     @Test
     public void redirectTest() {
-        List<Pair<String, String>> list = new ArrayList<>();
-        list.add(new Pair<>("LOL", "KEK"));
-        HashMapper<String> mapper1 = new HashMapper<>();
-        list.forEach(pair -> mapper1.connect(pair.getKey(), pair.getVal()));
+        // Fills the first mapper and checks it.
+        final List<Pair<String, String>> list1 =
+                Collections.singletonList(new Pair<>("LOL", "KEK"));
+        final HashMapper<String> mapper1 = new HashMapper<>();
+        list1.forEach(pair -> mapper1.connect(pair.getKey(), pair.getVal()));
         assertEquals(mapper1.get("LOL"), "KEK");
         assertEquals(mapper1.get("KEK"), "LOL");
-
-        list = new ArrayList<>();
-        list.add(new Pair<>("KEK", "CHEBUREK"));
-        HashMapper<String> mapper2 = new HashMapper<>();
-        list.forEach(pair -> mapper2.connect(pair.getKey(), pair.getVal()));
+        // Fills the second mapper and checks it.
+        final List<Pair<String, String>> list2 =
+                Collections.singletonList(new Pair<>("KEK", "CHEBUREK"));
+        final HashMapper<String> mapper2 = new HashMapper<>();
+        list2.forEach(pair -> mapper2.connect(pair.getKey(), pair.getVal()));
         assertEquals(mapper2.get("KEK"), "CHEBUREK");
         assertEquals(mapper2.get("CHEBUREK"), "KEK");
-
-        Mapper<String> mapper = mapper1.redirect(mapper2);
+        // Creates a redirected mapper and checks it.
+        final Mapper<String> mapper = mapper1.redirect(mapper2);
         assertEquals(mapper.get("LOL"), "CHEBUREK");
         assertEquals(mapper.get("CHEBUREK"), "LOL");
+        // Checks that original mappings were not modified.
+        assertEquals(mapper1.get("LOL"), "KEK");
+        assertEquals(mapper1.get("KEK"), "LOL");
+        assertEquals(mapper2.get("KEK"), "CHEBUREK");
+        assertEquals(mapper2.get("CHEBUREK"), "KEK");
     }
 
 }

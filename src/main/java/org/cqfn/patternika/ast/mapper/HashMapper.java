@@ -131,7 +131,7 @@ public class HashMapper<T> implements Mapper<T> {
      *         has different mapping in this and the given mappers.
      */
     @Override
-    public Mapper<T> merge(final Mapper<T> mapper) {
+    public HashMapper<T> merge(final Mapper<T> mapper) {
         final HashMapper<T> result = new HashMapper<>(this);
         for (final Map.Entry<T, T> entry : mapper.entrySet()) {
             final T oldValue = result.table.put(entry.getKey(), entry.getValue());
