@@ -13,14 +13,14 @@ public interface Node {
     /**
      * Returns node type identifier that uniquely identifies node type.
      *
-     * @return Node type identifier.
+     * @return node type identifier.
      */
     String getType();
 
     /**
      * Returns data associated with the node (in a textual format).
      *
-     * @return Node data.
+     * @return node data.
      */
     String getData();
 
@@ -34,14 +34,14 @@ public interface Node {
     /**
      * Returns the number of children.
      *
-     * @return Child node count.
+     * @return child node count.
      */
     int getChildCount();
 
     /**
      * Returns the maximum possible number of children for this type of node.
      *
-     * @return Maximum possible child node count or {@code -1} if there is no limit on node count.
+     * @return maximum possible child node count or {@code -1} if there is no limit on node count.
      */
     int getMaxChildCount();
 
@@ -55,14 +55,14 @@ public interface Node {
      * @return {@code true} if there are no constraints on child count or {@code false} otherwise.
      */
     default boolean isChildCountLimitless() {
-        return getChildCount() < 0;
+        return getMaxChildCount() < 0;
     }
 
     /**
      * Gets a child by its index.
      *
-     * @param index Child index.
-     * @return Child node.
+     * @param index child index.
+     * @return child node.
      */
     Node getChild(int index);
 
@@ -74,7 +74,7 @@ public interface Node {
      * only node type and data must match. Everything else is not taken into account.
      * Node children do not participate in the comparison.
      *
-     * @param other Node to be checked for match with the current node.
+     * @param other node to be checked for match with the current node.
      * @return {@code true} if the nodes match or {@code false} otherwise.
      */
     boolean matches(Node other);
