@@ -43,7 +43,7 @@ public class DeepMatches implements BiPredicate<Node, Node> {
     @Override
     public boolean test(final Node root1, final Node root2) {
         // Matching node trees must have matching root nodes.
-        if (!testNodes(root1, root2)) {
+        if (!matchNodes(root1, root2)) {
             return false;
         }
         // If one of the root nodes is a hole, the node trees are considered matching.
@@ -51,7 +51,7 @@ public class DeepMatches implements BiPredicate<Node, Node> {
             return true;
         }
         // In matching node trees, roots must have matching children.
-        return testChildren(root1, root2);
+        return matchChildren(root1, root2);
     }
 
     /**
@@ -61,7 +61,7 @@ public class DeepMatches implements BiPredicate<Node, Node> {
      * @param node2 the second node.
      * @return {@code true} if the nodes match or {@code false} otherwise.
      */
-    private boolean testNodes(final Node node1, final Node node2) {
+    private boolean matchNodes(final Node node1, final Node node2) {
         if (node1 == node2) {
             return true;
         }
@@ -78,7 +78,7 @@ public class DeepMatches implements BiPredicate<Node, Node> {
      * @param root2 the second node.
      * @return {@code true} if children of the nodes match or {@code false} otherwise.
      */
-    private boolean testChildren(final Node root1, final Node root2) {
+    private boolean matchChildren(final Node root1, final Node root2) {
         final int count1 = root1.getChildCount();
         final int count2 = root2.getChildCount();
         if (count1 != count2) {
