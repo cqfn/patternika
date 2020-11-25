@@ -98,24 +98,26 @@ public class NodeExtTest {
     public void testNodeExtGetParent() {
         final NodeExt root = new NodeExt(createTree());
         Assert.assertNull(root.getParent());
-        testParent(root);
+        testParent(root, 0);
     }
 
     /**
      * Tests that all children of a node have a valid parent (this parent node).
      *
      * @param parent parent node.
+     * @param depth depth, distance to the root.
      */
-    private void testParent(final NodeExt parent) {
+    private void testParent(final NodeExt parent, final int depth) {
+        Assert.assertEquals(depth, parent.getDepth());
         for (final NodeExt child : new Children<>(parent)) {
             Assert.assertSame(parent, child.getParent());
-            testParent(child);
+            testParent(child, depth + 1);
         }
     }
 
     /**
      * Test for methods  {@link NodeExt#getPrevious()}, {@link NodeExt#getNext()},
-     * and {@link NodeExt#getNodeIndex()}.
+     * and {@link NodeExt#getOrder()}.
      */
     @Test
     public void testNodeExtRelatives() {
@@ -123,17 +125,17 @@ public class NodeExtTest {
         // Checks root.
         Assert.assertNull(root.getPrevious());
         Assert.assertNull(root.getNext());
-        Assert.assertEquals(0, root.getNodeIndex());
+        Assert.assertEquals(0, root.getOrder());
         // Checks root.getChild(0).
-        Assert.assertEquals(0, root.getChild(0).getNodeIndex());
+        Assert.assertEquals(0, root.getChild(0).getOrder());
         Assert.assertNull(root.getChild(0).getPrevious());
         Assert.assertSame(root.getChild(1), root.getChild(0).getNext());
         // Checks root.getChild(1).
-        Assert.assertEquals(1, root.getChild(1).getNodeIndex());
+        Assert.assertEquals(1, root.getChild(1).getOrder());
         Assert.assertSame(root.getChild(0), root.getChild(1).getPrevious());
         Assert.assertSame(root.getChild(2), root.getChild(1).getNext());
         // Checks root.getChild(2).
-        Assert.assertEquals(2, root.getChild(2).getNodeIndex());
+        Assert.assertEquals(2, root.getChild(2).getOrder());
         Assert.assertSame(root.getChild(1), root.getChild(2).getPrevious());
         Assert.assertNull(root.getChild(2).getNext());
     }

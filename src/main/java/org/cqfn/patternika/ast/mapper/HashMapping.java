@@ -6,30 +6,30 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Mapper implementation based on a {@link HashMap}.
+ * Mapping container implementation based on a {@link HashMap}.
  *
  * @param <T> the type of mapped elements.
  *
- * @see Mapper
+ * @see Mapping
  * @since 2019/10/31
  */
-public class HashMapper<T> implements Mapper<T> {
+public class HashMapping<T> implements Mapping<T> {
     /** Table of mappings between elements. */
     private final Map<T, T> table;
 
     /**
      * Default constructor. Constructs an empty mapping.
      */
-    public HashMapper() {
+    public HashMapping() {
         this.table = new HashMap<>();
     }
 
     /**
      * Copy constructor.
      *
-     * @param other a mapper to be copied.
+     * @param other a mapping container to be copied.
      */
-    public HashMapper(final HashMapper<T> other) {
+    public HashMapping(final HashMapping<T> other) {
         this.table = new HashMap<>(other.table);
     }
 
@@ -57,7 +57,7 @@ public class HashMapper<T> implements Mapper<T> {
     }
 
     /**
-     * Checks whether the given element is mapped to something in this mapper.
+     * Checks whether the given element is mapped to something.
      *
      * @param element the given element.
      * @return {@code true} if the given element has a mapping or {@code false} otherwise.
@@ -105,7 +105,7 @@ public class HashMapper<T> implements Mapper<T> {
 
     /**
      * Removes mappings for the specified element and
-     * its corresponding element (if they are in the mapper).
+     * its corresponding element (if they are in the mapping container).
      *
      * @param element the element to be removed from mapping.
      */
@@ -118,22 +118,23 @@ public class HashMapper<T> implements Mapper<T> {
     }
 
     /**
-     * Creates a new mapper and adds to it all the connections from this mapper and the given one.
+     * Creates a new mapping container and adds to it all the connections
+     * from this mapping container and the given one.
      * <p>
-     * NOTE: if there are any collisions between this and the given mapper,
-     * the new mapper may not be balanced (a mapper is called 'balanced'
+     * NOTE: if there are any collisions between this and the given mapping container,
+     * the new one may not be balanced (a mapping is called 'balanced'
      * if the corresponding element for the corresponding element for some element
      * is that element for any element). Such collision are considered as errors.
      *
-     * @param mapper the given mapper.
-     * @return a new mapper with all the connections from this and the given one.
+     * @param mapping the given mapping container.
+     * @return a new mapping container with all the connections from this and the given one.
      * @throws IllegalArgumentException if mappings have a collision: the same element
-     *         has different mapping in this and the given mappers.
+     *         has different mapping in this and the given mapping container.
      */
     @Override
-    public HashMapper<T> merge(final Mapper<T> mapper) {
-        final HashMapper<T> result = new HashMapper<>(this);
-        for (final Map.Entry<T, T> entry : mapper.entrySet()) {
+    public HashMapping<T> merge(final Mapping<T> mapping) {
+        final HashMapping<T> result = new HashMapping<>(this);
+        for (final Map.Entry<T, T> entry : mapping.entrySet()) {
             final T oldValue = result.table.put(entry.getKey(), entry.getValue());
             if (oldValue != null && !oldValue.equals(entry.getValue())) {
                 throw new IllegalArgumentException(String.format(
@@ -141,26 +142,26 @@ public class HashMapper<T> implements Mapper<T> {
                         entry.getKey(),
                         oldValue,
                         entry.getValue())
-                );
+                    );
             }
         }
         return result;
     }
 
     /**
-     * Creates a new mapper that connects elements from this mapper to elements
-     * from the given mapper in the following way:
-     * if {@code a -> b} in this mapper and {@code b -> c} in the given one,
+     * Creates a new mapping container that connects elements from this mapping container
+     * to elements from the given mapping container in the following way:
+     * if {@code a -> b} in this mapping and {@code b -> c} in the given one,
      * result contains {@code a -> c}.
      *
-     * @param mapper the given mapper.
-     * @return       a new {@code HashMapper} object.
+     * @param mapping the given mapping container.
+     * @return a new mapping container.
      */
     @Override
-    public Mapper<T> redirect(final Mapper<T> mapper) {
-        final HashMapper<T> result = new HashMapper<>(this);
+    public Mapping<T> redirect(final Mapping<T> mapping) {
+        final HashMapping<T> result = new HashMapping<>(this);
         for (final Map.Entry<T, T> entry : entrySet()) {
-            final T mappedElement = mapper.get(entry.getValue());
+            final T mappedElement = mapping.get(entry.getValue());
             if (mappedElement != null) {
                 result.connect(entry.getKey(), mappedElement);
             }

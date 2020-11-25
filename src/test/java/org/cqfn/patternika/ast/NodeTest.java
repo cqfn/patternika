@@ -20,6 +20,7 @@ public class NodeTest {
         final Node node = createNode(-1);
         Assert.assertEquals(-1, node.getMaxChildCount());
         Assert.assertTrue(node.isChildCountLimitless());
+        Assert.assertFalse(node.isChildOrderStrict());
     }
 
     /**
@@ -31,6 +32,7 @@ public class NodeTest {
         final Node node = createNode(0);
         Assert.assertEquals(0, node.getMaxChildCount());
         Assert.assertFalse(node.isChildCountLimitless());
+        Assert.assertTrue(node.isChildOrderStrict());
     }
 
     /**

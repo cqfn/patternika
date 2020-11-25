@@ -4,13 +4,13 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Provides facilities for building mappings between elements of some common type.
+ * Container for mappings between elements of some common type.
  *
  * @param <T> the type of mapped elements.
  *
  * @since 2019/10/31
  */
-public interface Mapper<T> {
+public interface Mapping<T> {
 
     /**
      * Gets an element to which the given one is mapped.
@@ -49,36 +49,37 @@ public interface Mapper<T> {
 
     /**
      * Removes mappings for the given element an its corresponding element
-     * (if they are contained in this mapper).
+     * (if they are contained in this container).
      *
      * @param element the given element.
      */
     void disconnect(T element);
 
     /**
-     * Creates a new mapper and adds to it all the connections from this mapper and the given one.
+     * Creates a new mapping container and adds to it all the connections
+     * from this mapping container and the given one.
      * <p>
-     * NOTE: if there are any collisions between this and the given mapper,
-     * the new mapper may not be balanced (a mapper is called 'balanced'
+     * NOTE: if there are any collisions between this and the given mapping container,
+     * the new one may not be balanced (a mapping is called 'balanced'
      * if the corresponding element for the corresponding element for some element
      * is that element for any element). Such collision are considered as errors.
      *
-     * @param mapper the given mapper.
-     * @return a new mapper with all the connections from this and the given one.
+     * @param mapping the given mapping container.
+     * @return a new mapping container with all the connections from this and the given one.
      * @throws IllegalArgumentException if mappings have a collision: the same element
-     *         has different mapping in this and the given mappers.
+     *         has different mapping in this and the given mapping container.
      */
-    Mapper<T> merge(Mapper<T> mapper);
+    Mapping<T> merge(Mapping<T> mapping);
 
     /**
-     * Creates a new mapper that connects elements from this mapper to elements
-     * from the given mapper in the following way:
-     * if {@code a -> b} in this mapper and {@code b -> c} in the given one,
+     * Creates a new mapping container that connects elements from this mapping container
+     * to elements from the given mapping container in the following way:
+     * if {@code a -> b} in this mapping and {@code b -> c} in the given one,
      * result contains {@code a -> c}.
      *
-     * @param mapper the given mapper.
-     * @return       a new mapper.
+     * @param mapping the given mapping container.
+     * @return a new mapping container.
      */
-    Mapper<T> redirect(Mapper<T> mapper);
+    Mapping<T> redirect(Mapping<T> mapping);
 
 }
