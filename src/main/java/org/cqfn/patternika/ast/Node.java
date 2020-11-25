@@ -59,6 +59,18 @@ public interface Node {
     }
 
     /**
+     * Checks whether the order of node children is strict.
+     * This means that children of specific types must be at specific positions.
+     *
+     * @return {@code true} if the order is strict or {@code false} otherwise.
+     */
+    default boolean isChildOrderStrict() {
+        // Strict order is typical for a limited number of children.
+        // Nodes with unlimited children (e.g. statement blocks) typically allow an arbitrary order.
+        return !isChildCountLimitless();
+    }
+
+    /**
      * Gets a child by its index.
      *
      * @param index child index.
