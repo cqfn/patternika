@@ -15,7 +15,7 @@ import java.util.Objects;
  *
  * @since 2019/10/31
  */
-public abstract class AbstractTreeMapper {
+public abstract class AbstractMapper implements Mapper<NodeExt> {
     /** First node tree. */
     private final NodeExt treeRoot1;
     /** Second node tree. */
@@ -33,7 +33,7 @@ public abstract class AbstractTreeMapper {
      * @param treeRoot1 first node tree to be mapped.
      * @param treeRoot2 second node tree to be mapped.
      */
-    public AbstractTreeMapper(final NodeExt treeRoot1, final NodeExt treeRoot2) {
+    public AbstractMapper(final NodeExt treeRoot1, final NodeExt treeRoot2) {
         this.treeRoot1 = Objects.requireNonNull(treeRoot1);
         this.treeRoot2 = Objects.requireNonNull(treeRoot2);
         this.mapping = new HashMapping<>();
@@ -46,6 +46,7 @@ public abstract class AbstractTreeMapper {
      *
      * @return container with mappings between the two node trees.
      */
+    @Override
     public Mapping<NodeExt> buildMapping() {
         // let's try to build some connections fast first.
         if (treeRoot1.getType().equals(treeRoot2.getType())) {
