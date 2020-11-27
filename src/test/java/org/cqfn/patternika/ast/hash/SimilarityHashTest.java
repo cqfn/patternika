@@ -2,8 +2,8 @@ package org.cqfn.patternika.ast.hash;
 
 import org.cqfn.patternika.ast.Node;
 import org.cqfn.patternika.ast.TestNode;
-
 import org.cqfn.patternika.ast.iterator.Children;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -64,11 +64,6 @@ public class SimilarityHashTest {
                 hash.getHash(root),
                 hash.getHash(createTree())
             );
-        // Equal trees: all nodes are exact copies.
-        Assert.assertEquals(
-                hash.getHash(root),
-                hash.getHash(createTree())
-            );
         // Totally different trees.
         Assert.assertNotEquals(
                 hash.getHash(root),
@@ -90,6 +85,7 @@ public class SimilarityHashTest {
                     ),
                 new TestNode(
                         2,
+                        //  Modified: TestNode(211) has no child TestNode(2111)
                         new TestNode(21, new TestNode(211)),
                         new TestNode(22)
                     ),
@@ -114,6 +110,7 @@ public class SimilarityHashTest {
                     ),
                 new TestNode(
                         2,
+                        //  Modified: TestNode(2111) -> TestNode(2112)
                         new TestNode(21, new TestNode(211, new TestNode(2112))),
                         new TestNode(22)
                     ),
