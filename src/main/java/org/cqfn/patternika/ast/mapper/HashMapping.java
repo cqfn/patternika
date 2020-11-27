@@ -7,6 +7,12 @@ import java.util.Set;
 
 /**
  * Mapping container implementation based on a {@link HashMap}.
+ * <p>
+ * NOTE: Take care about methods {@code hashCode} and {@code equals} in the classes
+ * describing mapped elements. They determine uniqueness of elements and affect mapping.
+ * If instances of elements must be always unique, this container must be changed
+ * to use {@code IdentityHashMap} instead of {@code HashMap}. In this case,
+ * {@code hashCode} and {@code equals} will not affect the behavior of the container.
  *
  * @param <T> the type of mapped elements.
  *
@@ -115,6 +121,22 @@ public class HashMapping<T> implements Mapping<T> {
         if (mappedElement != null) {
             table.remove(mappedElement);
         }
+    }
+
+    /**
+     * Checks whether two elements are connected.
+     *
+     * @param element1 the first element.
+     * @param element2 the second element.
+     * @return {@code true} if the two elements are connected or {@code false} otherwise.
+     */
+    @Override
+    public boolean isConnected(final T element1, final T element2) {
+        final T mapped1 = table.get(element1);
+        final T mapped2 = table.get(element2);
+        // We check only that element1 is mapped to element2.
+        // No sense to check the opposite base, as mapping is guaranteed to be balanced.
+        return mapped1 != null && mapped2 != null && mapped1.equals(element2);
     }
 
     /**

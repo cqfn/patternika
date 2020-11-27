@@ -56,6 +56,15 @@ public interface Mapping<T> {
     void disconnect(T element);
 
     /**
+     * Checks whether two elements are connected.
+     *
+     * @param element1 the first element.
+     * @param element2 the second element.
+     * @return {@code true} if the two elements are connected or {@code false} otherwise.
+     */
+    boolean isConnected(T element1, T element2);
+
+    /**
      * Creates a new mapping container and adds to it all the connections
      * from this mapping container and the given one.
      * <p>
