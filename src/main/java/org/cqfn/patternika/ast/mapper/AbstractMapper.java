@@ -128,10 +128,8 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
         if (root != null && mapping.contains(root)) {
             final NodeExt corresponding = mapping.get(root);
             // let's form list of not connected children.
-            final LinkedList<NodeExt> notConnectedChildren1 =
-                    getNotConnectedChildren(root);
-            final LinkedList<NodeExt> notConnectedChildren2 =
-                    getNotConnectedChildren(corresponding);
+            final List<NodeExt> notConnectedChildren1 = getNotConnectedChildren(root);
+            final List<NodeExt> notConnectedChildren2 = getNotConnectedChildren(corresponding);
             // let's try to connect corresponding by order first (by O(N)).
             connectLinearOrder(
                     notConnectedChildren1,
@@ -139,7 +137,7 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
                     (child1, child2) -> similarity.getHash(child1) == similarity.getHash(child2)
                 );
             // and each one with each other if there is something left unconnected (O(N^2))
-            if (notConnectedChildren2.size() > 0) {
+            if (!notConnectedChildren2.isEmpty()) {
                 connectProductOrder(
                         notConnectedChildren1,
                         notConnectedChildren2,
@@ -148,7 +146,7 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
             }
             // and one with each other but with soft equation if there
             // is something left unconnected (O(N^2))
-            if (notConnectedChildren2.size() > 0) {
+            if (!notConnectedChildren2.isEmpty()) {
                 connectProductOrder(
                         notConnectedChildren1,
                         notConnectedChildren2,
@@ -157,7 +155,7 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
             }
             // and let's try to connect corresponding by order with the softest equation (by O(N)).
             if (notConnectedChildren1.size() == notConnectedChildren2.size()
-                    && notConnectedChildren2.size() > 0) {
+                    && !notConnectedChildren2.isEmpty()) {
                 connectLinearOrder(
                         notConnectedChildren1,
                         notConnectedChildren2,
@@ -168,8 +166,8 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
         }
     }
 
-    private LinkedList<NodeExt> getNotConnectedChildren(final NodeExt root) {
-        final LinkedList<NodeExt> result = new LinkedList<>();
+    private List<NodeExt> getNotConnectedChildren(final NodeExt root) {
+        final List<NodeExt> result = new LinkedList<>();
         for (final NodeExt child : new Children<>(root)) {
             if (!mapping.contains(child)) {
                 result.add(child);
