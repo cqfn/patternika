@@ -129,6 +129,35 @@ public class HashMappingTest {
     }
 
     /**
+     * Tests the {@link HashMapping#isConnected(Object, Object)} method.
+     */
+    @Test
+    public void isConnectedTest() {
+        final HashMapping<String> mapping = new HashMapping<>();
+        // Connects elements and checks that the mapping contains all of them.
+        mapping.connect("one", "1");
+        mapping.connect("two", "2");
+        // Checks that proper elements are connected.
+        assertTrue(mapping.isConnected("one", "1"));
+        assertTrue(mapping.isConnected("1", "one"));
+        assertTrue(mapping.isConnected("two", "2"));
+        assertTrue(mapping.isConnected("2", "two"));
+        // Checks that wrong elements are not connected.
+        assertFalse(mapping.isConnected("one", "2"));
+        assertFalse(mapping.isConnected("2", "one"));
+        assertFalse(mapping.isConnected("two", "1"));
+        assertFalse(mapping.isConnected("1", "two"));
+        assertFalse(mapping.isConnected("one", "3"));
+        assertFalse(mapping.isConnected("3", "one"));
+        // Removes one of the connections and checks again.
+        mapping.disconnect("two");
+        assertTrue(mapping.isConnected("one", "1"));
+        assertTrue(mapping.isConnected("1", "one"));
+        assertFalse(mapping.isConnected("two", "2"));
+        assertFalse(mapping.isConnected("2", "two"));
+    }
+
+    /**
      * Tests the {@link HashMapping#merge(Mapping)} method.
      * Basic merge without conflicts (without overlapping and with overlapping).
      */
