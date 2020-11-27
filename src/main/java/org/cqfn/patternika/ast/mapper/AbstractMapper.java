@@ -6,12 +6,17 @@ import org.cqfn.patternika.ast.hash.SimilarityHash;
 import org.cqfn.patternika.ast.iterator.Bfs;
 import org.cqfn.patternika.ast.iterator.Children;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiPredicate;
 
 /**
  * Creates a mapping for node trees.
  * Connections are built using an algorithm based on BFS KMP logic O(N^2).
+ *
+ * NOTE: Draft to be further reviewed and refactored.
  *
  * @since 2019/10/31
  */
@@ -24,8 +29,6 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
     private final Mapping<NodeExt> mapping;
     /** Calculates a similarity hash for nodes. */
     private final Hash similarity;
-    /** Metric of how similar positions of subtrees in some outer tree (or trees). */
-    private final PositionMetric positionMetric;
 
     /**
      * Constructor.
@@ -38,7 +41,6 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
         this.treeRoot2 = Objects.requireNonNull(treeRoot2);
         this.mapping = new HashMapping<>();
         this.similarity = new SimilarityHash();
-        this.positionMetric = new PositionMetric();
     }
 
     /**
@@ -123,7 +125,96 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
      * @param root root of the given subtree.
      */
     protected void downstairsNodeMapping(final NodeExt root) {
-        // Implement.
+        if (root != null && mapping.contains(root)) {
+            final NodeExt corresponding = mapping.get(root);
+            // let's form list of not connected children.
+            final LinkedList<NodeExt> notConnectedChildren1 =
+                    getNotConnectedChildren(root);
+            final LinkedList<NodeExt> notConnectedChildren2 =
+                    getNotConnectedChildren(corresponding);
+            // let's try to connect corresponding by order first (by O(N)).
+            connectLinearOrder(
+                    notConnectedChildren1,
+                    notConnectedChildren2,
+                    (child1, child2) -> similarity.getHash(child1) == similarity.getHash(child2)
+                );
+            // and each one with each other if there is something left unconnected (O(N^2))
+            if (notConnectedChildren2.size() > 0) {
+                connectProductOrder(
+                        notConnectedChildren1,
+                        notConnectedChildren2,
+                        (child1, child2) -> similarity.getHash(child1) == similarity.getHash(child2)
+                    );
+            }
+            // and one with each other but with soft equation if there
+            // is something left unconnected (O(N^2))
+            if (notConnectedChildren2.size() > 0) {
+                connectProductOrder(
+                        notConnectedChildren1,
+                        notConnectedChildren2,
+                        NodeExt::matches
+                    );
+            }
+            // and let's try to connect corresponding by order with the softest equation (by O(N)).
+            if (notConnectedChildren1.size() == notConnectedChildren2.size()
+                    && notConnectedChildren2.size() > 0) {
+                connectLinearOrder(
+                        notConnectedChildren1,
+                        notConnectedChildren2,
+                        (child1, child2) -> child1.getType().equals(child2.getType())
+                                && child1.getChildCount() == child2.getChildCount()
+                    );
+            }
+        }
+    }
+
+    private LinkedList<NodeExt> getNotConnectedChildren(final NodeExt root) {
+        final LinkedList<NodeExt> result = new LinkedList<>();
+        for (final NodeExt child : new Children<>(root)) {
+            if (!mapping.contains(child)) {
+                result.add(child);
+            }
+        }
+        return result;
+    }
+
+    private void connectLinearOrder(
+            final Iterable<NodeExt> nodes1,
+            final Iterable<NodeExt> nodes2,
+            final BiPredicate<NodeExt, NodeExt> needConnect) {
+        final Iterator<NodeExt> it1 = nodes1.iterator();
+        final Iterator<NodeExt> it2 = nodes2.iterator();
+        while (it1.hasNext() && it2.hasNext()) {
+            final NodeExt node1 = it1.next();
+            final NodeExt node2 = it2.next();
+            if (needConnect.test(node1, node2)) {
+                mapping.connect(node1, node2);
+                downstairsNodeMapping(node1);
+                it1.remove();
+                it2.remove();
+            }
+        }
+    }
+
+    private void connectProductOrder(
+            final Iterable<NodeExt> nodes1,
+            final Iterable<NodeExt> nodes2,
+            final BiPredicate<NodeExt, NodeExt> needConnect) {
+        final Iterator<NodeExt> it1 = nodes1.iterator();
+        while (it1.hasNext()) {
+            final NodeExt child1 = it1.next();
+            final Iterator<NodeExt> it2 = nodes2.iterator();
+            while (it2.hasNext()) {
+                final NodeExt child2 = it2.next();
+                if (needConnect.test(child1, child2)) {
+                    mapping.connect(child1, child2);
+                    downstairsNodeMapping(child1);
+                    it1.remove();
+                    it2.remove();
+                    break;
+                }
+            }
+        }
     }
 
     /**
