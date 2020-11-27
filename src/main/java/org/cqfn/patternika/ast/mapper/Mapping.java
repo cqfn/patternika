@@ -62,7 +62,7 @@ public interface Mapping<T> {
      * @param element2 the second element.
      * @return {@code true} if the two elements are connected or {@code false} otherwise.
      */
-    boolean isConnected(T element1, T element2);
+    boolean connected(T element1, T element2);
 
     /**
      * Creates a new mapping container and adds to it all the connections

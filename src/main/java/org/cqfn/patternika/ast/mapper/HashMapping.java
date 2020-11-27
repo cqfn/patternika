@@ -131,7 +131,7 @@ public class HashMapping<T> implements Mapping<T> {
      * @return {@code true} if the two elements are connected or {@code false} otherwise.
      */
     @Override
-    public boolean isConnected(final T element1, final T element2) {
+    public boolean connected(final T element1, final T element2) {
         final T mapped1 = table.get(element1);
         final T mapped2 = table.get(element2);
         // We check only that element1 is mapped to element2.

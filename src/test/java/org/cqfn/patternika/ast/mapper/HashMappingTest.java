@@ -129,32 +129,32 @@ public class HashMappingTest {
     }
 
     /**
-     * Tests the {@link HashMapping#isConnected(Object, Object)} method.
+     * Tests the {@link HashMapping#connected(Object, Object)} method.
      */
     @Test
-    public void isConnectedTest() {
+    public void connectedTest() {
         final HashMapping<String> mapping = new HashMapping<>();
         // Connects elements and checks that the mapping contains all of them.
         mapping.connect("one", "1");
         mapping.connect("two", "2");
         // Checks that proper elements are connected.
-        assertTrue(mapping.isConnected("one", "1"));
-        assertTrue(mapping.isConnected("1", "one"));
-        assertTrue(mapping.isConnected("two", "2"));
-        assertTrue(mapping.isConnected("2", "two"));
+        assertTrue(mapping.connected("one", "1"));
+        assertTrue(mapping.connected("1", "one"));
+        assertTrue(mapping.connected("two", "2"));
+        assertTrue(mapping.connected("2", "two"));
         // Checks that wrong elements are not connected.
-        assertFalse(mapping.isConnected("one", "2"));
-        assertFalse(mapping.isConnected("2", "one"));
-        assertFalse(mapping.isConnected("two", "1"));
-        assertFalse(mapping.isConnected("1", "two"));
-        assertFalse(mapping.isConnected("one", "3"));
-        assertFalse(mapping.isConnected("3", "one"));
+        assertFalse(mapping.connected("one", "2"));
+        assertFalse(mapping.connected("2", "one"));
+        assertFalse(mapping.connected("two", "1"));
+        assertFalse(mapping.connected("1", "two"));
+        assertFalse(mapping.connected("one", "3"));
+        assertFalse(mapping.connected("3", "one"));
         // Removes one of the connections and checks again.
         mapping.disconnect("two");
-        assertTrue(mapping.isConnected("one", "1"));
-        assertTrue(mapping.isConnected("1", "one"));
-        assertFalse(mapping.isConnected("two", "2"));
-        assertFalse(mapping.isConnected("2", "two"));
+        assertTrue(mapping.connected("one", "1"));
+        assertTrue(mapping.connected("1", "one"));
+        assertFalse(mapping.connected("two", "2"));
+        assertFalse(mapping.connected("2", "two"));
     }
 
     /**

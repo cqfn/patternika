@@ -103,7 +103,7 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
         final NodeExt parent2 = node2.getParent();
         // If parents exist, they must be mapped to each other and match, otherwise disconnect.
         if (parent1 != null && parent2 != null) {
-            if (!mapping.isConnected(parent1, parent2) || !parent1.matches(parent2)) {
+            if (!mapping.connected(parent1, parent2) || !parent1.matches(parent2)) {
                 return true;
             }
         }
