@@ -20,7 +20,6 @@
         <exclude name="AtLeastOneConstructor" />
         <exclude name="CommentDefaultAccessModifier"/>
         <exclude name="OnlyOneReturn"/>
-        <exclude name="ShortClassName"/>
     </rule>
     <rule ref="category/java/codestyle.xml/ShortClassName">
         <properties>
@@ -28,19 +27,16 @@
         </properties>
     </rule>
     <rule ref="category/java/design.xml" />
-    <rule ref="category/java/documentation.xml">
-        <exclude name="CommentSize"/>
-        <exclude name="CyclomaticComplexity"/>
+    <rule ref="category/java/design.xml/CyclomaticComplexity">
+        <properties>
+            <property name="methodReportLevel" value="11" />
+        </properties>
     </rule>
+    <rule ref="category/java/documentation.xml" />
     <rule ref="category/java/documentation.xml/CommentSize">
         <properties>
             <property name="maxLines" value="15" />
             <property name="maxLineLength" value="100" />
-        </properties>
-    </rule>
-    <rule ref="category/java/design.xml/CyclomaticComplexity">
-        <properties>
-            <property name="methodReportLevel" value="11" />
         </properties>
     </rule>
     <rule ref="category/java/errorprone.xml">
