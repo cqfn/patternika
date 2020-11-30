@@ -3,7 +3,7 @@ package org.cqfn.patternika.ast;
 import java.util.List;
 import org.cqfn.patternika.source.Fragment;
 
-public class XmlNode implements Node {
+public final class XmlNode implements Node {
     /** Original node (Node object). */
     private final Node node;
     /** Parent of the node. */
