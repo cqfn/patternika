@@ -53,6 +53,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     compile group: 'guru.nidi', name: 'graphviz-java', version: '0.18.0'
+    implementation 'com.guseyn.broken-xml:broken-xml:1.0.21'
 }
 
 jar {
