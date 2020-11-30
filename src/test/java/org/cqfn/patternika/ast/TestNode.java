@@ -3,8 +3,10 @@ package org.cqfn.patternika.ast;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import org.cqfn.patternika.source.Fragment;
 
 /**
@@ -12,7 +14,7 @@ import org.cqfn.patternika.source.Fragment;
  *
  * @since 2020/11/9
  */
-public final class TestNode implements Node {
+public class TestNode implements Node {
     /** Node type. */
     private final String type;
     /** Node data. */
@@ -143,25 +145,35 @@ public final class TestNode implements Node {
         return getType().equals(other.getType()) && getData().equals(other.getData());
     }
 
+    /**
+     * Checks the current object for equality with the given object.
+     * <p>
+     * Takes into account the following properties: type, data, and child count.
+     *
+     * @param o the given object.
+     * @return {@code true} or {@code false}.
+     */
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
-
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
-        final TestNode testNode = (TestNode) o;
-
+        final TestNode other = (TestNode) o;
         return new EqualsBuilder()
-            .append(data, testNode.data)
-            .append(type, testNode.type)
-            .append(children.size(), testNode.children.size())
+            .append(this.data, other.data)
+            .append(this.type, other.type)
+            .append(this.children.size(), other.children.size())
             .isEquals();
     }
 
+    /**
+     * Returns hash code for the current object.
+     *
+     * @return hash code.
+     */
     @Override
     public int hashCode() {
         final int initialNonZeroOddNumber = 17;
@@ -172,4 +184,5 @@ public final class TestNode implements Node {
             .append(children.size())
             .toHashCode();
     }
+
 }
