@@ -159,17 +159,25 @@ public class HashMappingTest {
 
     /**
      * Tests the {@link HashMapping#merge(Mapping)} method.
-     * Basic merge without conflicts (without overlapping and with overlapping).
+     * <p>
+     * Basic merge without conflicts and without overlapping.
      */
     @Test
-    public void mergeTest() {
-        // Merge without overlapping.
-        final int noOverlappingMiddle = 3;
-        mergeTest(noOverlappingMiddle, noOverlappingMiddle);
-        // Merge with overlapping.
-        final int overlappingStart = 2;
-        final int overlappingEnd = 4;
-        mergeTest(overlappingEnd, overlappingStart);
+    public void mergeNoOverlappingTest() {
+        final int middle = 3;
+        mergeTest(middle, middle);
+    }
+
+    /**
+     * Tests the {@link HashMapping#merge(Mapping)} method.
+     * <p>
+     * Basic merge without conflicts and with overlapping.
+     */
+    @Test
+    public void mergeOverlappingTest() {
+        final int overlapStart = 2;
+        final int overlapEnd = 4;
+        mergeTest(overlapEnd, overlapStart);
     }
 
     /**
