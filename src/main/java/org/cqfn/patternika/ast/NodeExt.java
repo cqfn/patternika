@@ -28,7 +28,7 @@ public class NodeExt implements Node {
     private final int depth;
     /** Parent of the node. */
     private final NodeExt parent;
-    /** Lazy list of node's children (initialized on first access). */
+    /** Lazy list of node's children (initialized on the first access). */
     private List<NodeExt> children;
 
     /**
@@ -59,7 +59,6 @@ public class NodeExt implements Node {
         this.order = order;
         this.depth = parent == null ? 0 : parent.depth + 1;
         this.parent = parent;
-        this.children = null;
     }
 
     /**
