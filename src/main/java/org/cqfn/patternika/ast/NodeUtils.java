@@ -34,12 +34,12 @@ public final class NodeUtils {
             && secondNode.getChildCount() == 0) {
             return true;
         }
-        final List<Node> childrenOfFirstNode = listOfChildren(firstNode);
-        final List<Node> childrenOfSecondNode = listOfChildren(secondNode);
+        final List<Node> firstNodeChildren = listOfChildren(firstNode);
+        final List<Node> secondNodeChildren = listOfChildren(secondNode);
 
         return areTwoListsOfNodesEqualOnEachLevelIgnoringOrder(
-            childrenOfFirstNode,
-            childrenOfSecondNode
+                firstNodeChildren,
+                secondNodeChildren
         );
     }
 
