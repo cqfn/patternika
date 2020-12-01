@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  */
 public final class Nodes {
     /**
-     * It's utility class.
+     * It's a utility class.
      */
     private Nodes() { }
 
@@ -105,19 +105,4 @@ public final class Nodes {
         return children;
     }
 
-    /**
-     * Returns node structure flatten to list.
-     *
-     * @param node Node to be flatten.
-     * @return flatten list of node structure.
-     */
-    public static List<Node> nodeFlattenToList(final Node node) {
-        final List<Node> resultList = new ArrayList<>();
-        resultList.add(node);
-        final List<Node> children = listOfChildren(node);
-        for (Node child: children) {
-            resultList.addAll(nodeFlattenToList(child));
-        }
-        return resultList;
-    }
 }

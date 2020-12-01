@@ -1,15 +1,17 @@
 package org.cqfn.patternika.ast;
 
+import org.cqfn.patternika.ast.iterator.Dfs;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.cqfn.patternika.ast.Nodes.areTwoNodesDeepEqual;
-import static org.cqfn.patternika.ast.Nodes.nodeFlattenToList;
 
 /**
- * The purpose of this class is to return all possible matches between two nodes.
+ * Finds all possible matches between nodes in two node trees.
  * It contains just one public method {@link NodeMatcher#findAll()} that does all the job.
  *
  * <p> The solution doesn't rely only on method {@link Object#equals(Object)} of nodes which are
@@ -19,19 +21,20 @@ import static org.cqfn.patternika.ast.Nodes.nodeFlattenToList;
  * @since 2020/11/11
  */
 public class NodeMatcher {
-    /** First Node to compare. **/
-    private final Node firstNode;
-    /** Second node to compare. **/
-    private final Node secondNode;
+    /** Root of the first node tree to compare. **/
+    private final Node firstRoot;
+    /** Root of the second node tree to compare. **/
+    private final Node secondRoot;
 
     /**
-     * Public constructor.
-     * @param firstNode First Node to compare.
-     * @param secondNode Second Node to compare.
+     * Constructor.
+     *
+     * @param firstRoot the root of the first node tree to compare.
+     * @param secondRoot the root of the second node tree to compare.
      */
-    public NodeMatcher(final Node firstNode, final Node secondNode) {
-        this.firstNode = firstNode;
-        this.secondNode = secondNode;
+    public NodeMatcher(final Node firstRoot, final Node secondRoot) {
+        this.firstRoot = Objects.requireNonNull(firstRoot);
+        this.secondRoot = Objects.requireNonNull(secondRoot);
     }
 
     /**
@@ -42,22 +45,22 @@ public class NodeMatcher {
      */
     public Map<Node, List<Node>> findAll() {
         final Map<Node, List<Node>> allMatches = new HashMap<>();
-        if (areTwoNodesDeepEqual(this.firstNode, this.secondNode)) {
+        if (areTwoNodesDeepEqual(this.firstRoot, this.secondRoot)) {
             final List<Node> matchedNodes = new ArrayList<>();
-            matchedNodes.add(this.secondNode);
-            allMatches.put(this.firstNode, matchedNodes);
+            matchedNodes.add(this.secondRoot);
+            allMatches.put(this.firstRoot, matchedNodes);
         }
-        final List<Node> flattenListOfNodesInFirstNode = nodeFlattenToList(this.firstNode);
-        final List<Node> flattenListOfNodesInSecondNode = nodeFlattenToList(this.secondNode);
-        for (final Node nodeFromFirstList : flattenListOfNodesInFirstNode) {
-            for (final Node nodeFromSecondList : flattenListOfNodesInSecondNode) {
+        final Iterable<Node> firstTreeNodes = new Dfs<>(this.firstRoot);
+        final List<Node> secondTreeNodes = new Dfs<>(this.secondRoot).toList();
+        for (final Node firstTreeNode : firstTreeNodes) {
+            for (final Node secondTreeNode : secondTreeNodes) {
                 final boolean nodesAreDeepEqual = areTwoNodesDeepEqual(
-                    nodeFromFirstList, nodeFromSecondList
+                        firstTreeNode, secondTreeNode
                 );
                 if (nodesAreDeepEqual) {
                     final List<Node> matchedNodes =
-                            allMatches.computeIfAbsent(nodeFromFirstList, x -> new ArrayList<>());
-                    matchedNodes.add(nodeFromSecondList);
+                            allMatches.computeIfAbsent(firstTreeNode, x -> new ArrayList<>());
+                    matchedNodes.add(secondTreeNode);
                 }
             }
         }
