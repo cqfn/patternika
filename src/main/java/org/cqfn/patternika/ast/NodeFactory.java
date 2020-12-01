@@ -26,15 +26,17 @@ public class NodeFactory {
      *
      * @param type node type, not {@code null}.
      * @param creator creator for the specified node type, not {@code null}.
+     * @return this factory.
      * @throws IllegalArgumentException if a creator for the specified type is already registered.
      */
-    public void register(final String type, final NodeCreator creator) {
+    public NodeFactory register(final String type, final NodeCreator creator) {
         Objects.requireNonNull(type);
         Objects.requireNonNull(creator);
         final NodeCreator old = creators.put(type, creator);
         if (old != null) {
             throw new IllegalArgumentException("Creator type " + type + " is already registered!");
         }
+        return this;
     }
 
     /**
