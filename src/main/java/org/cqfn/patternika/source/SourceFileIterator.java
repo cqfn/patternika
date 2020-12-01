@@ -34,14 +34,14 @@ class SourceFileIterator implements SourceIterator {
         if (index >= data.length()) {
             return 0;
         }
-        final char ch = data.charAt(index++);
-        if (ch == '\n') {
+        final char result = data.charAt(index++);
+        if (result == '\n') {
             row++;
             column = 1;
         } else {
             column++;
         }
-        return ch;
+        return result;
     }
 
     @Override
