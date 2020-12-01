@@ -49,6 +49,13 @@
     <rule ref="category/java/errorprone.xml">
         <exclude name="BeanMembersShouldSerialize"/>
     </rule>
+    <rule ref="category/java/errorprone.xml/AvoidDuplicateLiterals">
+        <properties>
+            <!-- Ignore @Test methods -->
+            <property name="violationSuppressXPath" value="
+        //ClassOrInterfaceBodyDeclaration/Annotation/MarkerAnnotation//Name[@Image='Test']" />
+        </properties>
+    </rule>
     <rule ref="category/java/performance.xml" />
 
 </ruleset>
