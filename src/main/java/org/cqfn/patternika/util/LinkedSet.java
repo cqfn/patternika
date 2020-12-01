@@ -14,7 +14,7 @@ import java.util.Objects;
  * <p>Allows iterating over the items in a proper order and
  * inserting new items into specific places (relative order) for O(1).
  *
- * @param <T> Value type.
+ * @param <T> the value type.
  *
  * @since 2020/11/2
  */
@@ -23,7 +23,7 @@ public class LinkedSet<T> implements Collection<T> {
     private final Map<T, Entry<T>> entries = new IdentityHashMap<>();
     /** First entry. */
     private Entry<T> first;
-    /** Lst entry. */
+    /** Last entry. */
     private Entry<T> last;
 
     /**
@@ -37,7 +37,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Additional constructor. Fills the set with values.
      *
-     * @param values Values to be copied into the set.
+     * @param values values to be copied into the set.
      */
     public LinkedSet(final Iterable<T> values) {
         this();
@@ -47,7 +47,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Return the number of values stored in the set.
      *
-     * @return Set size.
+     * @return the set size.
      */
     @Override
     public int size() {
@@ -67,7 +67,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Checks whether the set contains the specified value.
      *
-     * @param value Value.
+     * @param value a value.
      * @return {@code true} or {@code false}.
      */
     @Override
@@ -78,7 +78,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Checks whether the set contains all the values form the specified collection.
      *
-     * @param collection Collection of vales.
+     * @param collection a collection of values.
      * @return {@code true} if this set contains all of the elements in the specified collection or
      *         {@code false} otherwise.
      */
@@ -95,7 +95,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Returns an iterator over values stored in the set.
      *
-     * @return Iterator.
+     * @return a new iterator.
      */
     @Override
     public Iterator<T> iterator() {
@@ -105,7 +105,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Returns a new array that contains all values stored in the set.
      *
-     * @return Array of values.
+     * @return the array of values.
      */
     @Override
     public Object[] toArray() {
@@ -121,9 +121,9 @@ public class LinkedSet<T> implements Collection<T> {
      * Returns an array containing all of the values in this set;
      * the runtime type of the returned array is that of the specified array.
      *
-     * @param array Array.
-     * @param <U> Array type.
-     * @return Array.
+     * @param array array.
+     * @param <U> array type.
+     * @return array.
      */
     @Override
     public <U> U[] toArray(final U[] array) {
@@ -144,7 +144,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Returns the first value.
      *
-     * @return First value or {@code null} if there is no value (the set is empty).
+     * @return the first value or {@code null} if there is no value (the set is empty).
      */
     public T getFirst() {
         return first == null ? null : first.value;
@@ -153,7 +153,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Returns the last value.
      *
-     * @return Last value or {@code null} if there is no value (the set is empty).
+     * @return the last value or {@code null} if there is no value (the set is empty).
      */
     public T getLast() {
         return last == null ? null : last.value;
@@ -449,7 +449,7 @@ public class LinkedSet<T> implements Collection<T> {
         builder.append('{');
         for (;;) {
             final T value = iter.next();
-            builder.append(value == this ? "(this Set)" : value);
+            builder.append(value == this ? "(this set)" : value);
             if (!iter.hasNext()) {
                 return builder.append('}').toString();
             }
