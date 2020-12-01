@@ -147,7 +147,7 @@ public class LinkedSet<T> implements Collection<T> {
      * @return First value or {@code null} if there is no value (the set is empty).
      */
     public T getFirst() {
-        return first != null ? first.value : null;
+        return first == null ? null : first.value;
     }
 
     /**
@@ -156,7 +156,7 @@ public class LinkedSet<T> implements Collection<T> {
      * @return Last value or {@code null} if there is no value (the set is empty).
      */
     public T getLast() {
-        return last != null ? last.value : null;
+        return last == null ? null : last.value;
     }
 
     /**
@@ -171,7 +171,7 @@ public class LinkedSet<T> implements Collection<T> {
         if (entry == null) {
             throw new NoSuchElementException();
         }
-        return null != entry.previous ? entry.previous.value : null;
+        return null == entry.previous ? null : entry.previous.value;
     }
 
     /**
@@ -186,7 +186,7 @@ public class LinkedSet<T> implements Collection<T> {
         if (entry == null) {
             throw new NoSuchElementException();
         }
-        return null != entry.next ? entry.next.value : null;
+        return null == entry.next ? null : entry.next.value;
     }
 
     /**
@@ -437,7 +437,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Returns a textual representation of the set.
      *
-     * @return Text.
+     * @return text.
      */
     @Override
     public String toString() {
@@ -445,15 +445,15 @@ public class LinkedSet<T> implements Collection<T> {
         if (!iter.hasNext()) {
             return "{}";
         }
-        final StringBuilder sb = new StringBuilder();
-        sb.append('{');
+        final StringBuilder builder = new StringBuilder();
+        builder.append('{');
         for (;;) {
             final T value = iter.next();
-            sb.append(value == this ? "(this Set)" : value);
+            builder.append(value == this ? "(this Set)" : value);
             if (!iter.hasNext()) {
-                return sb.append('}').toString();
+                return builder.append('}').toString();
             }
-            sb.append(',').append(' ');
+            builder.append(',').append(' ');
         }
     }
 
