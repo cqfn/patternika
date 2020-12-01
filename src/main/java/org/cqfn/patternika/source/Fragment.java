@@ -112,7 +112,7 @@ public class Fragment {
      * @return the fragment length or {@code -1} if there is no start or no end.
      */
     public int getLength() {
-        return start != null && end != null ? end.getIndex() - start.getIndex() : -1;
+        return start == null || end == null ? -1 : end.getIndex() - start.getIndex();
     }
 
     /**
@@ -121,7 +121,7 @@ public class Fragment {
      * @return start fragment or {@code null} if there is no start.
      */
     public Fragment getStartFragment() {
-        return start != null ? new Fragment(source, start, start) : null;
+        return start == null ? null : new Fragment(source, start, start);
     }
 
     /**
@@ -130,7 +130,7 @@ public class Fragment {
      * @return end fragment or {@code null} if there is no end.
      */
     public Fragment getEndFragment() {
-        return end != null ? new Fragment(source, end, end) : null;
+        return end == null ? null : new Fragment(source, end, end);
     }
 
     /**
@@ -170,7 +170,7 @@ public class Fragment {
      */
     @Override
     public String toString() {
-        return start != null && end != null ? source.getFragmentAsString(start, end) : "";
+        return start == null || end == null ? "" : source.getFragmentAsString(start, end);
     }
 
     /**
