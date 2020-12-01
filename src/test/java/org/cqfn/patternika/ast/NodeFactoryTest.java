@@ -43,7 +43,7 @@ public class NodeFactoryTest {
             super("TestNode1", data, children);
         }
 
-        static Node create(
+        private static Node create(
                 final Fragment fragment,
                 final String data,
                 final List<Node> children) {

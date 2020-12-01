@@ -163,18 +163,18 @@ public class TestNode implements Node {
      * <p>
      * Takes into account the following properties: type, data, and child count.
      *
-     * @param o the given object.
+     * @param obj the given object.
      * @return {@code true} or {@code false}.
      */
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null || this.getClass() != obj.getClass()) {
             return false;
         }
-        final TestNode other = (TestNode) o;
+        final TestNode other = (TestNode) obj;
         return new EqualsBuilder()
             .append(this.data, other.data)
             .append(this.type, other.type)

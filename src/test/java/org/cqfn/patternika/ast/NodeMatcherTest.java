@@ -66,7 +66,7 @@ public class NodeMatcherTest {
             ),
             new TestNode("green", 1)
         );
-        Map<Node, List<Node>> matches = new NodeMatcher(firstNode, secondNode).findAll();
+        final Map<Node, List<Node>> matches = new NodeMatcher(firstNode, secondNode).findAll();
         final int numberOfMatches = 4;
         assertEquals(matches.size(), numberOfMatches);
 
