@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.cqfn.patternika.ast.Nodes.areTwoNodesDeepEqual;
+import static org.cqfn.patternika.ast.NodeUtils.areTwoNodesDeepEqual;
 
 /**
  * Finds all possible matches between nodes in two node trees.

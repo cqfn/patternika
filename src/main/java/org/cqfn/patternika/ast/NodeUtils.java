@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
  *
  * @since 2020/11/12
  */
-public final class Nodes {
+public final class NodeUtils {
     /**
      * It's a utility class.
      */
-    private Nodes() { }
+    private NodeUtils() { }
 
     /**
      * Detects if two nodes are deep equal (recursively) without considering indexes
@@ -58,10 +58,10 @@ public final class Nodes {
             return false;
         }
         final List<List<Node>> allChildrenOfAllNodesInFirstList = firstListOfNodes.stream()
-            .map(Nodes::listOfChildren).collect(
+            .map(NodeUtils::listOfChildren).collect(
                 Collectors.toList());
         final List<List<Node>> allChildrenOfAllNodesInSecondList = firstListOfNodes.stream()
-            .map(Nodes::listOfChildren).collect(
+            .map(NodeUtils::listOfChildren).collect(
                 Collectors.toList());
         if (allChildrenOfAllNodesInFirstList.size() != allChildrenOfAllNodesInSecondList.size()) {
             return false;
