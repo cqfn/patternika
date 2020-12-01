@@ -36,7 +36,46 @@ public class LinkedSetTest {
         Assert.assertFalse(set.isEmpty());
         Assert.assertEquals(items.size(), set.size());
         Assert.assertEquals("one", set.getFirst());
+        Assert.assertEquals("two", set.getNext("one"));
         Assert.assertEquals("five", set.getLast());
+        Assert.assertEquals("four", set.getPrevious("five"));
+        Assert.assertEquals(items, Arrays.asList(set.toArray()));
+    }
+
+    /**
+     * Test for method {@link LinkedSet#add)}.
+     */
+    @Test
+    public void testAdd() {
+        final List<String> items = Arrays.asList("one", "two", "three", "four", "five");
+        final LinkedSet<Object> set = new LinkedSet<>();
+        for (final String item : items) {
+            Assert.assertTrue(set.add(item));
+        }
+        Assert.assertEquals(items, Arrays.asList(set.toArray()));
+    }
+
+    /**
+     * Test for method {@link LinkedSet#add)}.
+     * Check that adding an existing element causes an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddException() {
+        final LinkedSet<Object> set = new LinkedSet<>();
+        Assert.assertTrue(set.add("one"));
+        Assert.assertTrue(set.add("two"));
+        Assert.assertTrue(set.add("one"));
+    }
+
+    /**
+     * Test for method {@link LinkedSet#addAll)}.
+     */
+    @Test
+    public void testAddAll() {
+        final List<String> items = Arrays.asList("one", "two", "three", "four", "five");
+        final LinkedSet<Object> set = new LinkedSet<>();
+        Assert.assertTrue(set.addAll(items));
+        Assert.assertFalse(set.addAll(Collections.emptyList()));
         Assert.assertEquals(items, Arrays.asList(set.toArray()));
     }
 
