@@ -31,6 +31,13 @@
             <property name="minimum" value="18" />
         </properties>
     </rule>
+    <rule ref="category/java/codestyle.xml/UnnecessaryLocalBeforeReturn">
+        <properties>
+            <!-- Ignore test classes that have the 'Test' Suffix -->
+            <property name="violationSuppressXPath"
+                      value="./ancestor::ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
+        </properties>
+    </rule>
     <rule ref="category/java/design.xml">
         <exclude name="LawOfDemeter" />
     </rule>
@@ -51,9 +58,9 @@
     </rule>
     <rule ref="category/java/errorprone.xml/AvoidDuplicateLiterals">
         <properties>
-            <!-- Ignore @Test methods -->
-            <property name="violationSuppressXPath" value="
-        //ClassOrInterfaceBodyDeclaration/Annotation/MarkerAnnotation//Name[@Image='Test']" />
+            <!-- Ignore test classes that have the 'Test' Suffix -->
+            <property name="violationSuppressXPath"
+                      value="./ancestor::ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
         </properties>
     </rule>
     <rule ref="category/java/performance.xml" />
