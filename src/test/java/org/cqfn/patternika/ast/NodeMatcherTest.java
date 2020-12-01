@@ -2,9 +2,11 @@ package org.cqfn.patternika.ast;
 
 import java.util.List;
 import java.util.Map;
+
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 
 /**
  * Tests NodeMatcher class.
@@ -68,13 +70,13 @@ public class NodeMatcherTest {
         final int numberOfMatches = 4;
         assertEquals(matches.size(), numberOfMatches);
 
-        Node key1 = new TestNode("red", 0);
-        Node key2 = new TestNode("purple", 2);
-        Node key3 = new TestNode(
+        final Node key1 = new TestNode("red", 0);
+        final Node key2 = new TestNode("purple", 2);
+        final Node key3 = new TestNode(
             "green", 1,
             new TestNode("purple", 2)
         );
-        Node key4 = new TestNode(
+        final Node key4 = new TestNode(
             "green", 1,
             new TestNode("red", 0),
             new TestNode("red", 0)
