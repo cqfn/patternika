@@ -519,7 +519,7 @@ public class LinkedSet<T> implements Collection<T> {
          */
         @Override
         public T next() {
-            if (current == null) {
+            if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             final T result = current.value;
@@ -534,7 +534,7 @@ public class LinkedSet<T> implements Collection<T> {
          */
         @Override
         public void remove() {
-            if (current == null) {
+            if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             if (!LinkedSet.this.remove(current.value)) {
