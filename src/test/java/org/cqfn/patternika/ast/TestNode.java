@@ -4,9 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import org.cqfn.patternika.source.Fragment;
 
 /**
@@ -182,11 +179,9 @@ public class TestNode implements Node {
             return false;
         }
         final TestNode other = (TestNode) obj;
-        return new EqualsBuilder()
-            .append(this.data, other.data)
-            .append(this.type, other.type)
-            .append(this.children.size(), other.children.size())
-            .isEquals();
+        return Objects.equals(this.type, other.type)
+            && Objects.equals(this.data, other.data)
+            && this.children.size() == other.children.size();
     }
 
     /**
@@ -196,13 +191,7 @@ public class TestNode implements Node {
      */
     @Override
     public int hashCode() {
-        final int initialNonZeroOddNumber = 17;
-        final int multiplierNonZeroOddNumber = 37;
-        return new HashCodeBuilder(initialNonZeroOddNumber, multiplierNonZeroOddNumber)
-            .append(type)
-            .append(data)
-            .append(children.size())
-            .toHashCode();
+        return Objects.hash(type, data, children.size());
     }
 
 }
