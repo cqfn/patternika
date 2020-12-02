@@ -43,6 +43,23 @@ public class LinkedSetTest {
     }
 
     /**
+     * Test for methods {@link LinkedSet#contains} and {@link LinkedSet#containsAll}.
+     */
+    @Test
+    public void testContains() {
+        final List<String> items = Arrays.asList("one", "two", "three", "four", "five");
+        final LinkedSet<String> set = new LinkedSet<>(items);
+        for (final String item : items) {
+            Assert.assertTrue(set.contains(item));
+        }
+        Assert.assertFalse(set.contains("zero"));
+        Assert.assertFalse(set.contains(null));
+        Assert.assertTrue(set.containsAll(items));
+        Assert.assertTrue(set.containsAll(Arrays.asList("four", "three", "five")));
+        Assert.assertFalse(set.containsAll(Arrays.asList("one", "zero", "three")));
+    }
+
+    /**
      * Test for method {@link LinkedSet#add)}.
      */
     @Test
@@ -61,7 +78,7 @@ public class LinkedSetTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testAddException() {
-        final LinkedSet<Object> set = new LinkedSet<>();
+        final LinkedSet<String> set = new LinkedSet<>();
         Assert.assertTrue(set.add("one"));
         Assert.assertTrue(set.add("two"));
         Assert.assertTrue(set.add("one"));
