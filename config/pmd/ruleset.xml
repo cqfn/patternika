@@ -63,6 +63,8 @@
                       value="./ancestor::ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
         </properties>
     </rule>
-    <rule ref="category/java/performance.xml" />
+    <rule ref="category/java/performance.xml">
+        <exclude name="AvoidInstantiatingObjectsInLoops"/>
+    </rule>
 
 </ruleset>
