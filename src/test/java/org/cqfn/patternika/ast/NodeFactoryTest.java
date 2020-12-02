@@ -27,7 +27,7 @@ public class NodeFactoryTest {
     private NodeFactory createFactory() {
         return new NodeFactory()
                 // Use case 0: the object is constructed using the constructor of its class.
-                .register("TestNode", (f, d, c) -> new TestNode("TestNode", d, c))
+                .register("TestNode", (f, d, c) -> new TestNode(f, "TestNode", d, c))
                 // Use case 1: the object is created using a factory method provided by its class.
                 .register("TestNode1", TestNode1::create)
                 // Use case 2: the object is create using an external factory method.
@@ -39,8 +39,12 @@ public class NodeFactoryTest {
      * The factory method can do a complex processing of its parameters.
      */
     private static class TestNode1 extends TestNode {
+        TestNode1(final Fragment fragment, final String data, final List<Node> children) {
+            super(fragment, "TestNode1", data, children);
+        }
+
         TestNode1(final String data, final List<Node> children) {
-            super("TestNode1", data, children);
+            this(null, data, children);
         }
 
         private static Node create(
@@ -50,7 +54,7 @@ public class NodeFactoryTest {
             // This implementation is trivial, but it can be complex.
             // E.g. when it is needed to check the order of children
             // and put them into a specific fields of the node class.
-            return new TestNode1(data, children);
+            return new TestNode1(fragment, data, children);
         }
     }
 
@@ -69,7 +73,7 @@ public class NodeFactoryTest {
         // This implementation is trivial, but it can be complex.
         // E.g. when it is needed to check the order of children
         // and put them into a specific fields of the node class.
-        return new TestNode("TestNode2", data, children);
+        return new TestNode(fragment, "TestNode2", data, children);
     }
 
     /**
