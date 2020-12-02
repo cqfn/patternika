@@ -5,7 +5,9 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Tests for the {@link LinkedSet} class.
@@ -57,6 +59,42 @@ public class LinkedSetTest {
         Assert.assertTrue(set.containsAll(items));
         Assert.assertTrue(set.containsAll(Arrays.asList("four", "three", "five")));
         Assert.assertFalse(set.containsAll(Arrays.asList("one", "zero", "three")));
+    }
+
+    /**
+     * Test for the iterator returned by method {@link LinkedSet#iterator()}.
+     * Only iterates, does not remove elements.
+     */
+    @Test
+    public void testIterator() {
+        final List<String> items = Arrays.asList("one", "two", "three");
+        final LinkedSet<String> set = new LinkedSet<>(items);
+        // We iterate two times to ensure that we get a new iterator each time.
+        for (int i = 0; i < 2; ++i) {
+            final Iterator<String> iter = set.iterator();
+            for (final String item : items) {
+                Assert.assertTrue(iter.hasNext());
+                Assert.assertEquals(item, iter.next());
+            }
+            Assert.assertFalse(iter.hasNext());
+        }
+    }
+
+    /**
+     * Test for the iterator returned by method {@link LinkedSet#iterator()}.
+     * Only iterates, does not remove elements.
+     * Tests that an exception is thrown when there are no more elements.
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void testIteratorWithException() {
+        final LinkedSet<String> set = new LinkedSet<>(Arrays.asList("one", "two"));
+        final Iterator<String> iter = set.iterator();
+        Assert.assertTrue(iter.hasNext());
+        Assert.assertEquals("one", iter.next());
+        Assert.assertTrue(iter.hasNext());
+        Assert.assertEquals("two", iter.next());
+        Assert.assertFalse(iter.hasNext());
+        iter.next(); // NoSuchElementException
     }
 
     /**
