@@ -63,6 +63,11 @@
                       value="./ancestor::ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
         </properties>
     </rule>
+    <rule ref="category/java/errorprone.xml/AvoidLiteralsInIfCondition">
+        <properties>
+            <property name="ignoreMagicNumbers" value="-1,0,'\n'" />
+        </properties>
+    </rule>
     <rule ref="category/java/performance.xml">
         <exclude name="AvoidInstantiatingObjectsInLoops"/>
     </rule>
