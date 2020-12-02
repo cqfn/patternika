@@ -165,7 +165,7 @@ public class HashMappingTest {
     @Test
     public void mergeNoOverlappingTest() {
         final int middle = 3;
-        mergeTest(middle, middle);
+        assertTrue(mergeTest(middle, middle));
     }
 
     /**
@@ -177,7 +177,7 @@ public class HashMappingTest {
     public void mergeOverlappingTest() {
         final int overlapStart = 2;
         final int overlapEnd = 4;
-        mergeTest(overlapEnd, overlapStart);
+        assertTrue(mergeTest(overlapEnd, overlapStart));
     }
 
     /**
@@ -187,8 +187,9 @@ public class HashMappingTest {
      *
      * @param firstEnd end index for the elements of the first mapping.
      * @param secondStart start index for the elements of the second mapping.
+     * @return {@code true} if no assertion has failed.
      */
-    private void mergeTest(final int firstEnd, final int secondStart) {
+    private boolean mergeTest(final int firstEnd, final int secondStart) {
         final int firstStart = 0;
         final int secondEnd = 6;
         final List<String> keys = Arrays.asList("one", "two", "three", "four", "five", "six");
@@ -226,6 +227,7 @@ public class HashMappingTest {
                 assertNull(mapping1.get(value));
             }
         }
+        return true;
     }
 
     /**
