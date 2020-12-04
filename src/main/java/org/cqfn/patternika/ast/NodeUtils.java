@@ -2,7 +2,6 @@ package org.cqfn.patternika.ast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Set of useful methods for Node.
@@ -57,19 +56,13 @@ public final class NodeUtils {
             firstListOfNodes, secondListOfNodes)) {
             return false;
         }
-        final List<List<Node>> allChildrenOfAllNodesInFirstList = firstListOfNodes.stream()
-            .map(NodeUtils::listOfChildren).collect(
-                Collectors.toList());
-        final List<List<Node>> allChildrenOfAllNodesInSecondList = firstListOfNodes.stream()
-            .map(NodeUtils::listOfChildren).collect(
-                Collectors.toList());
-        if (allChildrenOfAllNodesInFirstList.size() != allChildrenOfAllNodesInSecondList.size()) {
+        if (firstListOfNodes.size() != secondListOfNodes.size()) {
             return false;
         }
-        for (int index = 0; index < allChildrenOfAllNodesInFirstList.size(); index++) {
+        for (int index = 0; index < firstListOfNodes.size(); index++) {
             if (!areTwoListsOfNodesEqualOnEachLevelIgnoringOrder(
-                allChildrenOfAllNodesInFirstList.get(index),
-                allChildrenOfAllNodesInSecondList.get(index))) {
+                listOfChildren(firstListOfNodes.get(index)),
+                listOfChildren(secondListOfNodes.get(index)))) {
                 return false;
             }
         }

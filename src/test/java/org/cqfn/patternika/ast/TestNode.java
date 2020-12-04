@@ -4,9 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import org.cqfn.patternika.source.Fragment;
 
 /**
@@ -15,6 +12,8 @@ import org.cqfn.patternika.source.Fragment;
  * @since 2020/11/9
  */
 public class TestNode implements Node {
+    /** Code fragment associated with the current node, can be {@code null} in tests. */
+    private final Fragment fragment;
     /** Node type. */
     private final String type;
     /** Node data. */
@@ -25,11 +24,17 @@ public class TestNode implements Node {
     /**
      * Main constructor.
      *
+     * @param fragment fragment, can be {@code null}.
      * @param type node type.
      * @param data node data.
      * @param children node children.
      */
-    public TestNode(final String type, final String data, final List<Node> children) {
+    public TestNode(
+            final Fragment fragment,
+            final String type,
+            final String data,
+            final List<Node> children) {
+        this.fragment = fragment;
         this.type = Objects.requireNonNull(type);
         this.data = Objects.requireNonNull(data);
         this.children = Objects.requireNonNull(children);
@@ -45,11 +50,11 @@ public class TestNode implements Node {
      * @param children node children.
      */
     public TestNode(final String type, final int data, final List<Node> children) {
-        this(type, Integer.toString(data), children);
+        this(null, type, Integer.toString(data), children);
     }
 
     /**
-     * Secondary constructor.
+     * Additional constructor.
      *
      * @param type node type.
      * @param data node data.
@@ -106,8 +111,7 @@ public class TestNode implements Node {
      */
     @Override
     public Fragment getFragment() {
-        // No fragment for a test node.
-        return null;
+        return fragment;
     }
 
     /**
@@ -175,11 +179,9 @@ public class TestNode implements Node {
             return false;
         }
         final TestNode other = (TestNode) obj;
-        return new EqualsBuilder()
-            .append(this.data, other.data)
-            .append(this.type, other.type)
-            .append(this.children.size(), other.children.size())
-            .isEquals();
+        return Objects.equals(this.type, other.type)
+            && Objects.equals(this.data, other.data)
+            && this.children.size() == other.children.size();
     }
 
     /**
@@ -189,13 +191,7 @@ public class TestNode implements Node {
      */
     @Override
     public int hashCode() {
-        final int initialNonZeroOddNumber = 17;
-        final int multiplierNonZeroOddNumber = 37;
-        return new HashCodeBuilder(initialNonZeroOddNumber, multiplierNonZeroOddNumber)
-            .append(type)
-            .append(data)
-            .append(children.size())
-            .toHashCode();
+        return Objects.hash(type, data, children.size());
     }
 
 }
