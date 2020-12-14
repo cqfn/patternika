@@ -18,7 +18,12 @@ import java.util.Objects;
  *
  * @since 2020/11/2
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
+@SuppressWarnings({
+    "PMD.TooManyMethods",
+    "PMD.GodClass",
+    "PMD.NullAssignment",
+    "PMD.ConfusingTernary"
+})
 public class LinkedSet<T> implements Collection<T> {
     /** Maps values to their entries. */
     private final Map<T, Entry<T>> entries = new IdentityHashMap<>();

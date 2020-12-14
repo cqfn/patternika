@@ -21,6 +21,7 @@
         <exclude name="AtLeastOneConstructor" />
         <exclude name="CommentDefaultAccessModifier"/>
         <exclude name="OnlyOneReturn"/>
+        <exclude name="EmptyMethodInAbstractClassShouldBeAbstract"/>
     </rule>
     <rule ref="category/java/codestyle.xml/ShortClassName">
         <properties>
