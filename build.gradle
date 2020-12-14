@@ -70,8 +70,8 @@ checkstyle {
 
 pmd {
     toolVersion = "6.29.0"
-    // The build should not be terminated if there are failing PMD rules.
-    ignoreFailures = true
+    // The build will be terminated if there are failing PMD rules.
+    ignoreFailures = false
     // Custom PMD rules to suppress irrelevant warnings.
     // In general, PMD produces a great number of false positives.
     // We need to provide a custom ruleset that enables relevant rules and excludes the irrelevant.

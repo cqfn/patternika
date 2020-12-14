@@ -125,10 +125,24 @@ Changes made to the conventions in this project:
 * constructor parameters are allowed to have the same names as fields;
 * magic numbers 0, 1, -1, 2, and 31 (for hashes) are allowed.
 
-We suggest using **PMD** for checks.
+**PMD** &mdash; code must satisfy static analysis rules, which enforce compliance
+with [best coding practices](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html) for Java.
+The rule set includes the following categories: 
+* [Best Practices](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html#best-practices)
+  except for `JUnitAssertionsShouldIncludeMessage` and `JUnitTestContainsTooManyAsserts`
+* [Code Style](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html#code-style)
+  except for `AtLeastOneConstructor`, `CommentDefaultAccessModifier`, 
+  `OnlyOneReturn`, and `EmptyMethodInAbstractClassShouldBeAbstract`
+* [Design](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html#design)
+  except for `LawOfDemeter`
+* [Documentation](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html#documentation)
+* [Error Prone](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html#error-prone)
+  except for `BeanMembersShouldSerialize` and `CompareObjectsWithEquals`
+* [Performance](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html#performance)
+  except for `AvoidInstantiatingObjectsInLoops`
 
-It shows potential bugs and style violations. Some warnings might be irrelevant.
-The set of mandatory rules is to be reviewed. Currently, this is just a recommendation.
+Also, some rules from these categories have been modified.
+See the configuration [file](config/pmd/ruleset.xml) for details.
 
 ### Our Standards
 
