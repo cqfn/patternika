@@ -60,7 +60,6 @@ public class Children<T extends Node> implements Iterable<T> {
      * @param node node to be searched among children.
      * @return a child index or {@code -1} of there is no such node among children.
      */
-    @SuppressWarnings("PMD.CompareObjectsWithEquals")
     public int indexOf(final Node node) {
         for (int index = 0; index < parent.getChildCount(); ++index) {
             final Node child = parent.getChild(index);
