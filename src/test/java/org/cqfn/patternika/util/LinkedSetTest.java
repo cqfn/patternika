@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
  *
  * @since 2020/12/1
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public class LinkedSetTest {
 
     /**
@@ -98,6 +99,56 @@ public class LinkedSetTest {
     }
 
     /**
+     * Test for method {@link LinkedSet#toArray(Object[])}.
+     */
+    @SuppressWarnings("PMD.OptimizableToArrayCall")
+    @Test
+    public void testToArray() {
+        final LinkedSet<String> set1 = new LinkedSet<>(Collections.singletonList("one"));
+        final LinkedSet<String> set2 = new LinkedSet<>(Arrays.asList("one", "two", "three"));
+        Assert.assertArrayEquals(
+                new String[0],
+                new LinkedSet<String>().toArray(new String[0]));
+        Assert.assertArrayEquals(
+                new String[31],
+                new LinkedSet<String>().toArray(new String[31]));
+        Assert.assertArrayEquals(
+                new String[] {"one"},
+                set1.toArray(new String[0]));
+        Assert.assertArrayEquals(
+                new String[] {"one"},
+                set1.toArray(new String[set1.size()]));
+        Assert.assertArrayEquals(
+                new String[] {"one", null},
+                set1.toArray(new String[set1.size() + 1]));
+        Assert.assertArrayEquals(
+                new String[] {"one", "two", "three"},
+                set2.toArray(new String[0]));
+        Assert.assertArrayEquals(
+                new String[] {"one", "two", "three"},
+                set2.toArray(new String[set2.size()]));
+        Assert.assertArrayEquals(
+                new String[] {"one", "two", "three", null},
+                set2.toArray(new String[set2.size() + 1]));
+    }
+
+    /**
+     * Test for methods {@link LinkedSet#getFirst()} and {@link LinkedSet#getLast()}.
+     */
+    @Test
+    public void testGetFirstGetLast() {
+        final LinkedSet<String> set0 = new LinkedSet<>();
+        final LinkedSet<String> set1 = new LinkedSet<>(Collections.singletonList("one"));
+        final LinkedSet<String> set2 = new LinkedSet<>(Arrays.asList("one", "two", "three"));
+        Assert.assertNull(set0.getFirst());
+        Assert.assertNull(set0.getLast());
+        Assert.assertEquals("one", set1.getFirst());
+        Assert.assertEquals("one", set1.getLast());
+        Assert.assertEquals("one", set2.getFirst());
+        Assert.assertEquals("three", set2.getLast());
+    }
+
+    /**
      * Test for method {@link LinkedSet#add)}.
      */
     @Test
@@ -150,40 +201,6 @@ public class LinkedSetTest {
         Assert.assertEquals("{one}", set1.toString());
         Assert.assertEquals("{one, two, three, four, five}", set2.toString());
         Assert.assertEquals("{one, (this set), three}", set3.toString());
-    }
-
-    /**
-     * Test for method {@link LinkedSet#toArray(Object[])}.
-     */
-    @SuppressWarnings("PMD.OptimizableToArrayCall")
-    @Test
-    public void testToArray() {
-        final LinkedSet<String> set1 = new LinkedSet<>(Collections.singletonList("one"));
-        final LinkedSet<String> set2 = new LinkedSet<>(Arrays.asList("one", "two", "three"));
-        Assert.assertArrayEquals(
-                new String[0],
-                new LinkedSet<String>().toArray(new String[0]));
-        Assert.assertArrayEquals(
-                new String[31],
-                new LinkedSet<String>().toArray(new String[31]));
-        Assert.assertArrayEquals(
-                new String[] {"one"},
-                set1.toArray(new String[0]));
-        Assert.assertArrayEquals(
-                new String[] {"one"},
-                set1.toArray(new String[set1.size()]));
-        Assert.assertArrayEquals(
-                new String[] {"one", null},
-                set1.toArray(new String[set1.size() + 1]));
-        Assert.assertArrayEquals(
-                new String[] {"one", "two", "three"},
-                set2.toArray(new String[0]));
-        Assert.assertArrayEquals(
-                new String[] {"one", "two", "three"},
-                set2.toArray(new String[set2.size()]));
-        Assert.assertArrayEquals(
-                new String[] {"one", "two", "three", null},
-                set2.toArray(new String[set2.size() + 1]));
     }
 
 }
