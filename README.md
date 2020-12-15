@@ -78,7 +78,7 @@ Patternika can not only make such migration automatically,
 you can write your own rules and Patternika will patch whole projects 
 for you, using your rule-set!
 
-## Build
+## Building
 
 The project is built using the Gradle build automation tool.
 Instructions on how to use it are [here](docs/GRADLE.md).
@@ -90,12 +90,16 @@ https://github.com/patternika/patternika/actions?query=workflow%3A%22Java+CI+wit
 )
 and Circle CI are configured for this project.
 
-## Contributing to this project
+## Contributing
 
 Anyone and everyone is welcome to contribute. Please take a moment to
 review the [guidelines for contributing](CONTRIBUTING.md).
 
+* [Code of conduct](docs/CODE_OF_CONDUCT.md)
 * [Bug reports](CONTRIBUTING.md#bug-reports)
 * [Feature requests](CONTRIBUTING.md#feature-suggestions)
 * [Pull requests](CONTRIBUTING.md#pull-requests)
 * [Code quality policy](docs/CODE_QUALITY.md)
+
+**IMPORTANT**: By submitting any contribution, you agree to allow the project owner to
+license your work under the same [license](LICENSE) as that used for the project.

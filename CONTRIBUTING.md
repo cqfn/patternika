@@ -102,6 +102,3 @@ project:
    
 12. You may merge the Pull Request in once you have the sign-off of two other developers, or if you 
    do not have permission to do that, you may request the second reviewer to merge it for you.
-
-**IMPORTANT**: By submitting any changes, you agree to allow the project owner to
-license your work under the same license as that used by the project.

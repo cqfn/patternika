@@ -1,6 +1,7 @@
 ## Code Quality Policy
 
-Any committed code must pass the following automated checks.
+Any committed code must meet quality standards enforced
+by the following automated checks.
 
 **Tests** &mdash; all tests must pass without failures.
 
