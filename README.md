@@ -98,3 +98,4 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 * [Bug reports](CONTRIBUTING.md#bug-reports)
 * [Feature requests](CONTRIBUTING.md#feature-suggestions)
 * [Pull requests](CONTRIBUTING.md#pull-requests)
+* [Code quality policy](docs/CODE_QUALITY.md)
