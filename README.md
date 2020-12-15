@@ -101,5 +101,5 @@ review the [guidelines for contributing](docs/CONTRIBUTING.md).
 * [Pull requests](docs/CONTRIBUTING.md#pull-requests)
 * [Code quality policy](docs/CODE_QUALITY.md)
 
-**IMPORTANT**: By submitting any contribution, you agree to allow the project owner to
+IMPORTANT: By submitting any contribution, you agree to allow the project owner to
 license your work under the same [license](LICENSE) as that used for the project.
