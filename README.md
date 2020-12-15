@@ -85,7 +85,10 @@ Instructions on how to use it are [here](docs/GRADLE.md).
 
 ## CI/CD
 
-GitHub Workflow and Circle CI are configured for this project. `ToDo`
+[GitHub Workflow](
+https://github.com/patternika/patternika/actions?query=workflow%3A%22Java+CI+with+Gradle%22
+)
+and Circle CI are configured for this project.
 
 ## Contributing to this project
 
