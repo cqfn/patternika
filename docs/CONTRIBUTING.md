@@ -3,7 +3,7 @@
 When contributing to this repository, please first discuss the change you wish to make via issue,
 email, or any other method with the owners of this repository before making a change. 
 
-Please note that we have a [code of conduct](docs/CODE_OF_CONDUCT.md),
+Please note that we have a [code of conduct](CODE_OF_CONDUCT.md),
 please follow it in all your interactions within the project.
 
 ## Submission Guidelines
@@ -90,7 +90,7 @@ project:
    Pull Request would represent. The versioning scheme we use is `ToDo`.
 
 9. Make sure all checks, tests and builds are passing without any errors and warnings. 
-[Code Quality Policy](docs/CODE_QUALITY.md)
+   [Code Quality Policy](CODE_QUALITY.md)
 
 10. Push your branch up to your fork:
    ```bash
@@ -101,4 +101,4 @@ project:
     with a clear title and description.
    
 12. You may merge the Pull Request in once you have the sign-off of two other developers, or if you 
-   do not have permission to do that, you may request the second reviewer to merge it for you.
+    do not have permission to do that, you may request the second reviewer to merge it for you.

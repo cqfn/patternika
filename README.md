@@ -93,12 +93,12 @@ and Circle CI are configured for this project.
 ## Contributing
 
 Anyone and everyone is welcome to contribute. Please take a moment to
-review the [guidelines for contributing](CONTRIBUTING.md).
+review the [guidelines for contributing](docs/CONTRIBUTING.md).
 
 * [Code of conduct](docs/CODE_OF_CONDUCT.md)
-* [Bug reports](CONTRIBUTING.md#bug-reports)
-* [Feature requests](CONTRIBUTING.md#feature-suggestions)
-* [Pull requests](CONTRIBUTING.md#pull-requests)
+* [Bug reports](docs/CONTRIBUTING.md#bug-reports)
+* [Feature requests](docs/CONTRIBUTING.md#feature-suggestions)
+* [Pull requests](docs/CONTRIBUTING.md#pull-requests)
 * [Code quality policy](docs/CODE_QUALITY.md)
 
 **IMPORTANT**: By submitting any contribution, you agree to allow the project owner to
