@@ -149,6 +149,40 @@ public class LinkedSetTest {
     }
 
     /**
+     * Test for methods {@link LinkedSet#getPrevious(Object)} and {@link LinkedSet#getNext(Object)}.
+     */
+    @Test
+    public void testGetPreviousGetNext() {
+        final LinkedSet<String> set = new LinkedSet<>(Arrays.asList("one", "two", "three"));
+        Assert.assertNull(set.getPrevious("one"));
+        Assert.assertNull(set.getNext("three"));
+        Assert.assertEquals("one", set.getPrevious("two"));
+        Assert.assertEquals("three", set.getNext("two"));
+    }
+
+    /**
+     * Test for method {@link LinkedSet#getPrevious(Object)}.
+     * Tests that an exception is thrown when the element,
+     * for which previous is requested, is not in the set.
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void testGetPreviousException() {
+        final LinkedSet<String> set = new LinkedSet<>(Collections.singletonList("one"));
+        set.getPrevious("two");
+    }
+
+    /**
+     * Test for method {@link LinkedSet#getNext(Object)}.
+     * Tests that an exception is thrown when the element,
+     * for which next is requested, is not in the set.
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void testGetNextException() {
+        final LinkedSet<String> set = new LinkedSet<>(Collections.singletonList("one"));
+        set.getNext("two");
+    }
+
+    /**
      * Test for method {@link LinkedSet#add)}.
      */
     @Test
