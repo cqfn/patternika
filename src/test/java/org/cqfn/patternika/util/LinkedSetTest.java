@@ -152,4 +152,38 @@ public class LinkedSetTest {
         Assert.assertEquals("{one, (this set), three}", set3.toString());
     }
 
+    /**
+     * Test for method {@link LinkedSet#toArray(Object[])}.
+     */
+    @SuppressWarnings("PMD.OptimizableToArrayCall")
+    @Test
+    public void testToArray() {
+        final LinkedSet<String> set1 = new LinkedSet<>(Collections.singletonList("one"));
+        final LinkedSet<String> set2 = new LinkedSet<>(Arrays.asList("one", "two", "three"));
+        Assert.assertArrayEquals(
+                new String[0],
+                new LinkedSet<String>().toArray(new String[0]));
+        Assert.assertArrayEquals(
+                new String[31],
+                new LinkedSet<String>().toArray(new String[31]));
+        Assert.assertArrayEquals(
+                new String[] {"one"},
+                set1.toArray(new String[0]));
+        Assert.assertArrayEquals(
+                new String[] {"one"},
+                set1.toArray(new String[set1.size()]));
+        Assert.assertArrayEquals(
+                new String[] {"one", null},
+                set1.toArray(new String[set1.size() + 1]));
+        Assert.assertArrayEquals(
+                new String[] {"one", "two", "three"},
+                set2.toArray(new String[0]));
+        Assert.assertArrayEquals(
+                new String[] {"one", "two", "three"},
+                set2.toArray(new String[set2.size()]));
+        Assert.assertArrayEquals(
+                new String[] {"one", "two", "three", null},
+                set2.toArray(new String[set2.size() + 1]));
+    }
+
 }
