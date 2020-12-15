@@ -3,8 +3,8 @@
 When contributing to this repository, please first discuss the change you wish to make via issue,
 email, or any other method with the owners of this repository before making a change. 
 
-Please note that we have a [code of conduct](#our-standards), please follow it in all your 
-interactions within the project.
+Please note that we have a [code of conduct](CODE_OF_CONDUCT.md),
+please follow it in all your interactions within the project.
 
 ## Submission Guidelines
 
@@ -90,7 +90,7 @@ project:
    Pull Request would represent. The versioning scheme we use is `ToDo`.
 
 9. Make sure all checks, tests and builds are passing without any errors and warnings. 
-[Code Quality Policy](#code-quality-policy)
+   [Code Quality Policy](CODE_QUALITY.md)
 
 10. Push your branch up to your fork:
    ```bash
@@ -101,67 +101,4 @@ project:
     with a clear title and description.
    
 12. You may merge the Pull Request in once you have the sign-off of two other developers, or if you 
-   do not have permission to do that, you may request the second reviewer to merge it for you.
-
-**IMPORTANT**: By submitting any changes, you agree to allow the project owner to
-license your work under the same license as that used by the project.
-
-<a id="1" name="code-quality-policy"></a>
-## Code Quality Policy
-
-Any committed code must pass the following automated checks. 
-
-**Tests** &mdash; all tests must pass without failures.
-
-**JaCoCo** &mdash; method complexity greater than 10 is unacceptable.
-
-**Javadoc** &mdash; documentation must have a valid format and must be compiled 
-to HTML without errors.
-
-**Checkstyle** &mdash; code style must comply with
-[Sun's Java Style](https://checkstyle.sourceforge.io/sun_style.html) conventions.
-Changes made to the conventions in this project:
-* line length limit is set to 100; 
-* constructor parameters are allowed to have the same names as fields;
-* magic numbers 0, 1, -1, 2, and 31 (for hashes) are allowed.
-
-**PMD** &mdash; code must satisfy static analysis rules, which enforce compliance
-with [best coding practices](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html) for Java.
-The rule set includes the following categories: 
-* [Best Practices](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html#best-practices)
-  except for `JUnitAssertionsShouldIncludeMessage` and `JUnitTestContainsTooManyAsserts`
-* [Code Style](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html#code-style)
-  except for `AtLeastOneConstructor`, `CommentDefaultAccessModifier`, 
-  `OnlyOneReturn`, and `EmptyMethodInAbstractClassShouldBeAbstract`
-* [Design](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html#design)
-  except for `LawOfDemeter`
-* [Documentation](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html#documentation)
-* [Error Prone](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html#error-prone)
-  except for `BeanMembersShouldSerialize` and `CompareObjectsWithEquals`
-* [Performance](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html#performance)
-  except for `AvoidInstantiatingObjectsInLoops`
-
-Also, some rules from these categories have been modified.
-See the configuration [file](config/pmd/ruleset.xml) for details.
-
-### Our Standards
-
-Examples of behavior that contributes to creating a positive environment
-include:
-
-* Using welcoming and inclusive language
-* Being respectful of differing viewpoints and experiences
-* Gracefully accepting constructive criticism
-* Focusing on what is best for the community
-* Showing empathy towards other community members
-
-Examples of unacceptable behavior by participants include:
-
-* The use of sexualized language or imagery and unwelcome sexual attention or
-advances
-* Trolling, insulting/derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or electronic
-  address, without explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
-  professional setting
+    do not have permission to do that, you may request the second reviewer to merge it for you.
