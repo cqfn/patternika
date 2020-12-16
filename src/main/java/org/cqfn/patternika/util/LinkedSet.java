@@ -18,12 +18,7 @@ import java.util.Objects;
  *
  * @since 2020/11/2
  */
-@SuppressWarnings({
-    "PMD.TooManyMethods",
-    "PMD.GodClass",
-    "PMD.NullAssignment",
-    "PMD.ConfusingTernary"
-})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
 public class LinkedSet<T> implements Collection<T> {
     /** Maps values to their entries. */
     private final Map<T, Entry<T>> entries = new IdentityHashMap<>();
@@ -36,8 +31,7 @@ public class LinkedSet<T> implements Collection<T> {
      * Main constructor (an empty set).
      */
     public LinkedSet() {
-        this.first = null;
-        this.last = null;
+        // Nothing.
     }
 
     /**
@@ -355,14 +349,12 @@ public class LinkedSet<T> implements Collection<T> {
     private void removeEntryRefs(final Entry<T> current) {
         if (current == first) {
             first = current.next;
+        } else {
+            current.previous.next = current.next;
         }
         if (current == last) {
             last = current.previous;
-        }
-        if (current.previous != null) {
-            current.previous.next = current.next;
-        }
-        if (current.next != null) {
+        } else {
             current.next.previous = current.previous;
         }
     }
@@ -398,15 +390,15 @@ public class LinkedSet<T> implements Collection<T> {
         }
         final Entry<T> entry = new Entry<>(current, oldEntry.previous, oldEntry.next);
         entries.put(current, entry);
-        if (oldEntry.previous != null) {
-            oldEntry.previous.next = entry;
-        } else {
+        if (oldEntry == first) {
             first = entry;
-        }
-        if (oldEntry.next != null) {
-            oldEntry.next.previous = entry;
         } else {
+            oldEntry.previous.next = entry;
+        }
+        if (oldEntry == last) {
             last = entry;
+        } else {
+            oldEntry.next.previous = entry;
         }
     }
 
@@ -420,10 +412,10 @@ public class LinkedSet<T> implements Collection<T> {
     @Override
     public boolean retainAll(final Collection<?> collection) {
         boolean modified = false;
-        final Iterator<T> iter = iterator();
-        while (iter.hasNext()) {
-            if (!collection.contains(iter.next())) {
-                iter.remove();
+        for (Entry<T> current = first; current != null; current = current.next) {
+            final T value = current.value;
+            if (!collection.contains(value)) {
+                remove(value);
                 modified = true;
             }
         }
@@ -434,6 +426,7 @@ public class LinkedSet<T> implements Collection<T> {
      * Clears all values from the set.
      */
     @Override
+    @SuppressWarnings({"PMD.NullAssignment"})
     public void clear() {
         entries.clear();
         first = null;
@@ -542,9 +535,7 @@ public class LinkedSet<T> implements Collection<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            if (!LinkedSet.this.remove(current.value)) {
-                throw new IllegalStateException();
-            }
+            LinkedSet.this.remove(current.value);
             current = current.next;
         }
     }
