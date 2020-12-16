@@ -420,10 +420,10 @@ public class LinkedSet<T> implements Collection<T> {
     @Override
     public boolean retainAll(final Collection<?> collection) {
         boolean modified = false;
-        final Iterator<T> iter = iterator();
-        while (iter.hasNext()) {
-            if (!collection.contains(iter.next())) {
-                iter.remove();
+        for (Entry<T> current = first; current != null; current = current.next) {
+            final T value = current.value;
+            if (!collection.contains(value)) {
+                remove(value);
                 modified = true;
             }
         }
@@ -542,9 +542,7 @@ public class LinkedSet<T> implements Collection<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            if (!LinkedSet.this.remove(current.value)) {
-                throw new IllegalStateException();
-            }
+            LinkedSet.this.remove(current.value);
             current = current.next;
         }
     }

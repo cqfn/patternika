@@ -99,6 +99,41 @@ public class LinkedSetTest {
     }
 
     /**
+     * Test for the iterator returned by method {@link LinkedSet#iterator()}.
+     * Tests removing items using the iterator.
+     */
+    @Test
+    public void testIteratorRemove() {
+        final List<String> items = Arrays.asList("one", "two", "three", "four", "five");
+        final LinkedSet<String> set = new LinkedSet<>(items);
+        final Iterator<String> iter = set.iterator();
+        iter.remove(); // Removes "one".
+        iter.next();
+        iter.remove(); // Removes "three".
+        iter.next();
+        iter.remove(); // Removes "five".
+        Assert.assertFalse(iter.hasNext());
+        Assert.assertArrayEquals(new String[] {"two", "four"}, set.toArray());
+    }
+
+    /**
+     * Test for the iterator returned by method {@link LinkedSet#iterator()}.
+     * Tests removing items using the iterator, checks that
+     * an exception is thrown when there are no more elements.
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void testIteratorRemoveWithException() {
+        final LinkedSet<String> set = new LinkedSet<>(Arrays.asList("one", "two"));
+        final Iterator<String> iter = set.iterator();
+        Assert.assertTrue(iter.hasNext());
+        iter.remove();
+        Assert.assertTrue(iter.hasNext());
+        iter.remove();
+        Assert.assertFalse(iter.hasNext());
+        iter.remove(); // NoSuchElementException
+    }
+
+    /**
      * Test for method {@link LinkedSet#toArray(Object[])}.
      */
     @SuppressWarnings("PMD.OptimizableToArrayCall")
@@ -279,6 +314,60 @@ public class LinkedSetTest {
         Assert.assertArrayEquals(new String[] {"two", "four"}, set.toArray());
         Assert.assertFalse(set.removeAll(Arrays.asList("one", "five", "three")));
         Assert.assertArrayEquals(new String[] {"two", "four"}, set.toArray());
+    }
+
+    /**
+     * Test for method {@link LinkedSet#replace(Object, Object)}.
+     */
+    @Test
+    public void testReplace() {
+        final List<String> items = Arrays.asList("one", "two", "three", "four", "five");
+        final LinkedSet<String> set = new LinkedSet<>(items);
+        set.replace("one", "1");
+        set.replace("three", "3");
+        set.replace("five", "5");
+        Assert.assertArrayEquals(new String[] {"1", "two", "3", "four", "5"}, set.toArray());
+        set.replace("two", "2");
+        set.replace("four", "4");
+        Assert.assertArrayEquals(new String[] {"1", "2", "3", "4", "5"}, set.toArray());
+    }
+
+    /**
+     * Test for method {@link LinkedSet#replace(Object, Object)}.
+     * Check that replacing a missing element causes an exception.
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void testReplaceWithException() {
+        final LinkedSet<String> set = new LinkedSet<>(Arrays.asList("one", "two"));
+        set.replace("three", "3");
+    }
+
+    /**
+     * Test for method {@link LinkedSet#retainAll}.
+     */
+    @Test
+    public void testRetainAll() {
+        final List<String> items = Arrays.asList("one", "two", "three", "four", "five");
+        final LinkedSet<String> set = new LinkedSet<>(items);
+        Assert.assertFalse(set.retainAll(items));
+        Assert.assertTrue(set.retainAll(Arrays.asList("four", "two")));
+        Assert.assertArrayEquals(new String[] {"two", "four"}, set.toArray());
+    }
+
+    /**
+     * Test for method {@link LinkedSet#clear()}.
+     */
+    @Test
+    public void testClear() {
+        final String[] items = {"one", "two", "three"};
+        final LinkedSet<String> set = new LinkedSet<>(Arrays.asList(items));
+        Assert.assertArrayEquals(items, set.toArray());
+        set.clear();
+        Assert.assertArrayEquals(new String[0], set.toArray());
+        set.addFirst("two");
+        set.addLast("three");
+        set.addFirst("one");
+        Assert.assertArrayEquals(items, set.toArray());
     }
 
     /**
