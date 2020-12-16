@@ -29,9 +29,6 @@ public class DeepMatchesAnyOrder implements BiPredicate<Node, Node> {
         if (firstCount != secondCount) {
             return false;
         }
-        if (firstCount == 0) {
-            return true;
-        }
         for (int firstIndex = 0; firstIndex < firstCount; ++firstIndex) {
             boolean isMatchFound = false;
             final Node firstChild = firstRoot.getChild(firstIndex);
