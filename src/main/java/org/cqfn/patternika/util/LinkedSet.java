@@ -21,8 +21,7 @@ import java.util.Objects;
 @SuppressWarnings({
     "PMD.TooManyMethods",
     "PMD.GodClass",
-    "PMD.NullAssignment",
-    "PMD.ConfusingTernary"
+    "PMD.NullAssignment"
 })
 public class LinkedSet<T> implements Collection<T> {
     /** Maps values to their entries. */
@@ -398,15 +397,15 @@ public class LinkedSet<T> implements Collection<T> {
         }
         final Entry<T> entry = new Entry<>(current, oldEntry.previous, oldEntry.next);
         entries.put(current, entry);
-        if (oldEntry.previous != null) {
-            oldEntry.previous.next = entry;
-        } else {
+        if (oldEntry == first) {
             first = entry;
-        }
-        if (oldEntry.next != null) {
-            oldEntry.next.previous = entry;
         } else {
+            oldEntry.previous.next = entry;
+        }
+        if (oldEntry == last) {
             last = entry;
+        } else {
+            oldEntry.next.previous = entry;
         }
     }
 
