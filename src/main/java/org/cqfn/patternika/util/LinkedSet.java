@@ -18,11 +18,7 @@ import java.util.Objects;
  *
  * @since 2020/11/2
  */
-@SuppressWarnings({
-    "PMD.TooManyMethods",
-    "PMD.GodClass",
-    "PMD.NullAssignment"
-})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
 public class LinkedSet<T> implements Collection<T> {
     /** Maps values to their entries. */
     private final Map<T, Entry<T>> entries = new IdentityHashMap<>();
@@ -35,8 +31,7 @@ public class LinkedSet<T> implements Collection<T> {
      * Main constructor (an empty set).
      */
     public LinkedSet() {
-        this.first = null;
-        this.last = null;
+        // Nothing.
     }
 
     /**
@@ -354,14 +349,12 @@ public class LinkedSet<T> implements Collection<T> {
     private void removeEntryRefs(final Entry<T> current) {
         if (current == first) {
             first = current.next;
+        } else {
+            current.previous.next = current.next;
         }
         if (current == last) {
             last = current.previous;
-        }
-        if (current.previous != null) {
-            current.previous.next = current.next;
-        }
-        if (current.next != null) {
+        } else {
             current.next.previous = current.previous;
         }
     }
@@ -433,6 +426,7 @@ public class LinkedSet<T> implements Collection<T> {
      * Clears all values from the set.
      */
     @Override
+    @SuppressWarnings({"PMD.NullAssignment"})
     public void clear() {
         entries.clear();
         first = null;
