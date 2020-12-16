@@ -7,8 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import static org.cqfn.patternika.ast.NodeUtils.areTwoNodesDeepEqual;
+import java.util.function.BiPredicate;
 
 /**
  * Finds all possible matches between nodes in two node trees.
@@ -45,7 +44,8 @@ public class NodeMatcher {
      */
     public Map<Node, List<Node>> findAll() {
         final Map<Node, List<Node>> allMatches = new HashMap<>();
-        if (areTwoNodesDeepEqual(this.firstRoot, this.secondRoot)) {
+        final BiPredicate<Node, Node> deepMatches = new DeepMatchesAnyOrder();
+        if (deepMatches.test(this.firstRoot, this.secondRoot)) {
             final List<Node> matchedNodes = new ArrayList<>();
             matchedNodes.add(this.secondRoot);
             allMatches.put(this.firstRoot, matchedNodes);
@@ -54,10 +54,7 @@ public class NodeMatcher {
         final List<Node> secondTreeNodes = new Dfs<>(this.secondRoot).toList();
         for (final Node firstTreeNode : firstTreeNodes) {
             for (final Node secondTreeNode : secondTreeNodes) {
-                final boolean nodesAreDeepEqual = areTwoNodesDeepEqual(
-                        firstTreeNode, secondTreeNode
-                );
-                if (nodesAreDeepEqual) {
+                if (deepMatches.test(firstTreeNode, secondTreeNode)) {
                     final List<Node> matchedNodes =
                             allMatches.computeIfAbsent(firstTreeNode, x -> new ArrayList<>());
                     matchedNodes.add(secondTreeNode);
