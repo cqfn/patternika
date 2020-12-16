@@ -220,6 +220,68 @@ public class LinkedSetTest {
     }
 
     /**
+     * Test for methods {@link LinkedSet#addFirst(Object)} and {@link LinkedSet#addLast(Object)}.
+     */
+    @Test
+    public void testAddFirstAddLast() {
+        final LinkedSet<String> set = new LinkedSet<>(Collections.singletonList("two"));
+        set.addFirst("one");
+        set.addLast("three");
+        Assert.assertArrayEquals(new String[] {"one", "two", "three"}, set.toArray());
+    }
+
+    /**
+     * Test for method {@link LinkedSet#addBefore(Object, Object)}.
+     */
+    @Test
+    public void testAddBefore() {
+        final LinkedSet<String> set = new LinkedSet<>(Collections.singletonList("two"));
+        Assert.assertTrue(set.addBefore("one", "two"));
+        Assert.assertTrue(set.addBefore("zero", null));
+        Assert.assertFalse(set.addBefore("three", "four"));
+        Assert.assertArrayEquals(new String[] {"zero", "one", "two"}, set.toArray());
+    }
+
+    /**
+     * Test for method {@link LinkedSet#addAfter(Object, Object)}.
+     */
+    @Test
+    public void testAddAfter() {
+        final LinkedSet<String> set = new LinkedSet<>(Collections.singletonList("two"));
+        Assert.assertTrue(set.addAfter("three", "two"));
+        Assert.assertTrue(set.addAfter("four", null));
+        Assert.assertFalse(set.addAfter("one", "zero"));
+        Assert.assertArrayEquals(new String[] {"two", "three", "four"}, set.toArray());
+    }
+
+    /**
+     * Test for method {@link LinkedSet#remove(Object)}.
+     */
+    @Test
+    public void testRemove() {
+        final List<String> items = Arrays.asList("one", "two", "three", "four", "five");
+        final LinkedSet<String> set = new LinkedSet<>(items);
+        Assert.assertFalse(set.remove("zero"));
+        Assert.assertTrue(set.remove("one"));
+        Assert.assertTrue(set.remove("five"));
+        Assert.assertTrue(set.remove("three"));
+        Assert.assertArrayEquals(new String[] {"two", "four"}, set.toArray());
+    }
+
+    /**
+     * Test for method {@link LinkedSet#removeAll}.
+     */
+    @Test
+    public void testRemoveAll() {
+        final List<String> items = Arrays.asList("one", "two", "three", "four", "five");
+        final LinkedSet<String> set = new LinkedSet<>(items);
+        Assert.assertTrue(set.removeAll(Arrays.asList("one", "five", "zero", "three")));
+        Assert.assertArrayEquals(new String[] {"two", "four"}, set.toArray());
+        Assert.assertFalse(set.removeAll(Arrays.asList("one", "five", "three")));
+        Assert.assertArrayEquals(new String[] {"two", "four"}, set.toArray());
+    }
+
+    /**
      * Test for method {@link LinkedSet#toString()}.
      */
     @Test
