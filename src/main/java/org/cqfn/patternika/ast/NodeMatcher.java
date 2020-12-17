@@ -11,11 +11,10 @@ import java.util.function.BiPredicate;
 
 /**
  * Finds all possible matches between nodes in two node trees.
- * It contains just one public method {@link NodeMatcher#findAll()} that does all the job.
- *
- * <p> The solution doesn't rely only on method {@link Node#matches(Node)} of nodes which are
- * encapsulated in the class, but also relies on method {@link Node#matches(Node)} of their
- * child nodes.
+ * Contains just one public method {@link NodeMatcher#findAll()} that does all the job.
+ * <p>
+ * To match two nodes tress, the solution uses method {@link Node#matches(Node)},
+ * which is called for all nodes in the trees (from roots to leaves).
  *
  * @since 2020/11/11
  */
@@ -40,8 +39,8 @@ public class NodeMatcher {
     }
 
     /**
-     * Returns all nodes in {@code firstNode} which are subtrees in {@code secondNode} and
-     * all nodes in {@code secondNode} which are subtrees in {@code firstNode}.
+     * Returns all nodes in {@code firstRoot} which are subtrees in {@code secondRoot}
+     * and all nodes in {@code secondRoot} which are subtrees in {@code firstRoot}.
      *
      * @return all possible matches between first and second nodes.
      */
