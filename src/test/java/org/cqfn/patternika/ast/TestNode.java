@@ -194,4 +194,24 @@ public class TestNode implements Node {
         return Objects.hash(type, data, children.size());
     }
 
+    /**
+     * Returns textual representation of the node. Helpful for debugging.
+     * <p>
+     * Text contains: class name, node type, node data, child count, and object identity hash code.
+     * This allows identifying a specific node among similar nodes and identical nodes.
+     *
+     * @return textual representation of the node.
+     */
+    @Override
+    public String toString() {
+        return String.format(
+                "%s('%s', '%s', %d)@%s",
+                getClass().getSimpleName(),
+                type,
+                data,
+                getChildCount(),
+                Integer.toHexString(System.identityHashCode(this))
+            );
+    }
+
 }
