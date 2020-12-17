@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -22,7 +23,55 @@ import static org.junit.Assert.assertTrue;
 public class MapperTest {
 
     /**
-     * Test 1 for functionality of {@link GreedMapper}.
+     * Test for functionality of {@link GreedMapper}.
+     * <p>
+     * Tests that two node trees are correctly mapped.
+     * Currently, fails.
+     */
+    @Test
+    public void testMapper() {
+        final NodeExt root1 = new NodeExt(
+            new TestNode("a", 0,
+                new TestNode("g", 2),
+                new TestNode("b", 1,
+                    new TestNode("c", 2,
+                        new TestNode("d", 3,
+                            new TestNode("e", 4),
+                            new TestNode("f", 5)
+                        )
+                    )
+                )
+            )
+        );
+        final NodeExt root2 = new NodeExt(
+            new TestNode("a", 0,
+                new TestNode("b", 1,
+                    new TestNode("g", 2,
+                        new TestNode("d", 3,
+                            new TestNode("f", 5),
+                            new TestNode("e", 4)
+                        )
+                    )
+                )
+            )
+        );
+        final Mapping<NodeExt> mapping = new GreedMapper(root1, root2).buildMapping();
+        // Recursively matching subtrees of the two trees must be connected.
+        // assertMatchesConnected(mapping, root1, root2);
+        // a(1) <-> a(2)
+        assertConnected(mapping, root1, root2);
+        // g(1) not mapped
+        assertNull(mapping.get(root1.getChild(0)));
+        // b(1) <-> b(2)
+        assertConnected(mapping, root1.getChild(1), root2.getChild(0));
+        // c(1) not mapped
+        assertNull(mapping.get(root1.getChild(1).getChild(0)));
+        // g(2) not mapped
+        assertNull(mapping.get(root2.getChild(0).getChild(0)));
+    }
+
+    /**
+     * BFS test 1 for functionality of {@link GreedMapper}.
      * <p>
      * Checks that two trees, nodes of which match in the BFS order,
      * are correctly connected in the mapping.
@@ -55,7 +104,7 @@ public class MapperTest {
     }
 
     /**
-     * Test 2 for functionality of {@link GreedMapper}.
+     * BFS test 2 for functionality of {@link GreedMapper}.
      * <p>
      * Checks that two trees, nodes of which match in the BFS order,
      * are correctly connected in the mapping.
@@ -132,11 +181,24 @@ public class MapperTest {
         final Iterator<NodeExt> it1 = new Bfs<>(root1).iterator();
         final Iterator<NodeExt> it2 = new Bfs<>(root2).iterator();
         while (it1.hasNext() && it2.hasNext()) {
-            final NodeExt node1 = it1.next();
-            final NodeExt node2 = it2.next();
-            assertSame(mapping.get(node1), node2);
-            assertSame(mapping.get(node2), node1);
+            assertConnected(mapping, it1.next(), it2.next());
         }
+    }
+
+    /**
+     * Checks that two nodes are connected to each other.
+     *
+     * @param mapping mapping to be checked.
+     * @param node1 first node.
+     * @param node2 second node.
+     * @throws AssertionError if at least one pair of nodes traversed in BFS order is not connected.
+     */
+    private static void assertConnected(
+            final Mapping<NodeExt> mapping,
+            final NodeExt node1,
+            final NodeExt node2) {
+        assertSame(mapping.get(node1), node2);
+        assertSame(mapping.get(node2), node1);
     }
 
 }
