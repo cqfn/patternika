@@ -227,4 +227,22 @@ public class NodeExt implements Node {
         return parent.getChild(order + 1);
     }
 
+    /**
+     * Returns textual representation of the node. Helpful for debugging.
+     * <p>
+     * Contains class name, object identity hash code, and text of the wrapped node.
+     * This allows identifying specific nodes among similar nodes and identical nodes.
+     *
+     * @return textual representation of the node.
+     */
+    @Override
+    public String toString() {
+        return String.format(
+                "%s {%s} @%s",
+                getClass().getSimpleName(),
+                node.toString(),
+                Integer.toHexString(System.identityHashCode(this))
+            );
+    }
+
 }

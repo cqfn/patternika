@@ -125,6 +125,23 @@ jacocoTestCoverageVerification {
                 maximum = 10
             }
         }
+        // Limits on overall metrics for the project.
+        /*
+        rule {
+            // Minimum allowed instruction coverage is 60%.
+            limit {
+                counter = 'INSTRUCTION'
+                value = 'COVEREDRATIO'
+                minimum = 0.6
+            }
+            // Minimum allowed branch coverage is 60%.
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.6
+            }
+        }
+        */
     }
 }
 
