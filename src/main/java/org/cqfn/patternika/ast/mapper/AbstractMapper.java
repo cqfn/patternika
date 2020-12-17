@@ -110,7 +110,7 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
         }
         // All children must be mapped to matching nodes, otherwise disconnect.
         for (final NodeExt child : new Children<>(node1)) {
-            if (notMatchesMapping(child)) {
+            if (notMatchesMapped(child)) {
                 return true;
             }
         }
@@ -242,7 +242,7 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
     private boolean needUpdateMapping(final NodeExt root1, final NodeExt root2) {
         return root1.matches(root2)
                 && (root1.getChildCount() == 1 && root2.getChildCount() == 1
-                        || notMatchesMapping(root1) && notMatchesMapping(root2));
+                        || notMatchesMapped(root1) && notMatchesMapped(root2));
     }
 
     /**
@@ -252,7 +252,7 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
      * @return {@code true} if node is not mapped or does not match to its mapping or
      *         {@code false} otherwise.
      */
-    private boolean notMatchesMapping(final NodeExt node) {
+    private boolean notMatchesMapped(final NodeExt node) {
         final NodeExt mapped = mapping.get(node);
         return mapped == null || !node.matches(mapped);
     }

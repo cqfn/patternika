@@ -16,13 +16,15 @@ import java.util.function.BiPredicate;
  * To match two nodes tress, the solution uses method {@link Node#matches(Node)},
  * which is called for all nodes in the trees (from roots to leaves).
  *
+ * @param <T> Exact node type, {@link Node} or its subclass.
+ *
  * @since 2020/11/11
  */
-public class NodeMatcher {
+public class NodeMatcher<T extends Node> {
     /** Root of the first node tree to compare. */
-    private final Node firstRoot;
+    private final T firstRoot;
     /** Root of the second node tree to compare. */
-    private final Node secondRoot;
+    private final T secondRoot;
     /** Predicate for checking that two node trees recursively match. */
     private final BiPredicate<Node, Node> deepMatches;
 
@@ -32,7 +34,7 @@ public class NodeMatcher {
      * @param firstRoot the root of the first node tree to compare.
      * @param secondRoot the root of the second node tree to compare.
      */
-    public NodeMatcher(final Node firstRoot, final Node secondRoot) {
+    public NodeMatcher(final T firstRoot, final T secondRoot) {
         this.firstRoot = Objects.requireNonNull(firstRoot);
         this.secondRoot = Objects.requireNonNull(secondRoot);
         this.deepMatches = new DeepMatchesAnyOrder();
@@ -44,14 +46,14 @@ public class NodeMatcher {
      *
      * @return all possible matches between first and second nodes.
      */
-    public Map<Node, List<Node>> findAll() {
-        final Map<Node, List<Node>> allMatches = new HashMap<>();
-        final Iterable<Node> firstTreeNodes = new Dfs<>(this.firstRoot);
-        final List<Node> secondTreeNodes = new Dfs<>(this.secondRoot).toList();
-        for (final Node firstTreeNode : firstTreeNodes) {
-            for (final Node secondTreeNode : secondTreeNodes) {
+    public Map<T, List<T>> findAll() {
+        final Map<T, List<T>> allMatches = new HashMap<>();
+        final Iterable<T> firstTreeNodes = new Dfs<>(this.firstRoot);
+        final List<T> secondTreeNodes = new Dfs<>(this.secondRoot).toList();
+        for (final T firstTreeNode : firstTreeNodes) {
+            for (final T secondTreeNode : secondTreeNodes) {
                 if (deepMatches.test(firstTreeNode, secondTreeNode)) {
-                    final List<Node> matchedNodes =
+                    final List<T> matchedNodes =
                             allMatches.computeIfAbsent(firstTreeNode, x -> new ArrayList<>());
                     matchedNodes.add(secondTreeNode);
                 }

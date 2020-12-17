@@ -1,6 +1,5 @@
 package org.cqfn.patternika.ast.mapper;
 
-import org.cqfn.patternika.ast.Node;
 import org.cqfn.patternika.ast.NodeExt;
 import org.cqfn.patternika.ast.NodeMatcher;
 import org.cqfn.patternika.ast.TestNode;
@@ -101,14 +100,14 @@ public class MapperTest {
             final Mapping<NodeExt> mapping,
             final NodeExt root1,
             final NodeExt root2) {
-        final Map<Node, List<Node>> matches = new NodeMatcher(root1, root2).findAll();
-        for (final Map.Entry<Node, List<Node>> entry : matches.entrySet()) {
-            final Node source = entry.getKey();
-            final List<Node> targets = entry.getValue();
+        final Map<NodeExt, List<NodeExt>> matches = new NodeMatcher<>(root1, root2).findAll();
+        for (final Map.Entry<NodeExt, List<NodeExt>> entry : matches.entrySet()) {
+            final NodeExt source = entry.getKey();
+            final List<NodeExt> targets = entry.getValue();
             // The source must be connected to at least one of the targets.
             boolean isConnected = false;
-            for (final Node target : targets) {
-                if (mapping.connected((NodeExt) source, (NodeExt) target)) {
+            for (final NodeExt target : targets) {
+                if (mapping.connected(source, target)) {
                     isConnected = true;
                     break;
                 }
