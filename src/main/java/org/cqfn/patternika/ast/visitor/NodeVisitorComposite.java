@@ -50,21 +50,25 @@ public class NodeVisitorComposite implements NodeVisitor {
     /**
      * Registers a visitor for a specific node class.
      *
-     * @param nodeClass Node class, not {@code null}.
-     * @param visitor Visitor for this node class, not {@code null}.
+     * @param nodeClass node class, not {@code null}.
+     * @param visitor visitor for this node class, not {@code null}.
+     * @return this object.
      */
-    public void register(final Class<? extends Node> nodeClass, final NodeVisitor visitor) {
+    public NodeVisitorComposite register(
+            final Class<? extends Node> nodeClass,
+            final NodeVisitor visitor) {
         Objects.requireNonNull(nodeClass);
         Objects.requireNonNull(visitor);
         visitors.put(nodeClass, visitor);
+        return this;
     }
 
     /**
      * Finds a visitor for the specified node class.
      * If there is no visitor for a specific class, searches for visitors of its super classes.
      *
-     * @param nodeClass Node class, not {@code null}.
-     * @return Visitor or {@code null} if not found.
+     * @param nodeClass node class, not {@code null}.
+     * @return visitor or {@code null} if not found.
      */
     public NodeVisitor findNodeVisitor(final Class<? extends Node> nodeClass) {
         NodeVisitor visitor = null;
