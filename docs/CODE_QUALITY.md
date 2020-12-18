@@ -49,4 +49,4 @@ The rule set includes the following categories:
      * `AvoidInstantiatingObjectsInLoops`
 
 Also, some rules from these categories have been modified.
-See the configuration [file](config/pmd/ruleset.xml) for details.
+See the configuration [file](../config/pmd/ruleset.xml) for details.
