@@ -5,19 +5,22 @@ by the following automated checks.
 
 **Tests** &mdash; all tests must pass without failures.
 
-**JaCoCo** &mdash; method complexity greater than 10 is unacceptable.
+**[JaCoCo](https://www.jacoco.org/jacoco/)** &mdash;
+method complexity greater than 10 is unacceptable.
 
 **Javadoc** &mdash; documentation must have a valid format and must be compiled
 to HTML without errors.
 
-**Checkstyle** &mdash; code style must comply with
+**[Checkstyle](https://checkstyle.sourceforge.io/)** &mdash;
+code style must comply with
 [Sun's Java Style](https://checkstyle.sourceforge.io/sun_style.html) conventions.
 Changes made to the conventions in this project:
 * line length limit is set to 100;
 * constructor parameters are allowed to have the same names as fields;
 * magic numbers 0, 1, -1, 2, and 31 (for hashes) are allowed.
 
-**PMD** &mdash; code must satisfy static analysis rules, which enforce compliance
+**[PMD](https://pmd.github.io/)** &mdash;
+code must satisfy static analysis rules, which enforce compliance
 with [best coding practices](https://pmd.github.io/pmd-6.30.0/pmd_rules_java.html) for Java.
 The rule set includes the following categories:
 
