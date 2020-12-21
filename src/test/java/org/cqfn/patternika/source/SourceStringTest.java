@@ -3,6 +3,7 @@ package org.cqfn.patternika.source;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -67,6 +68,7 @@ public class SourceStringTest {
         assertTrue(pos3.compareTo(pos2) > 0);
         assertTrue(pos1.compareTo(pos3) < 0);
         assertTrue(pos3.compareTo(pos1) > 0);
+
     }
 
     /**
@@ -78,6 +80,26 @@ public class SourceStringTest {
         final Position position1 = new SourceStringPosition(0);
         final Position position2 = new SourceFilePosition(0, 0, 0);
         assertEquals(0, position1.compareTo(position2));
+    }
+
+    /**
+     * Test for methods {@link Position#min} and {@link Position#max}
+     * for class {@link SourceStringPosition}.
+     */
+    @Test
+    public void testSourceStringPositionMinMax() {
+        final Position pos1 = new SourceStringPosition(0);
+        final Position pos2 = new SourceStringPosition(Integer.MAX_VALUE);
+        assertEquals(pos1, Position.min(pos1, pos2));
+        assertEquals(pos1, Position.min(pos2, pos1));
+        assertEquals(pos1, Position.min(pos1, null));
+        assertEquals(pos1, Position.min(null, pos1));
+        assertNull(null, Position.min(null, null));
+        assertEquals(pos2, Position.max(pos1, pos2));
+        assertEquals(pos2, Position.max(pos2, pos1));
+        assertEquals(pos1, Position.max(pos1, null));
+        assertEquals(pos1, Position.max(null, pos1));
+        assertNull(null, Position.max(null, null));
     }
 
 }
