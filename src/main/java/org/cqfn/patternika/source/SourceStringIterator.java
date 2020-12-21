@@ -29,19 +29,9 @@ class SourceStringIterator implements SourceIterator {
     }
 
     @Override
-    public char getChar() {
-        return index < data.length() ? data.charAt(index) : 0;
-    }
-
-    @Override
     public char getChar(final int offset) {
         final int pos = index + offset;
         return pos < data.length() ? data.charAt(pos) : 0;
-    }
-
-    @Override
-    public Position getPosition() {
-        return new SourceStringPosition(index);
     }
 
     @Override

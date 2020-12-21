@@ -32,4 +32,26 @@ public interface Position extends Comparable<Position> {
     @Override
     String toString();
 
+    /**
+     * Returns the smaller of two positions.
+     *
+     * @param first first position to be compared.
+     * @param second second position to be compared.
+     * @return minimal position.
+     */
+    static Position min(final Position first, final Position second) {
+        return second == null || first != null && first.compareTo(second) < 0 ? first : second;
+    }
+
+    /**
+     * Returns the greater of two positions.
+     *
+     * @param first first position to be compared.
+     * @param second second position to be compared.
+     * @return maximal position.
+     */
+    static Position max(final Position first, final Position second) {
+        return second == null || first != null && first.compareTo(second) > 0 ? first : second;
+    }
+
 }

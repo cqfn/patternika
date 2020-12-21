@@ -186,17 +186,9 @@ public class Fragment {
         if (!first.source.equals(second.source)) {
             throw new IllegalArgumentException("Fragments to be merged have different sources!");
         }
-        final Position start = min(first.start, second.start);
-        final Position end = max(first.end, second.end);
+        final Position start = Position.min(first.start, second.start);
+        final Position end = Position.max(first.end, second.end);
         return start == null && end == null ? null : new Fragment(first.source, start, end);
-    }
-
-    private static Position min(final Position first, final Position second) {
-        return second == null || first != null && first.compareTo(second) < 0 ? first : second;
-    }
-
-    private static Position max(final Position first, final Position second) {
-        return second == null || first != null && first.compareTo(second) > 0 ? first : second;
     }
 
 }
