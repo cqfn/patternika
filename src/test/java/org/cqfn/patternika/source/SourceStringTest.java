@@ -1,7 +1,9 @@
 package org.cqfn.patternika.source;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the {@link SourceString} class.
@@ -32,15 +34,17 @@ public class SourceStringTest {
         while (iter.getChar() != 0) {
             iter.nextChar();
             count++;
+            final String text = source.getFragmentAsString(start, iter.getPosition());
+            assertEquals(TEXT.substring(0, count), text);
         }
         final Position end = iter.getPosition();
-        Assert.assertEquals(0, iter.nextChar());
-        Assert.assertEquals(TEXT.length(), count);
-        Assert.assertEquals(TEXT, source.getFragmentAsString(start, end));
-        Assert.assertTrue(start.compareTo(end) < 0);
-        Assert.assertTrue(end.compareTo(start) > 0);
-        Assert.assertEquals(Integer.toString(0), start.toString());
-        Assert.assertEquals(Integer.toString(TEXT.length()), end.toString());
+        assertEquals(0, iter.nextChar());
+        assertEquals(TEXT.length(), count);
+        assertEquals(TEXT, source.getFragmentAsString(start, end));
+        assertTrue(start.compareTo(end) < 0);
+        assertTrue(end.compareTo(start) > 0);
+        assertEquals(Integer.toString(0), start.toString());
+        assertEquals(Integer.toString(TEXT.length()), end.toString());
     }
 
     /**
@@ -51,18 +55,18 @@ public class SourceStringTest {
         final Position pos1 = new SourceStringPosition(Integer.MIN_VALUE);
         final Position pos2 = new SourceStringPosition(0);
         final Position pos3 = new SourceStringPosition(Integer.MAX_VALUE);
-        Assert.assertEquals(Integer.MIN_VALUE, pos1.getIndex());
-        Assert.assertEquals(0, pos2.getIndex());
-        Assert.assertEquals(Integer.MAX_VALUE, pos3.getIndex());
-        Assert.assertEquals(Integer.toString(Integer.MIN_VALUE), pos1.toString());
-        Assert.assertEquals(Integer.toString(0), pos2.toString());
-        Assert.assertEquals(Integer.toString(Integer.MAX_VALUE), pos3.toString());
-        Assert.assertTrue(pos1.compareTo(pos2) < 0);
-        Assert.assertTrue(pos2.compareTo(pos1) > 0);
-        Assert.assertTrue(pos2.compareTo(pos3) < 0);
-        Assert.assertTrue(pos3.compareTo(pos2) > 0);
-        Assert.assertTrue(pos1.compareTo(pos3) < 0);
-        Assert.assertTrue(pos3.compareTo(pos1) > 0);
+        assertEquals(Integer.MIN_VALUE, pos1.getIndex());
+        assertEquals(0, pos2.getIndex());
+        assertEquals(Integer.MAX_VALUE, pos3.getIndex());
+        assertEquals(Integer.toString(Integer.MIN_VALUE), pos1.toString());
+        assertEquals(Integer.toString(0), pos2.toString());
+        assertEquals(Integer.toString(Integer.MAX_VALUE), pos3.toString());
+        assertTrue(pos1.compareTo(pos2) < 0);
+        assertTrue(pos2.compareTo(pos1) > 0);
+        assertTrue(pos2.compareTo(pos3) < 0);
+        assertTrue(pos3.compareTo(pos2) > 0);
+        assertTrue(pos1.compareTo(pos3) < 0);
+        assertTrue(pos3.compareTo(pos1) > 0);
     }
 
     /**
@@ -73,7 +77,7 @@ public class SourceStringTest {
     public void testSourceStringPositionException() {
         final Position position1 = new SourceStringPosition(0);
         final Position position2 = new SourceFilePosition(0, 0, 0);
-        Assert.assertEquals(0, position1.compareTo(position2));
+        assertEquals(0, position1.compareTo(position2));
     }
 
 }
