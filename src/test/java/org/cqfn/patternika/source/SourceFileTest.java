@@ -7,28 +7,33 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests for the {@link SourceString} class.
+ * Tests for the {@link SourceFile} class.
  *
- * @since 2020/12/18
+ * @since 2020/12/21
  */
-public class SourceStringTest {
+public class SourceFileTest {
 
     /**
-     * Source text.
+     * Source file text.
      */
     private static final String TEXT =
-          "public List<T> toList() {\n"
-        + "    final List<T> result = new ArrayList<>();\n"
-        + "    forEach(result::add);\n"
-        + "    return result;\n"
-        + "}";
+              "/**\n"
+        + "     * Test for {@link SourceFilePosition}.\n"
+        + "     * Must produce an exception when comparing it with an incompatible position type.\n"
+        + "     */\n"
+        + "    @Test(expected = IllegalArgumentException.class)\n"
+        + "    public void testSourceStringPositionException() {\n"
+        + "        final Position position1 = new SourceFilePosition(0, 0, 0);\n"
+        + "        final Position position2 = new SourceStringPosition(0);\n"
+        + "        assertEquals(0, position1.compareTo(position2));\n"
+        + "    }";
 
     /**
-     * Test for {@link SourceString}.
+     * Test for {@link SourceFile}.
      */
     @Test
     public void test() {
-        final Source source = new SourceString(TEXT);
+        final Source source = new SourceFile(TEXT);
         final SourceIterator iter = source.getIterator();
         final Position start = iter.getPosition();
         int count = 0;
@@ -44,26 +49,27 @@ public class SourceStringTest {
         assertEquals(TEXT, source.getFragmentAsString(start, end));
         assertTrue(start.compareTo(end) < 0);
         assertTrue(end.compareTo(start) > 0);
-        assertEquals(Integer.toString(0), start.toString());
-        assertEquals(Integer.toString(TEXT.length()), end.toString());
-        assertEquals(0, start.getIndex());
-        assertEquals(TEXT.length(), end.getIndex());
+        assertEquals("1.1", start.toString());
+        assertEquals("10.6", end.toString());
     }
 
     /**
-     * Test for {@link SourceStringPosition}.
+     * Test for {@link SourceFilePosition}.
      */
     @Test
-    public void testSourceStringPosition() {
-        final Position pos1 = new SourceStringPosition(Integer.MIN_VALUE);
-        final Position pos2 = new SourceStringPosition(0);
-        final Position pos3 = new SourceStringPosition(Integer.MAX_VALUE);
+    public void testSourceFilePosition() {
+        final Position pos1 =
+                new SourceFilePosition(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
+        final Position pos2 =
+                new SourceFilePosition(0, 0, 0);
+        final Position pos3 =
+                new SourceFilePosition(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
         assertEquals(Integer.MIN_VALUE, pos1.getIndex());
         assertEquals(0, pos2.getIndex());
         assertEquals(Integer.MAX_VALUE, pos3.getIndex());
-        assertEquals(Integer.toString(Integer.MIN_VALUE), pos1.toString());
-        assertEquals(Integer.toString(0), pos2.toString());
-        assertEquals(Integer.toString(Integer.MAX_VALUE), pos3.toString());
+        assertEquals(String.format("%d.%d", Integer.MIN_VALUE, Integer.MIN_VALUE), pos1.toString());
+        assertEquals(String.format("%d.%d", 0, 0), pos2.toString());
+        assertEquals(String.format("%d.%d", Integer.MAX_VALUE, Integer.MAX_VALUE), pos3.toString());
         assertTrue(pos1.compareTo(pos2) < 0);
         assertTrue(pos2.compareTo(pos1) > 0);
         assertTrue(pos2.compareTo(pos3) < 0);
@@ -73,24 +79,26 @@ public class SourceStringTest {
     }
 
     /**
-     * Test for {@link SourceStringPosition}.
+     * Test for {@link SourceFilePosition}.
      * Must produce an exception when comparing it with an incompatible position type.
      */
     @Test(expected = IllegalArgumentException.class)
     public void testSourceStringPositionException() {
-        final Position position1 = new SourceStringPosition(0);
-        final Position position2 = new SourceFilePosition(0, 0, 0);
+        final Position position1 = new SourceFilePosition(0, 0, 0);
+        final Position position2 = new SourceStringPosition(0);
         assertEquals(0, position1.compareTo(position2));
     }
 
     /**
      * Test for methods {@link Position#min} and {@link Position#max}
-     * for class {@link SourceStringPosition}.
+     * for class {@link SourceFilePosition}.
      */
     @Test
-    public void testSourceStringPositionMinMax() {
-        final Position pos1 = new SourceStringPosition(0);
-        final Position pos2 = new SourceStringPosition(Integer.MAX_VALUE);
+    public void testSourceFilePositionMinMax() {
+        final Position pos1 =
+                new SourceFilePosition(0, 0, 0);
+        final Position pos2 =
+                new SourceFilePosition(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
         assertEquals(pos1, Position.min(pos1, pos2));
         assertEquals(pos1, Position.min(pos2, pos1));
         assertEquals(pos1, Position.min(pos1, null));
