@@ -22,7 +22,7 @@ import java.util.Objects;
  *
  * @since 2020/12/25
  */
-public class WeakChainDisconnect {
+public class WeakChain {
     /** Mapping to be cleared on weak connections. */
     private final Mapping<NodeExt> mapping;
 
@@ -31,7 +31,7 @@ public class WeakChainDisconnect {
      *
      * @param mapping the mapping to be cleared of weak connections, not {@code null}.
      */
-    public WeakChainDisconnect(final Mapping<NodeExt> mapping) {
+    public WeakChain(final Mapping<NodeExt> mapping) {
         this.mapping = Objects.requireNonNull(mapping);
     }
 
