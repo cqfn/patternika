@@ -175,36 +175,4 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
         }
     }
 
-    /**
-     * Recursive function.
-     * Try to extend mapping for given subtrees by throwing up connection if possible.
-     *
-     * @param root1 root of the first given tree.
-     * @param root2 root of the second given tree.
-     */
-    protected void upraiseNodeMapping(final NodeExt root1, final NodeExt root2) {
-        if (root1 != null && root2 != null && root1.getType().equals(root2.getType())) {
-            final boolean bothNotMapped = !mapping.contains(root1) && !mapping.contains(root2);
-            if (bothNotMapped || needUpdateMapping(root1, root2)) {
-                // Connecting will disband previous connections if needed.
-                mapping.connect(root1, root2);
-                upraiseNodeMapping(root1.getParent(), root2.getParent());
-            }
-        }
-    }
-
-    /**
-     * Checks that mappings of the two nodes need to be updated to connect the nodes to each other.
-     *
-     * @param root1 the first node tree.
-     * @param root2 the second node tree.
-     * @return {@code true} or {@code false}.
-     */
-    private boolean needUpdateMapping(final NodeExt root1, final NodeExt root2) {
-        return root1.matches(root2)
-                && (root1.getChildCount() == 1 && root2.getChildCount() == 1
-                        || MappingUtils.notMatchesMapped(mapping, root1)
-                              && MappingUtils.notMatchesMapped(mapping, root2));
-    }
-
 }
