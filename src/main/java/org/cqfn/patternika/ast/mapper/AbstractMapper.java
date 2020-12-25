@@ -25,7 +25,7 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
     private final NodeExt treeRoot1;
     /** Second node tree. */
     private final NodeExt treeRoot2;
-    /** Mappings to created. */
+    /** Mappings to be created. */
     private final Mapping<NodeExt> mapping;
     /** Calculates a similarity hash for nodes. */
     private final Hash similarity;
@@ -65,12 +65,8 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
             }
         }
         // And remove those connections
-        // that will cause a line of updates instead of one deletion and insertion
-        for (final NodeExt node : bfsNodes) {
-            if (needDisconnectMapping(node)) {
-                mapping.disconnect(node);
-            }
-        }
+        // that will cause a line of updates instead of one deletion and insertion.
+        new WeakChainDisconnect(mapping).process(bfsNodes);
         return mapping;
     }
 
@@ -81,41 +77,6 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
      * @param root2 root of the second given tree.
      */
     protected abstract void buildMapping(NodeExt root1, NodeExt root2);
-
-    /**
-     * Checks whether a node needs to be disconnected from the mapping.
-     * <p>
-     * This helps remove those connections that will cause a line of updates
-     * instead of one deletion and insertion.
-     *
-     * @param node1 node to be checked.
-     * @return {@code true} or {@code false}.
-     */
-    private boolean needDisconnectMapping(final NodeExt node1) {
-        // We can disconnect only nodes that have a mapping and mismatch this mapping.
-        final NodeExt node2 = mapping.get(node1);
-        if (node2 == null || node1.matches(node2)) {
-            return false;
-        }
-        // Number of children must be equal, otherwise disconnect.
-        if (node1.getChildCount() != node2.getChildCount()) {
-            return true;
-        }
-        final NodeExt parent1 = node1.getParent();
-        final NodeExt parent2 = node2.getParent();
-        // If parents exist, they must be mapped to each other and match, otherwise disconnect.
-        if (parent1 != null && parent2 != null
-                && (!mapping.connected(parent1, parent2) || !parent1.matches(parent2))) {
-            return true;
-        }
-        // All children must be mapped to matching nodes, otherwise disconnect.
-        for (final NodeExt child : new Children<>(node1)) {
-            if (notMatchesMapped(child)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * Recursive function.
@@ -242,19 +203,8 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
     private boolean needUpdateMapping(final NodeExt root1, final NodeExt root2) {
         return root1.matches(root2)
                 && (root1.getChildCount() == 1 && root2.getChildCount() == 1
-                        || notMatchesMapped(root1) && notMatchesMapped(root2));
-    }
-
-    /**
-     * Checks that a node is not mapped or does not match to its mapping.
-     *
-     * @param node node to be checked.
-     * @return {@code true} if node is not mapped or does not match to its mapping or
-     *         {@code false} otherwise.
-     */
-    private boolean notMatchesMapped(final NodeExt node) {
-        final NodeExt mapped = mapping.get(node);
-        return mapped == null || !node.matches(mapped);
+                        || MappingUtils.notMatchesMapped(mapping, root1)
+                              && MappingUtils.notMatchesMapped(mapping, root2));
     }
 
 }
