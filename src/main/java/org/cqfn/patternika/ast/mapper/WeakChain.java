@@ -40,8 +40,8 @@ public class WeakChain {
      *
      * @param root the node tree root.
      */
-    public void process(final NodeExt root) {
-        process(new Bfs<>(root));
+    public void disconnect(final NodeExt root) {
+        disconnect(new Bfs<>(root));
     }
 
     /**
@@ -49,7 +49,7 @@ public class WeakChain {
      *
      * @param bfsNodes tree nodes in the BFS order.
      */
-    public void process(final Iterable<NodeExt> bfsNodes) {
+    public void disconnect(final Iterable<NodeExt> bfsNodes) {
         for (final NodeExt node : bfsNodes) {
             if (needToDisconnect(node)) {
                 mapping.disconnect(node);

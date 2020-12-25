@@ -66,7 +66,7 @@ public abstract class AbstractMapper implements Mapper<NodeExt> {
         }
         // And remove those connections
         // that will cause a line of updates instead of one deletion and insertion.
-        new WeakChain(mapping).process(bfsNodes);
+        new WeakChain(mapping).disconnect(bfsNodes);
         return mapping;
     }
 
