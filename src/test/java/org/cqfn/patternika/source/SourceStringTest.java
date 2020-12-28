@@ -19,10 +19,10 @@ public class SourceStringTest {
      */
     private static final String TEXT =
             "public List<T> toList() {\n"
-                    + "    final List<T> result = new ArrayList<>();\n"
-                    + "    forEach(result::add);\n"
-                    + "    return result;\n"
-                    + "}";
+          + "    final List<T> result = new ArrayList<>();\n"
+          + "    forEach(result::add);\n"
+          + "    return result;\n"
+          + "}";
 
     /**
      * Test for {@link SourceString}.
