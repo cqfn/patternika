@@ -34,6 +34,20 @@ public class Downstairs {
     }
 
     /**
+     * Processes nodes in the BFS order to extend mapping.
+     * If a node is not connected, tries to extend mapping starting from their parents.
+     *
+     * @param bfsNodes tree nodes in the BFS order.
+     */
+    public void connectAll(final Iterable<NodeExt> bfsNodes) {
+        for (final NodeExt node : bfsNodes) {
+            if (!mapping.contains(node)) {
+                connect(node.getParent());
+            }
+        }
+    }
+
+    /**
      * Recursive function.
      * Try to extend mapping for given subtree by throwing down connection if possible.
      *
@@ -48,43 +62,32 @@ public class Downstairs {
             return;
         }
         // let's form list of not connected children.
-        final List<NodeExt> notConnectedNodes1 = getNotConnectedChildren(root);
-        final List<NodeExt> notConnectedNodes2 = getNotConnectedChildren(corresponding);
+        final List<NodeExt> notConnected1 = getNotConnectedChildren(root);
+        final List<NodeExt> notConnected2 = getNotConnectedChildren(corresponding);
         // let's try to connect corresponding by order first (by O(N)).
-        connectLinearOrder(
-                notConnectedNodes1,
-                notConnectedNodes2,
-                (child1, child2) -> similarity.getHash(child1) == similarity.getHash(child2)
-            );
+        connectLinearOrder(notConnected1, notConnected2, this::similarityHashEquals);
         // and each one with each other if there is something left unconnected (O(N^2))
-        if (!notConnectedNodes2.isEmpty()) {
-            connectProductOrder(
-                    notConnectedNodes1,
-                    notConnectedNodes2,
-                    (child1, child2) -> similarity.getHash(child1) == similarity.getHash(child2)
-                );
+        if (!notConnected2.isEmpty()) {
+            connectProductOrder(notConnected1, notConnected2, this::similarityHashEquals);
         }
         // and one with each other but with soft equation if there
         // is something left unconnected (O(N^2))
-        if (!notConnectedNodes2.isEmpty()) {
-            connectProductOrder(
-                    notConnectedNodes1,
-                    notConnectedNodes2,
-                    NodeExt::matches
-                );
+        if (!notConnected2.isEmpty()) {
+            connectProductOrder(notConnected1, notConnected2, NodeExt::matches);
         }
         // and let's try to connect corresponding by order with the softest equation (by O(N)).
-        if (notConnectedNodes1.size() == notConnectedNodes2.size()
-                && !notConnectedNodes2.isEmpty()) {
-            connectLinearOrder(
-                    notConnectedNodes1,
-                    notConnectedNodes2,
-                    (child1, child2) -> child1.getType().equals(child2.getType())
-                                     && child1.getChildCount() == child2.getChildCount()
-                );
+        if (!notConnected2.isEmpty() && notConnected1.size() == notConnected2.size()) {
+            connectLinearOrder(notConnected1, notConnected2, this::typeAndChildCountMatch);
         }
     }
 
+    /**
+     * Returns a linked list of children of the specified root,
+     * which do not have connections in the mapping.
+     *
+     * @param root root node.
+     * @return linked list of unconnected nodes.
+     */
     private List<NodeExt> getNotConnectedChildren(final NodeExt root) {
         final List<NodeExt> result = new LinkedList<>();
         for (final NodeExt child : new Children<>(root)) {
@@ -95,6 +98,37 @@ public class Downstairs {
         return result;
     }
 
+    /**
+     * Checks whether similarity hashes of two nodes match.
+     *
+     * @param node1 first node.
+     * @param node2 second node.
+     * @return {@code true} or {@code false}.
+     */
+    private boolean similarityHashEquals(final NodeExt node1, final NodeExt node2) {
+        return similarity.getHash(node1) == similarity.getHash(node2);
+    }
+
+    /**
+     * Checks whether types and child counts of two nodes match.
+     *
+     * @param node1 first node.
+     * @param node2 second node.
+     * @return {@code true} or {@code false}.
+     */
+    private boolean typeAndChildCountMatch(final NodeExt node1, final NodeExt node2) {
+        return node1.getType().equals(node2.getType())
+            && node1.getChildCount() == node2.getChildCount();
+    }
+
+    /**
+     * Iterates over two collections of nodes in a linear order and connects pairs of nodes
+     * if they satisfy the predicate. Removes the connected nodes from the lists.
+     *
+     * @param nodes1 first list of unconnected nodes.
+     * @param nodes2 second list of unconnected nodes.
+     * @param needConnect predicate for checking that nodes need to be connected.
+     */
     private void connectLinearOrder(
             final Iterable<NodeExt> nodes1,
             final Iterable<NodeExt> nodes2,
@@ -113,6 +147,14 @@ public class Downstairs {
         }
     }
 
+    /**
+     * Iterates over two collections of nodes in a product order and connects pairs of nodes
+     * if they satisfy the predicate. Removes the connected nodes from the lists.
+     *
+     * @param nodes1 first list of unconnected nodes.
+     * @param nodes2 second list of unconnected nodes.
+     * @param needConnect predicate for checking that nodes need to be connected.
+     */
     private void connectProductOrder(
             final Iterable<NodeExt> nodes1,
             final Iterable<NodeExt> nodes2,

@@ -1,13 +1,21 @@
 package org.cqfn.patternika.ast.mapper;
 
 import org.cqfn.patternika.ast.NodeExt;
+import org.cqfn.patternika.ast.iterator.Bfs;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Mapper for Node objects that builds connections based on Greed logic O(N^2).
  *
  * @since 2019/10/31
 c*/
-public class GreedMapper extends AbstractMapper {
+public class GreedMapper implements Mapper<NodeExt> {
+    /** First node tree root. */
+    private final NodeExt root1;
+    /** Second node tree root. */
+    private final NodeExt root2;
 
     /**
      * Constructor.
@@ -16,19 +24,31 @@ public class GreedMapper extends AbstractMapper {
      * @param root2 second node tree to be mapped.
      */
     public GreedMapper(final NodeExt root1, final NodeExt root2) {
-        super(root1, root2);
+        this.root1 = Objects.requireNonNull(root1);
+        this.root2 = Objects.requireNonNull(root2);
     }
 
     /**
-     * Builds mappings between the two node trees.
+     * Builds a mapping.
      *
-     * @param root1 root of the first node tree.
-     * @param root2 root of the second node tree.
+     * @return container with mappings between the two node trees.
      */
     @Override
-    protected void buildMapping(final NodeExt root1, final NodeExt root2) {
-        // Simple greed logic has already been implemented in AbstractMapper
-        // so that here we just have to do nothing to save some memory and time.
+    public Mapping<NodeExt> buildMapping() {
+        final Mapping<NodeExt> mapping = new HashMapping<>();
+        final Downstairs downstairs = new Downstairs(mapping);
+        final WeakChain weakChain = new WeakChain(mapping);
+        // Builds connection starting from root (a fast way).
+        if (root1.getType().equals(root2.getType())) {
+            mapping.connect(root1, root2);
+            downstairs.connect(root1);
+        }
+        final List<NodeExt> bfsNodes = new Bfs<>(root1).toList();
+        // Adds additional connections where possible.
+        downstairs.connectAll(bfsNodes);
+        // Remove weak chain connections.
+        weakChain.disconnect(bfsNodes);
+        return mapping;
     }
 
 }
