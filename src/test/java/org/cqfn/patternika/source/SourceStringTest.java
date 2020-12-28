@@ -3,6 +3,7 @@ package org.cqfn.patternika.source;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -17,11 +18,11 @@ public class SourceStringTest {
      * Source text.
      */
     private static final String TEXT =
-          "public List<T> toList() {\n"
-        + "    final List<T> result = new ArrayList<>();\n"
-        + "    forEach(result::add);\n"
-        + "    return result;\n"
-        + "}";
+            "public List<T> toList() {\n"
+                    + "    final List<T> result = new ArrayList<>();\n"
+                    + "    forEach(result::add);\n"
+                    + "    return result;\n"
+                    + "}";
 
     /**
      * Test for {@link SourceString}.
@@ -101,6 +102,23 @@ public class SourceStringTest {
         assertEquals(pos1, Position.max(pos1, null));
         assertEquals(pos1, Position.max(null, pos1));
         assertNull(null, Position.max(null, null));
+    }
+
+    /**
+     * Test for methods {@link SourceStringPosition#equals} and
+     * {@link SourceStringPosition#hashCode} .
+     */
+    @Test
+    public void testSourceStringPositionEqualsHashCode() {
+        final Position pos1 = new SourceStringPosition(31);
+        final Position pos2 = new SourceStringPosition(Integer.MAX_VALUE);
+        final Position pos3 = new SourceStringPosition(31);
+        assertEquals(pos1, pos3);
+        assertEquals(pos1.hashCode(), pos3.hashCode());
+        assertNotEquals(pos1, pos2);
+        assertNotEquals(pos1.hashCode(), pos2.hashCode());
+        assertNotEquals(pos1, null);
+        assertNotEquals(pos1, new SourceFilePosition(31, 0, 0));
     }
 
 }
