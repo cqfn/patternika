@@ -131,10 +131,38 @@ public class FragmentTest {
      * Test for the {@link Fragment#merge} method, which generates an exception.
      */
     @Test(expected = IllegalArgumentException.class)
-    public void testMerge() {
+    public void testMergeException() {
         final Fragment fragment1 = new Fragment(new SourceString("one"));
         final Fragment fragment2 = new Fragment(new SourceString("two"));
         fragment1.merge(fragment2); // throws an exception.
+    }
+
+    /**
+     * Tests for the {@link Fragment#merge(Fragment)} method.
+     */
+    @Test
+    public void testMerge() {
+        final int offset = TEXT.length() / 4;
+        final Source source = new SourceString(TEXT);
+        final Position start = new SourceStringPosition(0);
+        final Position end = new SourceStringPosition(TEXT.length());
+        final Position pos1 = new SourceStringPosition(offset);
+        final Position pos2 = new SourceStringPosition(TEXT.length() - offset);
+        final Fragment merged1 = new Fragment(source, start, pos1).merge(
+                                 new Fragment(source, pos2, end));
+        Assert.assertEquals(start, merged1.getStart());
+        Assert.assertEquals(end, merged1.getEnd());
+        final Fragment merged2 = new Fragment(source, start, null).merge(
+                                 new Fragment(source, null, end));
+        Assert.assertEquals(start, merged2.getStart());
+        Assert.assertEquals(end, merged2.getEnd());
+        final Fragment merged3 = new Fragment(source, null, null).merge(
+                                 new Fragment(source, null, null));
+        Assert.assertNull(merged3);
+        final Fragment merged4 = new Fragment(source, null, null).merge(
+                                 new Fragment(source, null, end));
+        Assert.assertNull(merged4.getStart());
+        Assert.assertEquals(end, merged4.getEnd());
     }
 
 }
