@@ -3,6 +3,7 @@ package org.cqfn.patternika.source;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -109,6 +110,27 @@ public class SourceFileTest {
         assertEquals(pos1, Position.max(pos1, null));
         assertEquals(pos1, Position.max(null, pos1));
         assertNull(null, Position.max(null, null));
+    }
+
+    /**
+     * Test for methods {@link SourceFilePosition#equals} and
+     * {@link SourceFilePosition#hashCode} .
+     */
+    @Test
+    public void testSourceFilePositionEqualsHashCode() {
+        final Position pos1 = new SourceFilePosition(31, 2, 1);
+        final Position pos2 = new SourceFilePosition(0, 1, 1);
+        final Position pos3 = new SourceFilePosition(31, 2, 1);
+        assertEquals(pos1, pos3);
+        assertEquals(pos1.hashCode(), pos3.hashCode());
+        assertNotEquals(pos1, pos2);
+        assertNotEquals(pos1.hashCode(), pos2.hashCode());
+        assertNotEquals(pos1, null);
+        assertNotEquals(pos1, new SourceStringPosition(31));
+        assertNotEquals(new SourceFilePosition(0, 1, 1),
+                        new SourceFilePosition(0, 2, 1));
+        assertNotEquals(new SourceFilePosition(0, 1, 1),
+                        new SourceFilePosition(0, 1, 2));
     }
 
 }
