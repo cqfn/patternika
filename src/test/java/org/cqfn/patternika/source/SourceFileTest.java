@@ -127,6 +127,10 @@ public class SourceFileTest {
         assertNotEquals(pos1.hashCode(), pos2.hashCode());
         assertNotEquals(pos1, null);
         assertNotEquals(pos1, new SourceStringPosition(31));
+        assertNotEquals(new SourceFilePosition(0, 1, 1),
+                        new SourceFilePosition(0, 2, 1));
+        assertNotEquals(new SourceFilePosition(0, 1, 1),
+                        new SourceFilePosition(0, 1, 2));
     }
 
 }
