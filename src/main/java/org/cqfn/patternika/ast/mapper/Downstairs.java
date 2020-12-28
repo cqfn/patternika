@@ -91,7 +91,7 @@ public class Downstairs {
         }
         // and let's try to connect corresponding by order with the softest equation (by O(N)).
         if (!notConnected2.isEmpty() && notConnected1.size() == notConnected2.size()) {
-            connectLinearOrder(notConnected1, notConnected2, this::typeAndChildCountMatch);
+            connectLinearOrder(notConnected1, notConnected2, Downstairs::typeAndChildCountMatch);
         }
     }
 
@@ -130,7 +130,7 @@ public class Downstairs {
      * @param node2 second node.
      * @return {@code true} or {@code false}.
      */
-    private boolean typeAndChildCountMatch(final NodeExt node1, final NodeExt node2) {
+    private static boolean typeAndChildCountMatch(final NodeExt node1, final NodeExt node2) {
         return node1.getType().equals(node2.getType())
             && node1.getChildCount() == node2.getChildCount();
     }
