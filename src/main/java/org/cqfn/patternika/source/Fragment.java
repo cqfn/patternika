@@ -25,7 +25,7 @@ public class Fragment {
     public Fragment(final Source source, final Position start, final Position end) {
         this.source = Objects.requireNonNull(source);
         // Start is always a lesser existing position.
-        if (start == null || start.compareTo(end) < 0) {
+        if (start == null || end == null || start.compareTo(end) < 0) {
             this.start = start;
             this.end = end;
         } else {
