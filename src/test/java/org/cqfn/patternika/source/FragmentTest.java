@@ -127,4 +127,14 @@ public class FragmentTest {
         Assert.assertFalse(fragment5.contains(fragment1));
     }
 
+    /**
+     * Test for the {@link Fragment#merge} method, which generates an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testMerge() {
+        final Fragment fragment1 = new Fragment(new SourceString("one"));
+        final Fragment fragment2 = new Fragment(new SourceString("two"));
+        fragment1.merge(fragment2); // throws an exception.
+    }
+
 }
