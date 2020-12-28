@@ -34,6 +34,23 @@ class SourceStringPosition implements Position {
         return String.valueOf(index);
     }
 
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof SourceStringPosition)) {
+            return false;
+        }
+        final SourceStringPosition other = (SourceStringPosition) obj;
+        return this.index == other.index;
+    }
+
+    @Override
+    public int hashCode() {
+        return index;
+    }
+
     /**
      * Checks that position type is {@link SourceStringPosition}.
      *
