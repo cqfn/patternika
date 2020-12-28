@@ -39,12 +39,9 @@ public class GreedMapper implements Mapper<NodeExt> {
         final Downstairs downstairs = new Downstairs(mapping);
         final WeakChain weakChain = new WeakChain(mapping);
         // Builds connection starting from root (a fast way).
-        if (root1.getType().equals(root2.getType())) {
-            mapping.connect(root1, root2);
-            downstairs.connect(root1);
-        }
-        final List<NodeExt> bfsNodes = new Bfs<>(root1).toList();
+        downstairs.connect(root1, root2);
         // Adds additional connections where possible.
+        final List<NodeExt> bfsNodes = new Bfs<>(root1).toList();
         downstairs.connectAll(bfsNodes);
         // Remove weak chain connections.
         weakChain.disconnect(bfsNodes);

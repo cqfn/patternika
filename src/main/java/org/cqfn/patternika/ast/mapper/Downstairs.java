@@ -34,6 +34,20 @@ public class Downstairs {
     }
 
     /**
+     * Tries to connect two node trees starting from their roots.
+     * Root nodes must have the same type.
+     *
+     * @param root1 first root to be connected.
+     * @param root2 second root to be connected.
+     */
+    public void connect(final NodeExt root1, final NodeExt root2) {
+        if (root1.getType().equals(root2.getType())) {
+            mapping.connect(root1, root2);
+            connect(root1);
+        }
+    }
+
+    /**
      * Processes nodes in the BFS order to extend mapping.
      * If a node is not connected, tries to extend mapping starting from their parents.
      *
