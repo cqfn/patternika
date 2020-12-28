@@ -16,7 +16,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests for the {@link AbstractMapper} class.
+ * Tests for the mapper logic.
  *
  * @since 2020/12/17
  */
