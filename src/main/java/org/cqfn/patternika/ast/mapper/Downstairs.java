@@ -2,7 +2,6 @@ package org.cqfn.patternika.ast.mapper;
 
 import org.cqfn.patternika.ast.NodeExt;
 import org.cqfn.patternika.ast.hash.Hash;
-import org.cqfn.patternika.ast.hash.SimilarityHash;
 import org.cqfn.patternika.ast.iterator.Children;
 
 import java.util.Iterator;
@@ -27,10 +26,11 @@ public class Downstairs {
      * Constructor.
      *
      * @param mapping the mapping to be extended, not {@code null}.
+     * @param similarity calculates a similarity hash for nodes, not {@code null}.
      */
-    public Downstairs(final Mapping<NodeExt> mapping) {
+    public Downstairs(final Mapping<NodeExt> mapping, final Hash similarity) {
         this.mapping = Objects.requireNonNull(mapping);
-        this.similarity = new SimilarityHash();
+        this.similarity = Objects.requireNonNull(similarity);
     }
 
     /**
