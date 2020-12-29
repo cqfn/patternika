@@ -68,9 +68,6 @@ public class Downstairs {
      * @param root root of the given subtree.
      */
     public void connect(final NodeExt root) {
-        if (root == null) {
-            return;
-        }
         final NodeExt corresponding = mapping.get(root);
         if (corresponding == null) {
             return;

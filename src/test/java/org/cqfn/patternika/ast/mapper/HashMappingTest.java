@@ -22,6 +22,17 @@ import static org.junit.Assert.assertTrue;
 public class HashMappingTest {
 
     /**
+     * Tests the @link HashMapping#contains} and {@link HashMapping#get} methods
+     * getting {@code null}.
+     */
+    @Test
+    public void testGetNull() {
+        final HashMapping<String> mapping = new HashMapping<>();
+        assertFalse(mapping.contains(null));
+        assertNull(mapping.get(null));
+    }
+
+    /**
      * Tests the {@link HashMapping#connect(Iterable, Iterable)},
      * and {@link HashMapping#contains(Object)} and {@link HashMapping#get(Object)} methods.
      */
