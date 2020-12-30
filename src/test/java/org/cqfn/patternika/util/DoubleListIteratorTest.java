@@ -59,6 +59,6 @@ public class DoubleListIteratorTest {
             );
         final Iterator<Integer> iter = new DoubleListIterator<>(list);
         Assert.assertFalse(iter.hasNext());
-        iter.next();
+        iter.next(); // Causes an exception.
     }
 }

@@ -44,7 +44,7 @@ public class DepthSorted<T extends Node> implements Iterable<T> {
             depth = Math.max(depth, addNodes(child));
         }
         addNode(depth, root);
-        return depth;
+        return depth + 1;
     }
 
     private void addNode(final int depth, final T node) {
