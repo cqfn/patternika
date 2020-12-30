@@ -1,5 +1,6 @@
 package org.cqfn.patternika.util;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -52,12 +53,19 @@ public final class DoubleListIterator<T> implements Iterator<T> {
      *         {@code null} if there is no next item list.
      */
     private Iterator<T> nextItemIter() {
-        return listIter.hasNext() ? iterFactory.apply(listIter.next()) : null;
+        Iterator<T> iter = Collections.emptyIterator();
+        while (!iter.hasNext() && listIter.hasNext()) {
+            final List<T> list = listIter.next();
+            if (list != null) {
+                iter = iterFactory.apply(list);
+            }
+        }
+        return iter;
     }
 
     @Override
     public boolean hasNext() {
-        return itemIter != null && itemIter.hasNext();
+        return itemIter.hasNext();
     }
 
     @Override
