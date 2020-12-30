@@ -49,11 +49,12 @@ public class DepthSorted<T extends Node> implements Iterable<T> {
 
     private void addNode(final int depth, final T node) {
         final List<T> nodes;
-        if (depth < nodesByDepth.size()) {
-            nodes = nodesByDepth.get(depth);
-        } else {
+        // Depth is always increased by 1 as addNodes returns from a recursive call.
+        if (depth == nodesByDepth.size()) {
             nodes = new ArrayList<>();
-            nodesByDepth.add(depth, nodes);
+            nodesByDepth.add(nodes);
+        } else {
+            nodes = nodesByDepth.get(depth);
         }
         nodes.add(node);
         nodeCount++;
