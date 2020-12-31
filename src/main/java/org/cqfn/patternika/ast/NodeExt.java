@@ -119,12 +119,6 @@ public class NodeExt implements Node {
      */
     @Override
     public boolean matches(final Node other) {
-        if (other == null) {
-            return false;
-        }
-        if (other == this) {
-            return true;
-        }
         final Node otherNode = other instanceof NodeExt ? ((NodeExt) other).node : other;
         return node.matches(otherNode);
     }
