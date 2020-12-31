@@ -2,7 +2,6 @@ package org.cqfn.patternika.ast.mapper;
 
 import org.cqfn.patternika.ast.NodeExt;
 import org.cqfn.patternika.ast.hash.Hash;
-import org.cqfn.patternika.ast.hash.SimilarityHash;
 import org.cqfn.patternika.ast.iterator.Children;
 
 import java.util.Iterator;
@@ -27,10 +26,25 @@ public class Downstairs {
      * Constructor.
      *
      * @param mapping the mapping to be extended, not {@code null}.
+     * @param similarity calculates a similarity hash for nodes, not {@code null}.
      */
-    public Downstairs(final Mapping<NodeExt> mapping) {
+    public Downstairs(final Mapping<NodeExt> mapping, final Hash similarity) {
         this.mapping = Objects.requireNonNull(mapping);
-        this.similarity = new SimilarityHash();
+        this.similarity = Objects.requireNonNull(similarity);
+    }
+
+    /**
+     * Tries to connect two node trees starting from their roots.
+     * Root nodes must have the same type.
+     *
+     * @param root1 first root to be connected.
+     * @param root2 second root to be connected.
+     */
+    public void connect(final NodeExt root1, final NodeExt root2) {
+        if (root1.getType().equals(root2.getType())) {
+            mapping.connect(root1, root2);
+            connect(root1);
+        }
     }
 
     /**
@@ -54,9 +68,6 @@ public class Downstairs {
      * @param root root of the given subtree.
      */
     public void connect(final NodeExt root) {
-        if (root == null) {
-            return;
-        }
         final NodeExt corresponding = mapping.get(root);
         if (corresponding == null) {
             return;
@@ -65,10 +76,10 @@ public class Downstairs {
         final List<NodeExt> notConnected1 = getNotConnectedChildren(root);
         final List<NodeExt> notConnected2 = getNotConnectedChildren(corresponding);
         // let's try to connect corresponding by order first (by O(N)).
-        connectLinearOrder(notConnected1, notConnected2, this::similarityHashEquals);
+        connectLinearOrder(notConnected1, notConnected2, similarity::isHashEqual);
         // and each one with each other if there is something left unconnected (O(N^2))
         if (!notConnected2.isEmpty()) {
-            connectProductOrder(notConnected1, notConnected2, this::similarityHashEquals);
+            connectProductOrder(notConnected1, notConnected2, similarity::isHashEqual);
         }
         // and one with each other but with soft equation if there
         // is something left unconnected (O(N^2))
@@ -77,7 +88,7 @@ public class Downstairs {
         }
         // and let's try to connect corresponding by order with the softest equation (by O(N)).
         if (!notConnected2.isEmpty() && notConnected1.size() == notConnected2.size()) {
-            connectLinearOrder(notConnected1, notConnected2, this::typeAndChildCountMatch);
+            connectLinearOrder(notConnected1, notConnected2, Downstairs::typeAndChildCountMatch);
         }
     }
 
@@ -99,24 +110,13 @@ public class Downstairs {
     }
 
     /**
-     * Checks whether similarity hashes of two nodes match.
-     *
-     * @param node1 first node.
-     * @param node2 second node.
-     * @return {@code true} or {@code false}.
-     */
-    private boolean similarityHashEquals(final NodeExt node1, final NodeExt node2) {
-        return similarity.getHash(node1) == similarity.getHash(node2);
-    }
-
-    /**
      * Checks whether types and child counts of two nodes match.
      *
      * @param node1 first node.
      * @param node2 second node.
      * @return {@code true} or {@code false}.
      */
-    private boolean typeAndChildCountMatch(final NodeExt node1, final NodeExt node2) {
+    private static boolean typeAndChildCountMatch(final NodeExt node1, final NodeExt node2) {
         return node1.getType().equals(node2.getType())
             && node1.getChildCount() == node2.getChildCount();
     }
