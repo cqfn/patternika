@@ -76,10 +76,10 @@ public class Downstairs {
         final List<NodeExt> notConnected1 = getNotConnectedChildren(root);
         final List<NodeExt> notConnected2 = getNotConnectedChildren(corresponding);
         // let's try to connect corresponding by order first (by O(N)).
-        connectLinearOrder(notConnected1, notConnected2, this::similarityHashEquals);
+        connectLinearOrder(notConnected1, notConnected2, similarity::isHashEqual);
         // and each one with each other if there is something left unconnected (O(N^2))
         if (!notConnected2.isEmpty()) {
-            connectProductOrder(notConnected1, notConnected2, this::similarityHashEquals);
+            connectProductOrder(notConnected1, notConnected2, similarity::isHashEqual);
         }
         // and one with each other but with soft equation if there
         // is something left unconnected (O(N^2))
@@ -107,17 +107,6 @@ public class Downstairs {
             }
         }
         return result;
-    }
-
-    /**
-     * Checks whether similarity hashes of two nodes match.
-     *
-     * @param node1 first node.
-     * @param node2 second node.
-     * @return {@code true} or {@code false}.
-     */
-    private boolean similarityHashEquals(final NodeExt node1, final NodeExt node2) {
-        return similarity.getHash(node1) == similarity.getHash(node2);
     }
 
     /**
