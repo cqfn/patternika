@@ -25,7 +25,7 @@ public class Fragment {
     public Fragment(final Source source, final Position start, final Position end) {
         this.source = Objects.requireNonNull(source);
         // Start is always a lesser existing position.
-        if (start == null || start.compareTo(end) < 0) {
+        if (start == null || end == null || start.compareTo(end) < 0) {
             this.start = start;
             this.end = end;
         } else {
@@ -112,7 +112,7 @@ public class Fragment {
      * @return the fragment length or {@code -1} if there is no start or no end.
      */
     public int getLength() {
-        return start != null && end != null ? end.getIndex() - start.getIndex() : -1;
+        return start == null || end == null ? -1 : end.getIndex() - start.getIndex();
     }
 
     /**
@@ -121,7 +121,7 @@ public class Fragment {
      * @return start fragment or {@code null} if there is no start.
      */
     public Fragment getStartFragment() {
-        return start != null ? new Fragment(source, start, start) : null;
+        return start == null ? null : new Fragment(source, start, start);
     }
 
     /**
@@ -130,7 +130,7 @@ public class Fragment {
      * @return end fragment or {@code null} if there is no end.
      */
     public Fragment getEndFragment() {
-        return end != null ? new Fragment(source, end, end) : null;
+        return end == null ? null : new Fragment(source, end, end);
     }
 
     /**
@@ -164,39 +164,32 @@ public class Fragment {
     }
 
     /**
+     * Merges this fragment with the specified fragment and returns the result.
+     *
+     * @param other the fragment to be merged with this fragment, not {@code null}.
+     * @return merged fragment or
+     *         {@code null} if failed to merge (both fragments have no start and no end).
+     * @throws IllegalArgumentException if the fragments to be merged have different sources.
+     */
+    public Fragment merge(final Fragment other) {
+        if (!this.source.equals(other.source)) {
+            throw new IllegalArgumentException("Fragments to be merged have different sources!");
+        }
+        final Position newStart = Position.min(this.start, other.start);
+        final Position newEnd = Position.max(this.end, other.end);
+        return newStart == null && newEnd == null
+                ? null
+                : new Fragment(this.source, newStart, newEnd);
+    }
+
+    /**
      * Textual representation of the fragment.
      *
      * @return text for the fragment or an empty string if the pattern has no start or end.
      */
     @Override
     public String toString() {
-        return start != null && end != null ? source.getFragmentAsString(start, end) : "";
-    }
-
-    /**
-     * Merges two fragment and returns the result.
-     *
-     * @param first first fragment, not {@code null}.
-     * @param second second fragment, not {@code null}.
-     * @return merged fragment or
-     *         {@code null} if failed to merge (fragments have no start and no end).
-     * @throws IllegalArgumentException if the fragments to be merged have different sources.
-     */
-    public static Fragment merge(final Fragment first, final Fragment second) {
-        if (!first.source.equals(second.source)) {
-            throw new IllegalArgumentException("Fragments to be merged have different sources!");
-        }
-        final Position start = min(first.start, second.start);
-        final Position end = max(first.end, second.end);
-        return start == null && end == null ? null : new Fragment(first.source, start, end);
-    }
-
-    private static Position min(final Position first, final Position second) {
-        return second == null || first != null && first.compareTo(second) < 0 ? first : second;
-    }
-
-    private static Position max(final Position first, final Position second) {
-        return second == null || first != null && first.compareTo(second) > 0 ? first : second;
+        return start == null || end == null ? "" : source.getFragmentAsString(start, end);
     }
 
 }

@@ -17,4 +17,15 @@ public interface Hash {
      */
     int getHash(Node root);
 
+    /**
+     * Checks whether the hashes of two nodes equal.
+     *
+     * @param node1 first node.
+     * @param node2 second node.
+     * @return {@code true} or {@code false}.
+     */
+    default boolean isHashEqual(final Node node1, final Node node2) {
+        return getHash(node1) == getHash(node2);
+    }
+
 }

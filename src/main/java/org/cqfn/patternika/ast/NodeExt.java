@@ -28,7 +28,7 @@ public class NodeExt implements Node {
     private final int depth;
     /** Parent of the node. */
     private final NodeExt parent;
-    /** Lazy list of node's children (initialized on first access). */
+    /** Lazy list of node's children (initialized on the first access). */
     private List<NodeExt> children;
 
     /**
@@ -59,7 +59,6 @@ public class NodeExt implements Node {
         this.order = order;
         this.depth = parent == null ? 0 : parent.depth + 1;
         this.parent = parent;
-        this.children = null;
     }
 
     /**
@@ -120,12 +119,6 @@ public class NodeExt implements Node {
      */
     @Override
     public boolean matches(final Node other) {
-        if (other == null) {
-            return false;
-        }
-        if (other == this) {
-            return true;
-        }
         final Node otherNode = other instanceof NodeExt ? ((NodeExt) other).node : other;
         return node.matches(otherNode);
     }
@@ -226,6 +219,24 @@ public class NodeExt implements Node {
             return null;
         }
         return parent.getChild(order + 1);
+    }
+
+    /**
+     * Returns textual representation of the node. Helpful for debugging.
+     * <p>
+     * Contains class name, object identity hash code, and text of the wrapped node.
+     * This allows identifying specific nodes among similar nodes and identical nodes.
+     *
+     * @return textual representation of the node.
+     */
+    @Override
+    public String toString() {
+        return String.format(
+                "%s {%s} @%s",
+                getClass().getSimpleName(),
+                node.toString(),
+                Integer.toHexString(System.identityHashCode(this))
+            );
     }
 
 }

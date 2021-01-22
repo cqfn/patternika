@@ -1,63 +1,61 @@
 package org.cqfn.patternika.ast;
 
+import org.cqfn.patternika.ast.iterator.Dfs;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.cqfn.patternika.ast.Nodes.areTwoNodesDeepEqual;
-import static org.cqfn.patternika.ast.Nodes.nodeFlattenToList;
+import java.util.Objects;
+import java.util.function.BiPredicate;
 
 /**
- * The purpose of this class is to return all possible matches between two nodes.
- * It contains just one public method {@link NodeMatcher#findAll()} that does all the job.
+ * Finds all possible matches between nodes in two node trees.
+ * Contains just one public method {@link NodeMatcher#findAll()} that does all the job.
+ * <p>
+ * To match two nodes tress, the solution uses method {@link Node#matches(Node)},
+ * which is called for all nodes in the trees (from roots to leaves).
  *
- * <p> The solution doesn't rely only on method {@link Object#equals(Object)} of nodes which are
- * encapsulated in the class, but also relies on method {@link Object#equals(Object)} of their
- * child nodes.
+ * @param <T> Exact node type, {@link Node} or its subclass.
  *
  * @since 2020/11/11
  */
-public class NodeMatcher {
-    /** First Node to compare. **/
-    private final Node firstNode;
-    /** Second node to compare. **/
-    private final Node secondNode;
+public class NodeMatcher<T extends Node> {
+    /** Root of the first node tree to compare. */
+    private final T firstRoot;
+    /** Root of the second node tree to compare. */
+    private final T secondRoot;
+    /** Predicate for checking that two node trees recursively match. */
+    private final BiPredicate<Node, Node> deepMatches;
 
     /**
-     * Public constructor.
-     * @param firstNode First Node to compare.
-     * @param secondNode Second Node to compare.
+     * Constructor.
+     *
+     * @param firstRoot the root of the first node tree to compare.
+     * @param secondRoot the root of the second node tree to compare.
      */
-    public NodeMatcher(final Node firstNode, final Node secondNode) {
-        this.firstNode = firstNode;
-        this.secondNode = secondNode;
+    public NodeMatcher(final T firstRoot, final T secondRoot) {
+        this.firstRoot = Objects.requireNonNull(firstRoot);
+        this.secondRoot = Objects.requireNonNull(secondRoot);
+        this.deepMatches = new DeepMatchesAnyOrder();
     }
 
     /**
-     * Returns all nodes in {@code firstNode} which are subtrees in {@code secondNode} and
-     * all nodes in {@code secondNode} which are subtrees in {@code firstNode}.
+     * Returns all nodes in {@code firstRoot} which are subtrees in {@code secondRoot}
+     * and all nodes in {@code secondRoot} which are subtrees in {@code firstRoot}.
      *
      * @return all possible matches between first and second nodes.
      */
-    public Map<Node, List<Node>> findAll() {
-        final Map<Node, List<Node>> allMatches = new HashMap<>();
-        if (areTwoNodesDeepEqual(this.firstNode, this.secondNode)) {
-            final List<Node> matchedNodes = new ArrayList<>();
-            matchedNodes.add(this.secondNode);
-            allMatches.put(this.firstNode, matchedNodes);
-        }
-        final List<Node> flattenListOfNodesInFirstNode = nodeFlattenToList(this.firstNode);
-        final List<Node> flattenListOfNodesInSecondNode = nodeFlattenToList(this.secondNode);
-        for (final Node nodeFromFirstList : flattenListOfNodesInFirstNode) {
-            for (final Node nodeFromSecondList : flattenListOfNodesInSecondNode) {
-                final boolean nodesAreDeepEqual = areTwoNodesDeepEqual(
-                    nodeFromFirstList, nodeFromSecondList
-                );
-                if (nodesAreDeepEqual) {
-                    final List<Node> matchedNodes =
-                            allMatches.computeIfAbsent(nodeFromFirstList, x -> new ArrayList<>());
-                    matchedNodes.add(nodeFromSecondList);
+    public Map<T, List<T>> findAll() {
+        final Map<T, List<T>> allMatches = new HashMap<>();
+        final Iterable<T> firstTreeNodes = new Dfs<>(this.firstRoot);
+        final List<T> secondTreeNodes = new Dfs<>(this.secondRoot).toList();
+        for (final T firstTreeNode : firstTreeNodes) {
+            for (final T secondTreeNode : secondTreeNodes) {
+                if (deepMatches.test(firstTreeNode, secondTreeNode)) {
+                    final List<T> matchedNodes =
+                            allMatches.computeIfAbsent(firstTreeNode, x -> new ArrayList<>());
+                    matchedNodes.add(secondTreeNode);
                 }
             }
         }

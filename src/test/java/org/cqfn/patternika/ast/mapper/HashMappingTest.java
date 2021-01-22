@@ -22,6 +22,17 @@ import static org.junit.Assert.assertTrue;
 public class HashMappingTest {
 
     /**
+     * Tests the @link HashMapping#contains} and {@link HashMapping#get} methods
+     * getting {@code null}.
+     */
+    @Test
+    public void testGetNull() {
+        final HashMapping<String> mapping = new HashMapping<>();
+        assertFalse(mapping.contains(null));
+        assertNull(mapping.get(null));
+    }
+
+    /**
      * Tests the {@link HashMapping#connect(Iterable, Iterable)},
      * and {@link HashMapping#contains(Object)} and {@link HashMapping#get(Object)} methods.
      */
@@ -129,18 +140,55 @@ public class HashMappingTest {
     }
 
     /**
-     * Tests the {@link HashMapping#merge(Mapping)} method.
-     * Basic merge without conflicts (without overlapping and with overlapping).
+     * Tests the {@link HashMapping#connected(Object, Object)} method.
      */
     @Test
-    public void mergeTest() {
-        // Merge without overlapping.
-        final int noOverlappingMiddle = 3;
-        mergeTest(noOverlappingMiddle, noOverlappingMiddle);
-        // Merge with overlapping.
-        final int overlappingStart = 2;
-        final int overlappingEnd = 4;
-        mergeTest(overlappingEnd, overlappingStart);
+    public void connectedTest() {
+        final HashMapping<String> mapping = new HashMapping<>();
+        // Connects elements and checks that the mapping contains all of them.
+        mapping.connect("one", "1");
+        mapping.connect("two", "2");
+        // Checks that proper elements are connected.
+        assertTrue(mapping.connected("one", "1"));
+        assertTrue(mapping.connected("1", "one"));
+        assertTrue(mapping.connected("two", "2"));
+        assertTrue(mapping.connected("2", "two"));
+        // Checks that wrong elements are not connected.
+        assertFalse(mapping.connected("one", "2"));
+        assertFalse(mapping.connected("2", "one"));
+        assertFalse(mapping.connected("two", "1"));
+        assertFalse(mapping.connected("1", "two"));
+        assertFalse(mapping.connected("one", "3"));
+        assertFalse(mapping.connected("3", "one"));
+        // Removes one of the connections and checks again.
+        mapping.disconnect("two");
+        assertTrue(mapping.connected("one", "1"));
+        assertTrue(mapping.connected("1", "one"));
+        assertFalse(mapping.connected("two", "2"));
+        assertFalse(mapping.connected("2", "two"));
+    }
+
+    /**
+     * Tests the {@link HashMapping#merge(Mapping)} method.
+     * <p>
+     * Basic merge without conflicts and without overlapping.
+     */
+    @Test
+    public void mergeNoOverlappingTest() {
+        final int middle = 3;
+        assertTrue(mergeTest(middle, middle));
+    }
+
+    /**
+     * Tests the {@link HashMapping#merge(Mapping)} method.
+     * <p>
+     * Basic merge without conflicts and with overlapping.
+     */
+    @Test
+    public void mergeOverlappingTest() {
+        final int overlapStart = 2;
+        final int overlapEnd = 4;
+        assertTrue(mergeTest(overlapEnd, overlapStart));
     }
 
     /**
@@ -150,8 +198,9 @@ public class HashMappingTest {
      *
      * @param firstEnd end index for the elements of the first mapping.
      * @param secondStart start index for the elements of the second mapping.
+     * @return {@code true} if no assertion has failed.
      */
-    private void mergeTest(final int firstEnd, final int secondStart) {
+    private boolean mergeTest(final int firstEnd, final int secondStart) {
         final int firstStart = 0;
         final int secondEnd = 6;
         final List<String> keys = Arrays.asList("one", "two", "three", "four", "five", "six");
@@ -189,6 +238,7 @@ public class HashMappingTest {
                 assertNull(mapping1.get(value));
             }
         }
+        return true;
     }
 
     /**

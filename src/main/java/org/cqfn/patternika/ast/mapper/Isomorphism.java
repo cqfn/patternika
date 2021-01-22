@@ -61,7 +61,7 @@ public class Isomorphism {
      * @return set of isomorphic trees.
      */
     public Set<Node> getGroup(final Node node) {
-        return getGroup(add(node));
+        return getGroup(hash.getHash(node));
     }
 
     /**

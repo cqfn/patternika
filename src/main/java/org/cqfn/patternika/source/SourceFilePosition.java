@@ -1,5 +1,7 @@
 package org.cqfn.patternika.source;
 
+import java.util.Objects;
+
 /**
  * Represents a position in source code file (multiline text).
  *
@@ -40,6 +42,25 @@ class SourceFilePosition implements Position {
     @Override
     public String toString() {
         return String.valueOf(row) + '.' + column;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof SourceFilePosition)) {
+            return false;
+        }
+        final SourceFilePosition other = (SourceFilePosition) obj;
+        return this.index == other.index
+            && this.row == other.row
+            && this.column == other.column;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(index, row, column);
     }
 
     /**

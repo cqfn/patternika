@@ -14,30 +14,30 @@ import java.util.Objects;
  * <p>Allows iterating over the items in a proper order and
  * inserting new items into specific places (relative order) for O(1).
  *
- * @param <T> Value type.
+ * @param <T> the value type.
  *
  * @since 2020/11/2
  */
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
 public class LinkedSet<T> implements Collection<T> {
     /** Maps values to their entries. */
     private final Map<T, Entry<T>> entries = new IdentityHashMap<>();
     /** First entry. */
     private Entry<T> first;
-    /** Lst entry. */
+    /** Last entry. */
     private Entry<T> last;
 
     /**
      * Main constructor (an empty set).
      */
     public LinkedSet() {
-        this.first = null;
-        this.last = null;
+        // Nothing.
     }
 
     /**
      * Additional constructor. Fills the set with values.
      *
-     * @param values Values to be copied into the set.
+     * @param values values to be copied into the set.
      */
     public LinkedSet(final Iterable<T> values) {
         this();
@@ -47,7 +47,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Return the number of values stored in the set.
      *
-     * @return Set size.
+     * @return the set size.
      */
     @Override
     public int size() {
@@ -67,7 +67,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Checks whether the set contains the specified value.
      *
-     * @param value Value.
+     * @param value a value.
      * @return {@code true} or {@code false}.
      */
     @Override
@@ -78,7 +78,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Checks whether the set contains all the values form the specified collection.
      *
-     * @param collection Collection of vales.
+     * @param collection a collection of values.
      * @return {@code true} if this set contains all of the elements in the specified collection or
      *         {@code false} otherwise.
      */
@@ -95,7 +95,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Returns an iterator over values stored in the set.
      *
-     * @return Iterator.
+     * @return a new iterator.
      */
     @Override
     public Iterator<T> iterator() {
@@ -105,7 +105,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Returns a new array that contains all values stored in the set.
      *
-     * @return Array of values.
+     * @return the array of values.
      */
     @Override
     public Object[] toArray() {
@@ -121,9 +121,9 @@ public class LinkedSet<T> implements Collection<T> {
      * Returns an array containing all of the values in this set;
      * the runtime type of the returned array is that of the specified array.
      *
-     * @param array Array.
-     * @param <U> Array type.
-     * @return Array.
+     * @param array array.
+     * @param <U> array type.
+     * @return array.
      */
     @Override
     public <U> U[] toArray(final U[] array) {
@@ -144,19 +144,19 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Returns the first value.
      *
-     * @return First value or {@code null} if there is no value (the set is empty).
+     * @return the first value or {@code null} if there is no value (the set is empty).
      */
     public T getFirst() {
-        return first != null ? first.value : null;
+        return first == null ? null : first.value;
     }
 
     /**
      * Returns the last value.
      *
-     * @return Last value or {@code null} if there is no value (the set is empty).
+     * @return the last value or {@code null} if there is no value (the set is empty).
      */
     public T getLast() {
-        return last != null ? last.value : null;
+        return last == null ? null : last.value;
     }
 
     /**
@@ -171,7 +171,7 @@ public class LinkedSet<T> implements Collection<T> {
         if (entry == null) {
             throw new NoSuchElementException();
         }
-        return null != entry.previous ? entry.previous.value : null;
+        return null == entry.previous ? null : entry.previous.value;
     }
 
     /**
@@ -186,7 +186,7 @@ public class LinkedSet<T> implements Collection<T> {
         if (entry == null) {
             throw new NoSuchElementException();
         }
-        return null != entry.next ? entry.next.value : null;
+        return null == entry.next ? null : entry.next.value;
     }
 
     /**
@@ -349,14 +349,12 @@ public class LinkedSet<T> implements Collection<T> {
     private void removeEntryRefs(final Entry<T> current) {
         if (current == first) {
             first = current.next;
+        } else {
+            current.previous.next = current.next;
         }
         if (current == last) {
             last = current.previous;
-        }
-        if (current.previous != null) {
-            current.previous.next = current.next;
-        }
-        if (current.next != null) {
+        } else {
             current.next.previous = current.previous;
         }
     }
@@ -392,15 +390,15 @@ public class LinkedSet<T> implements Collection<T> {
         }
         final Entry<T> entry = new Entry<>(current, oldEntry.previous, oldEntry.next);
         entries.put(current, entry);
-        if (oldEntry.previous != null) {
-            oldEntry.previous.next = entry;
-        } else {
+        if (oldEntry == first) {
             first = entry;
-        }
-        if (oldEntry.next != null) {
-            oldEntry.next.previous = entry;
         } else {
+            oldEntry.previous.next = entry;
+        }
+        if (oldEntry == last) {
             last = entry;
+        } else {
+            oldEntry.next.previous = entry;
         }
     }
 
@@ -414,10 +412,10 @@ public class LinkedSet<T> implements Collection<T> {
     @Override
     public boolean retainAll(final Collection<?> collection) {
         boolean modified = false;
-        final Iterator<T> iter = iterator();
-        while (iter.hasNext()) {
-            if (!collection.contains(iter.next())) {
-                iter.remove();
+        for (Entry<T> current = first; current != null; current = current.next) {
+            final T value = current.value;
+            if (!collection.contains(value)) {
+                remove(value);
                 modified = true;
             }
         }
@@ -428,6 +426,7 @@ public class LinkedSet<T> implements Collection<T> {
      * Clears all values from the set.
      */
     @Override
+    @SuppressWarnings({"PMD.NullAssignment"})
     public void clear() {
         entries.clear();
         first = null;
@@ -437,7 +436,7 @@ public class LinkedSet<T> implements Collection<T> {
     /**
      * Returns a textual representation of the set.
      *
-     * @return Text.
+     * @return text.
      */
     @Override
     public String toString() {
@@ -445,15 +444,15 @@ public class LinkedSet<T> implements Collection<T> {
         if (!iter.hasNext()) {
             return "{}";
         }
-        final StringBuilder sb = new StringBuilder();
-        sb.append('{');
+        final StringBuilder builder = new StringBuilder();
+        builder.append('{');
         for (;;) {
             final T value = iter.next();
-            sb.append(value == this ? "(this Set)" : value);
+            builder.append(value == this ? "(this set)" : value);
             if (!iter.hasNext()) {
-                return sb.append('}').toString();
+                return builder.append('}').toString();
             }
-            sb.append(',').append(' ');
+            builder.append(',').append(' ');
         }
     }
 
@@ -518,7 +517,7 @@ public class LinkedSet<T> implements Collection<T> {
          */
         @Override
         public T next() {
-            if (current == null) {
+            if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             final T result = current.value;
@@ -533,14 +532,11 @@ public class LinkedSet<T> implements Collection<T> {
          */
         @Override
         public void remove() {
-            if (current == null) {
+            if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            final Entry<T> next = current.next;
-            if (!LinkedSet.this.remove(current.value)) {
-                throw new IllegalStateException();
-            }
-            current = next;
+            LinkedSet.this.remove(current.value);
+            current = current.next;
         }
     }
 

@@ -3,8 +3,7 @@ package org.cqfn.patternika.ast;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import org.cqfn.patternika.source.Fragment;
 
 /**
@@ -12,29 +11,50 @@ import org.cqfn.patternika.source.Fragment;
  *
  * @since 2020/11/9
  */
-public final class TestNode implements Node {
+public class TestNode implements Node {
+    /** Code fragment associated with the current node, can be {@code null} in tests. */
+    private final Fragment fragment;
     /** Node type. */
     private final String type;
     /** Node data. */
-    private final int data;
+    private final String data;
     /** List of node children. */
     private final List<Node> children;
 
     /**
      * Main constructor.
      *
+     * @param fragment fragment, can be {@code null}.
+     * @param type node type.
+     * @param data node data.
+     * @param children node children.
+     */
+    public TestNode(
+            final Fragment fragment,
+            final String type,
+            final String data,
+            final List<Node> children) {
+        this.fragment = fragment;
+        this.type = Objects.requireNonNull(type);
+        this.data = Objects.requireNonNull(data);
+        this.children = Objects.requireNonNull(children);
+    }
+
+    /**
+     * Additional constructor.
+     * <p>
+     * Data has an integer type to simplify tests.
+     *
      * @param type node type.
      * @param data node data.
      * @param children node children.
      */
     public TestNode(final String type, final int data, final List<Node> children) {
-        this.type = Objects.requireNonNull(type);
-        this.data = data;
-        this.children = Objects.requireNonNull(children);
+        this(null, type, Integer.toString(data), children);
     }
 
     /**
-     * Secondary constructor.
+     * Additional constructor.
      *
      * @param type node type.
      * @param data node data.
@@ -81,7 +101,7 @@ public final class TestNode implements Node {
      */
     @Override
     public String getData() {
-        return Integer.toString(data);
+        return data;
     }
 
     /**
@@ -91,8 +111,7 @@ public final class TestNode implements Node {
      */
     @Override
     public Fragment getFragment() {
-        // No fragment for a test node.
-        return null;
+        return fragment;
     }
 
     /**
@@ -143,33 +162,56 @@ public final class TestNode implements Node {
         return getType().equals(other.getType()) && getData().equals(other.getData());
     }
 
+    /**
+     * Checks the current object for equality with the given object.
+     * <p>
+     * Takes into account the following properties: type, data, and child count.
+     *
+     * @param obj the given object.
+     * @return {@code true} or {@code false}.
+     */
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null || this.getClass() != obj.getClass()) {
             return false;
         }
-
-        final TestNode testNode = (TestNode) o;
-
-        return new EqualsBuilder()
-            .append(data, testNode.data)
-            .append(type, testNode.type)
-            .append(children.size(), testNode.children.size())
-            .isEquals();
+        final TestNode other = (TestNode) obj;
+        return Objects.equals(this.type, other.type)
+            && Objects.equals(this.data, other.data)
+            && this.children.size() == other.children.size();
     }
 
+    /**
+     * Returns hash code for the current object.
+     *
+     * @return hash code.
+     */
     @Override
     public int hashCode() {
-        final int initialNonZeroOddNumber = 17;
-        final int multiplierNonZeroOddNumber = 37;
-        return new HashCodeBuilder(initialNonZeroOddNumber, multiplierNonZeroOddNumber)
-            .append(type)
-            .append(data)
-            .append(children.size())
-            .toHashCode();
+        return Objects.hash(type, data, children.size());
     }
+
+    /**
+     * Returns textual representation of the node. Helpful for debugging.
+     * <p>
+     * Text contains: class name, node type, node data, child count, and object identity hash code.
+     * This allows identifying specific nodes among similar nodes and identical nodes.
+     *
+     * @return textual representation of the node.
+     */
+    @Override
+    public String toString() {
+        return String.format(
+                "%s {'%s', '%s', %d} @%s",
+                getClass().getSimpleName(),
+                type,
+                data,
+                getChildCount(),
+                Integer.toHexString(System.identityHashCode(this))
+            );
+    }
+
 }

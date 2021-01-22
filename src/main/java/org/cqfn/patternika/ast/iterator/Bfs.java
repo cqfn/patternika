@@ -3,7 +3,7 @@ package org.cqfn.patternika.ast.iterator;
 import org.cqfn.patternika.ast.Node;
 
 /**
- * Iterable for a node, which allows iterating over tree nodes
+ * Iterable for node trees, which allows iterating over tree nodes
  * in a BFS (breadth-first search) manner.
  *
  * @param <T> Exact node type, {@link Node} or its subclass.

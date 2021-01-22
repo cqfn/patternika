@@ -29,8 +29,8 @@ public final class GraphvizUtils {
     public static void fromDotFile(final String dotFilePath,
                                    final String targetImagePath) throws IOException {
         try (InputStream dot = GraphvizUtils.class.getResourceAsStream(dotFilePath)) {
-            final MutableGraph g = new Parser().read(dot);
-            Graphviz.fromGraph(g).render(Format.PNG).toFile(new File(targetImagePath));
+            final MutableGraph graph = new Parser().read(dot);
+            Graphviz.fromGraph(graph).render(Format.PNG).toFile(new File(targetImagePath));
         }
     }
 
@@ -43,7 +43,7 @@ public final class GraphvizUtils {
      */
     public static void fromDotContent(final String dotContent,
                                       final String targetImagePath) throws IOException {
-        final MutableGraph g = new Parser().read(dotContent);
-        Graphviz.fromGraph(g).render(Format.PNG).toFile(new File(targetImagePath));
+        final MutableGraph graph = new Parser().read(dotContent);
+        Graphviz.fromGraph(graph).render(Format.PNG).toFile(new File(targetImagePath));
     }
 }

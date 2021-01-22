@@ -34,30 +34,20 @@ class SourceFileIterator implements SourceIterator {
         if (index >= data.length()) {
             return 0;
         }
-        final char ch = data.charAt(index++);
-        if (ch == '\n') {
+        final char result = data.charAt(index++);
+        if (result == '\n') {
             row++;
             column = 1;
         } else {
             column++;
         }
-        return ch;
-    }
-
-    @Override
-    public char getChar() {
-        return index < data.length() ? data.charAt(index) : 0;
+        return result;
     }
 
     @Override
     public char getChar(final int offset) {
         final int pos = index + offset;
         return pos < data.length() ? data.charAt(pos) : 0;
-    }
-
-    @Override
-    public Position getPosition() {
-        return new SourceFilePosition(index, row, column);
     }
 
     @Override

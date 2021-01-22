@@ -26,7 +26,7 @@ public abstract class NodeVisitorTypedLeaf<T extends Node> implements NodeVisito
     @Override
     @SuppressWarnings("unchecked")
     public boolean enter(final Node node) {
-        visit((T) node);
+        visitNode((T) node);
         return false;
     }
 
@@ -45,6 +45,6 @@ public abstract class NodeVisitorTypedLeaf<T extends Node> implements NodeVisito
      *
      * @param node Node, not {@code null}.
      */
-    public abstract void visit(T node);
+    public abstract void visitNode(T node);
 
 }
