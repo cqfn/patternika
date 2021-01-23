@@ -58,9 +58,7 @@ public class ParserJava implements Parser {
         if (!result.isSuccessful()) {
             throw new JavaParserException(result.getProblems());
         }
-        final Optional<? extends Node> root = result.getResult();
-        assert root.isPresent() : "No AST in the parser result!";
-        return adapter.adapt(source, root.get());
+        return adapt(source, result);
     }
 
     /**
@@ -85,9 +83,7 @@ public class ParserJava implements Parser {
         if (!result.isSuccessful()) {
             throw new JavaParserException("JavaParser failed to parse the snippet.", problems);
         }
-        final Optional<? extends Node> root = result.getResult();
-        assert root.isPresent() : "No AST in the parser result!";
-        return adapter.adapt(source, root.get());
+        return adapt(source, result);
     }
 
     /**
@@ -98,7 +94,7 @@ public class ParserJava implements Parser {
      * @param <N> the root node type for the constructed AST (depends on start).
      * @return a parsing result.
      */
-    protected <N extends Node> ParseResult<N> parse(
+    public <N extends Node> ParseResult<N> parse(
             final ParseStart<N> start,
             final Source source) {
         try (Provider provider = new SourceProvider(source.getIterator())) {
@@ -106,6 +102,19 @@ public class ParserJava implements Parser {
         } catch (final IOException ex) {
             throw new AssertionError("Unexpected IO error!", ex);
         }
+    }
+
+    /**
+     * Converts the JavaParser result to the Patternika AST.
+     *
+     * @param source the source.
+     * @param result the result of JavaParser.
+     * @return the AST.
+     */
+    private JavaNode adapt(final Source source, final ParseResult<? extends Node> result) {
+        final Optional<? extends Node> root = result.getResult();
+        assert root.isPresent() : "No AST in the parser result!";
+        return adapter.adapt(source, root.get());
     }
 
 }
