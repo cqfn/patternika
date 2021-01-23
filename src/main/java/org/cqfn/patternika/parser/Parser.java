@@ -14,8 +14,9 @@ public interface Parser {
      *
      * @param source the source to be parsed.
      * @return an AST.
+     * @throws ParserException if the parser failed to parse code in the specified source.
      */
-    Node parse(Source source);
+    Node parse(Source source) throws ParserException;
 
     /**
      * Parses a code snippet specified as source and returns an AST for it.
@@ -26,6 +27,7 @@ public interface Parser {
      *
      * @param source the source to be parsed.
      * @return an AST.
+     * @throws ParserException if the parser failed to parse code in the specified source.
      */
-    Node parseSnippet(Source source);
+    Node parseSnippet(Source source) throws ParserException;
 }
