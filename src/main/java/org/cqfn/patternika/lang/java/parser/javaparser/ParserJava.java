@@ -4,14 +4,13 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ParseStart;
 import com.github.javaparser.Problem;
-import com.github.javaparser.Provider;
 import com.github.javaparser.ast.Node;
 
 import org.cqfn.patternika.parser.Parser;
 import org.cqfn.patternika.parser.ParserException;
 import org.cqfn.patternika.source.Source;
+import org.cqfn.patternika.source.SourceIterator;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,7 +55,8 @@ public class ParserJava implements Parser {
      */
     @Override
     public JavaNode parse(final Source source) throws ParserException {
-        final ParseResult<? extends Node> result = parse(ParseStart.COMPILATION_UNIT, source);
+        final SourceIterator iterator = source.getIterator();
+        final ParseResult<? extends Node> result = parse(ParseStart.COMPILATION_UNIT, iterator);
         if (!result.isSuccessful()) {
             throw new JavaParserException(result.getProblems());
         }
@@ -75,7 +75,8 @@ public class ParserJava implements Parser {
         ParseResult<? extends Node> result = null;
         final List<Problem> problems = new ArrayList<>();
         for (final ParseStart<? extends Node> start : parseStarts) {
-            result = parse(start, source);
+            final SourceIterator iterator = source.getIterator();
+            result = parse(start, iterator);
             if (result.isSuccessful()) {
                 break;
             }
@@ -92,17 +93,15 @@ public class ParserJava implements Parser {
      * Parses the specified source with JavaParser from the specified start.
      *
      * @param start specifies what piece of code is to be parsed.
-     * @param source the source to be parsed.
+     * @param sourceIterator iterator for the source to be parsed.
      * @param <N> the root node type for the constructed AST (depends on start).
      * @return a parsing result.
      */
     public <N extends Node> ParseResult<N> parse(
             final ParseStart<N> start,
-            final Source source) {
-        try (Provider provider = new SourceProvider(source.getIterator())) {
+            final SourceIterator sourceIterator) {
+        try (SourceProvider provider = new SourceProvider(sourceIterator)) {
             return parser.parse(start, provider);
-        } catch (final IOException ex) {
-            throw new AssertionError("Unexpected IO error!", ex);
         }
     }
 
