@@ -27,7 +27,7 @@ public class JavaParserAdapterTest {
         + "    }\n"
         + "\n"
         + "    public int getX() { return x; }\n"
-        + "    public int add(int y) { return this.x + y; }\n"
+        + "    public int add(int y) { return this.x + y + 10; }\n"
         + "\n"
         + "    @Override\n"
         + "    public String toString() { return \"X{x=\" + x + '}'; }\n"
