@@ -3,6 +3,7 @@ package org.cqfn.patternika.lang.java.parser.javaparser;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.comments.CommentsCollection;
+import org.cqfn.patternika.parser.Adapter;
 import org.cqfn.patternika.parser.ParserException;
 import org.cqfn.patternika.source.Source;
 import org.cqfn.patternika.source.SourceFile;
@@ -108,7 +109,7 @@ public class ParserJavaTest {
     /**
      * Mock object for an AST adapter. Checks that JavaParser has produced an AST.
      */
-    private static final Adapter ADAPTER_MOCK = (source, root) -> {
+    private static final Adapter<Node> ADAPTER_MOCK = (source, root) -> {
         Assert.assertEquals(Node.Parsedness.PARSED, root.getParsed());
         return null;
     };

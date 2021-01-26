@@ -6,6 +6,7 @@ import com.github.javaparser.ParseStart;
 import com.github.javaparser.Problem;
 import com.github.javaparser.ast.Node;
 
+import org.cqfn.patternika.parser.Adapter;
 import org.cqfn.patternika.parser.Parser;
 import org.cqfn.patternika.parser.ParserException;
 import org.cqfn.patternika.source.Source;
@@ -26,7 +27,7 @@ public class ParserJava implements Parser {
     /** Java parser. */
     private final JavaParser parser;
     /** Adapts the AST build by JavaParser to the Patternika format. */
-    private final Adapter adapter;
+    private final Adapter<Node> adapter;
     /** Variants of parse starts in the order of likelihood (needed to parse snippets). */
     private final List<ParseStart<? extends Node>> parseStarts;
 
@@ -35,7 +36,7 @@ public class ParserJava implements Parser {
      *
      * @param adapter the adapter to convert the AST build by JavaParser to the Patternika format.
      */
-    public ParserJava(final Adapter adapter) {
+    public ParserJava(final Adapter<Node> adapter) {
         this.parser = new JavaParser();
         this.adapter = Objects.requireNonNull(adapter);
         this.parseStarts = Arrays.asList(
@@ -54,7 +55,7 @@ public class ParserJava implements Parser {
      * @throws ParserException if the parser failed to parse code in the specified source.
      */
     @Override
-    public JavaNode parse(final Source source) throws ParserException {
+    public org.cqfn.patternika.ast.Node  parse(final Source source) throws ParserException {
         final SourceIterator iterator = source.getIterator();
         final ParseResult<? extends Node> result = parse(ParseStart.COMPILATION_UNIT, iterator);
         if (!result.isSuccessful()) {
@@ -71,7 +72,7 @@ public class ParserJava implements Parser {
      * @throws ParserException if the parser failed to parse code in the specified source.
      */
     @Override
-    public JavaNode parseSnippet(final Source source) throws ParserException {
+    public org.cqfn.patternika.ast.Node parseSnippet(final Source source) throws ParserException {
         ParseResult<? extends Node> result = null;
         final List<Problem> problems = new ArrayList<>();
         for (final ParseStart<? extends Node> start : parseStarts) {
@@ -112,7 +113,9 @@ public class ParserJava implements Parser {
      * @param result the result of JavaParser.
      * @return the AST.
      */
-    protected JavaNode adapt(final Source source, final ParseResult<? extends Node> result) {
+    protected org.cqfn.patternika.ast.Node adapt(
+            final Source source,
+            final ParseResult<? extends Node> result) {
         final Optional<? extends Node> root = result.getResult();
         if (!root.isPresent()) {
             throw new IllegalArgumentException("No AST in the parser result!");
