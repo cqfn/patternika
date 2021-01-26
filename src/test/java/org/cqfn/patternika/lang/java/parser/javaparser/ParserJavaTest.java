@@ -1,12 +1,16 @@
 package org.cqfn.patternika.lang.java.parser.javaparser;
 
+import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.comments.CommentsCollection;
 import org.cqfn.patternika.parser.ParserException;
 import org.cqfn.patternika.source.Source;
 import org.cqfn.patternika.source.SourceFile;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Collections;
 
 /**
  * Tests for the {@link ParserJava} class.
@@ -88,6 +92,20 @@ public class ParserJavaTest {
         + "}";
 
     /**
+     * Text of a code block.
+     */
+    private static final String BLOCK =
+          "{\n"
+        + "    int x = 0;\n"
+        + "    int y = a;\n"
+        + "    while (x < y) {\n"
+        + "        this.m = x;\n"
+        + "        this.z = process(x, y);\n"
+        + "        x++;\n"
+        + "    }\n"
+        + "}";
+
+    /**
      * Mock object for an AST adapter. Checks that JavaParser has produced an AST.
      */
     private static final Adapter ADAPTER_MOCK = (source, root) -> {
@@ -103,6 +121,23 @@ public class ParserJavaTest {
     @Test
     public void testParseCompilationUnit() throws ParserException {
         final Source source = new SourceFile(COMPILATION_UNIT);
+        final ParserJava parserJava = new ParserJava(ADAPTER_MOCK);
+        Assert.assertNull(parserJava.parse(source));
+    }
+
+    /**
+     * Tests that JavaParser generates the {@link JavaParserException}
+     * exception when provided with an incomplete code of a compilation unit.
+     *
+     * @throws ParserException if the parser fails.
+     */
+    @Test(expected = JavaParserException.class)
+    public void testParseCompilationUnitException() throws ParserException {
+        final String text =
+             "int x = 1;\n"
+            + "int y = 2;\n"
+            + "int z = x + y;";
+        final Source source = new SourceFile(text);
         final ParserJava parserJava = new ParserJava(ADAPTER_MOCK);
         Assert.assertNull(parserJava.parse(source));
     }
@@ -129,6 +164,74 @@ public class ParserJavaTest {
         final Source source = new SourceFile(METHOD);
         final ParserJava parserJava = new ParserJava(ADAPTER_MOCK);
         Assert.assertNull(parserJava.parseSnippet(source));
+    }
+
+    /**
+     * Tests that JavaParser successfully parses a code block.
+     *
+     * @throws ParserException if the parser fails.
+     */
+    @Test
+    public void testParseBlock() throws ParserException {
+        final Source source = new SourceFile(BLOCK);
+        final ParserJava parserJava = new ParserJava(ADAPTER_MOCK);
+        Assert.assertNull(parserJava.parseSnippet(source));
+    }
+
+    /**
+     * Tests that JavaParser successfully parses a single statement.
+     *
+     * @throws ParserException if the parser fails.
+     */
+    @Test
+    public void testParseStatement() throws ParserException {
+        final String text = "int a = x + test(y);";
+        final Source source = new SourceFile(text);
+        final ParserJava parserJava = new ParserJava(ADAPTER_MOCK);
+        Assert.assertNull(parserJava.parseSnippet(source));
+    }
+
+    /**
+     * Tests that JavaParser successfully parses a expression statement.
+     *
+     * @throws ParserException if the parser fails.
+     */
+    @Test
+    public void testParseExpression() throws ParserException {
+        final String text = "a / x + b * 2";
+        final Source source = new SourceFile(text);
+        final ParserJava parserJava = new ParserJava(ADAPTER_MOCK);
+        Assert.assertNull(parserJava.parseSnippet(source));
+    }
+
+    /**
+     * Tests that JavaParser generates the {@link JavaParserException}
+     * exception when it fails to parse the provided snippet.
+     *
+     * @throws ParserException if the parser fails.
+     */
+    @Test(expected = JavaParserException.class)
+    public void testParseSnippetException() throws ParserException {
+        final String text =
+              "int a = 10;\n"
+            + "int b = 5;\n"
+            + "int c = a + b;";
+        final Source source = new SourceFile(text);
+        final ParserJava parserJava = new ParserJava(ADAPTER_MOCK);
+        Assert.assertNull(parserJava.parseSnippet(source));
+    }
+
+    /**
+     * Test that the adapt methods throws an exception if provided a parser result with AST .
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testAdaptException() {
+        final Source source = new SourceFile("int x = 10;");
+        final ParserJava parserJava = new ParserJava(ADAPTER_MOCK);
+        parserJava.adapt(
+                source,
+                new ParseResult<>(null, Collections.emptyList(), new CommentsCollection())
+            );
     }
 
 }

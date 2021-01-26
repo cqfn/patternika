@@ -25,16 +25,11 @@ import java.util.Optional;
  */
 public class ParserJava implements Parser {
     /** Java parser. */
-    private final JavaParser parser = new JavaParser();
+    private final JavaParser parser;
     /** Adapts the AST build by JavaParser to the Patternika format. */
     private final Adapter adapter;
     /** Variants of parse starts in the order of likelihood (needed to parse snippets). */
-    private final List<ParseStart<? extends Node>> parseStarts = Arrays.asList(
-            ParseStart.COMPILATION_UNIT,
-            ParseStart.CLASS_OR_INTERFACE_TYPE,
-            ParseStart.CLASS_BODY,
-            ParseStart.BLOCK
-    );
+    private final List<ParseStart<? extends Node>> parseStarts;
 
     /**
      * Constructor.
@@ -42,7 +37,14 @@ public class ParserJava implements Parser {
      * @param adapter the adapter to convert the AST build by JavaParser to the Patternika format.
      */
     public ParserJava(final Adapter adapter) {
+        this.parser = new JavaParser();
         this.adapter = Objects.requireNonNull(adapter);
+        this.parseStarts = Arrays.asList(
+            ParseStart.COMPILATION_UNIT,
+            ParseStart.CLASS_BODY,
+            ParseStart.BLOCK,
+            ParseStart.EXPRESSION
+        );
     }
 
     /**
@@ -79,7 +81,7 @@ public class ParserJava implements Parser {
             }
             problems.addAll(result.getProblems());
         }
-        assert result != null;
+        Objects.requireNonNull(result);
         if (!result.isSuccessful()) {
             throw new JavaParserException("JavaParser failed to parse the snippet.", problems);
         }
@@ -111,9 +113,11 @@ public class ParserJava implements Parser {
      * @param result the result of JavaParser.
      * @return the AST.
      */
-    private JavaNode adapt(final Source source, final ParseResult<? extends Node> result) {
+    protected JavaNode adapt(final Source source, final ParseResult<? extends Node> result) {
         final Optional<? extends Node> root = result.getResult();
-        assert root.isPresent() : "No AST in the parser result!";
+        if (!root.isPresent()) {
+            throw new IllegalArgumentException("No AST in the parser result!");
+        }
         return adapter.adapt(source, root.get());
     }
 
