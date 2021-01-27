@@ -28,6 +28,24 @@ class SourceFilePosition implements Position {
         this.column = column;
     }
 
+    /**
+     * Returns the row index.
+     *
+     * @return the row index.
+     */
+    public int getRow() {
+        return row;
+    }
+
+    /**
+     * Returns the column index.
+     *
+     * @return the column index.
+     */
+    public int getColumn() {
+        return column;
+    }
+
     @Override
     public int getIndex() {
         return index;
