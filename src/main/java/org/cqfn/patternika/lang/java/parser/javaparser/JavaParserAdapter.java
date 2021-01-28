@@ -5,12 +5,17 @@ import com.github.javaparser.ast.Node;
 import org.cqfn.patternika.parser.Adapter;
 import org.cqfn.patternika.source.Source;
 
+import java.util.function.Function;
+
 /**
  * Implementation of {@link Adapter} that adapts JavaParser AST to the Patternika format.
  *
  * @since 2021/01/26
  */
 public class JavaParserAdapter implements Adapter<Node> {
+    /** Function that extracts data from JavaParser nodes depending on their types. */
+    private final Function<Node, String> data = new NodeDataExtractor();
+
     /**
      * Adapts the AST build by JavaParser to the Patternika format.
      *
@@ -20,7 +25,8 @@ public class JavaParserAdapter implements Adapter<Node> {
      */
     @Override
     public JavaNode adapt(final Source source, final Node root) {
-        final FragmentProvider fragmentProvider = new FragmentProvider(source);
-        return new JavaNodeWrapper(root, fragmentProvider);
+        final FragmentProvider fragments = new FragmentProvider(source);
+        final JavaNodeFactory factory = new JavaNodeFactory(data, fragments);
+        return factory.apply(root);
     }
 }

@@ -1,6 +1,7 @@
 package org.cqfn.patternika.lang.java.parser.javaparser;
 
 import com.github.javaparser.Position;
+
 import org.cqfn.patternika.source.Source;
 import org.cqfn.patternika.source.SourceIterator;
 
