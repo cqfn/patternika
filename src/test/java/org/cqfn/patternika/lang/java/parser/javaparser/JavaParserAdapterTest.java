@@ -18,7 +18,7 @@ public class JavaParserAdapterTest {
      */
     private static final String CODE =
           "class X {\n"
-        + "    static { int z = 0; }\n"
+        + "    static { int z[] = new int[] {1, 2, 3}; }\n"
         + "    public enum E {\n"
         + "        ONE,\n"
         + "        TWO;\n"
