@@ -42,7 +42,7 @@ public class JavaParserAdapterTest {
     public void test() throws ParserException {
         final Source source = new SourceFile(CODE);
         final ParserJava parserJava = new ParserJava(new JavaParserAdapter());
-        Assert.assertNull(parserJava.parse(source));
+        Assert.assertNotNull(parserJava.parse(source));
     }
 
 }
