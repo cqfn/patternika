@@ -6,15 +6,20 @@ import org.cqfn.patternika.source.Fragment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
- * Node wrapper.
+ * JavaNode implementation that wraps {@link Node} objects provided by JavaParser.
  *
  * @since 2021/01/26
  */
 public class JavaNodeWrapper implements JavaNode {
     /** JavaParser node to be wrapped. */
     private final Node node;
+    /** Function that provides a fragment for the specified JavaParser node. */
+    private final Function<Node, Fragment> fragmentProvider;
+    /** The source code the fragment associated with this node. */
+    private Fragment fragment;
     /** Lazy list of node's children (initialized on the first access). */
     private List<JavaNode> children;
 
@@ -22,9 +27,11 @@ public class JavaNodeWrapper implements JavaNode {
      * Constructor.
      *
      * @param node a JavaParser node.
+     * @param fragmentProvider the function that provides code fragments for JavaParser nodes.
      */
-    public JavaNodeWrapper(final Node node) {
+    public JavaNodeWrapper(final Node node, final Function<Node, Fragment> fragmentProvider) {
         this.node = Objects.requireNonNull(node);
+        this.fragmentProvider = Objects.requireNonNull(fragmentProvider);
     }
 
     /**
@@ -54,7 +61,10 @@ public class JavaNodeWrapper implements JavaNode {
      */
     @Override
     public Fragment getFragment() {
-        return null;
+        if (fragment == null) {
+            fragment = fragmentProvider.apply(node);
+        }
+        return fragment;
     }
 
     /**
@@ -86,18 +96,13 @@ public class JavaNodeWrapper implements JavaNode {
     @Override
     public org.cqfn.patternika.ast.Node getChild(final int index) {
         if (children == null) {
-            children = newChildren(node);
+            final List<Node> childNodes = node.getChildNodes();
+            children = new ArrayList<>(childNodes.size());
+            for (final Node child : childNodes) {
+                children.add(new JavaNodeWrapper(child, fragmentProvider));
+            }
         }
         return children.get(index);
-    }
-
-    private static List<JavaNode> newChildren(final Node root) {
-        final List<Node> nodes = root.getChildNodes();
-        final List<JavaNode> children = new ArrayList<>(nodes.size());
-        for (final Node node : nodes) {
-            children.add(new JavaNodeWrapper(node));
-        }
-        return children;
     }
 
     /**
