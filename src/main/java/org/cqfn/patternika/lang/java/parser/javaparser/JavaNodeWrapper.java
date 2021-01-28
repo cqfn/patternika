@@ -41,7 +41,7 @@ public class JavaNodeWrapper implements JavaNode {
      */
     @Override
     public String getType() {
-        return node.getClass().getTypeName();
+        return node.getClass().getSimpleName();
     }
 
     /**
