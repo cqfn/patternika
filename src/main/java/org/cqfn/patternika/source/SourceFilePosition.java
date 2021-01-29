@@ -7,7 +7,7 @@ import java.util.Objects;
  *
  * @since 2019/12/09
  **/
-class SourceFilePosition implements Position {
+public final class SourceFilePosition implements Position {
     /** Character index. */
     private final int index;
     /** Row index. */
