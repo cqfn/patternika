@@ -48,6 +48,8 @@ public class PositionConverter implements Function<Position, org.cqfn.patternika
      *
      * @param pos the original position the function argument
      * @return the converted position that points to source.
+     * @throws IllegalArgumentException if the specified position does not exist
+     *         in the source.
      */
     @Override
     public org.cqfn.patternika.source.Position apply(final Position pos) {
@@ -59,7 +61,7 @@ public class PositionConverter implements Function<Position, org.cqfn.patternika
         while (line != pos.line || column != pos.column) {
             final char val = iterator.getChar();
             if (val == 0 || line > pos.line) {
-                throw new IllegalStateException(
+                throw new IllegalArgumentException(
                         "Failed to find position " + pos + " in the source!");
             }
             if (val == '\n') {

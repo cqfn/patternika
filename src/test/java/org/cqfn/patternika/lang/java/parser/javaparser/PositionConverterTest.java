@@ -114,4 +114,24 @@ public class PositionConverterTest {
         }
         Assert.assertTrue(true);
     }
+
+    /**
+     * Checks that an exception is thrown when the specified position
+     * does not exist in the source (line is greater than the last line in the source).
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testLineOutOfBounds() {
+        final PositionConverter converter = new PositionConverter(SOURCE);
+        testPosition(converter, 31, 1);
+    }
+
+    /**
+     * Checks that an exception is thrown when the specified position
+     * does not exist in the source (column is greater than the length of the target line).
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testColumnOutOfBounds() {
+        final PositionConverter converter = new PositionConverter(SOURCE);
+        testPosition(converter, 1, 31);
+    }
 }
