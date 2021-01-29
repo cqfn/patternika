@@ -56,9 +56,9 @@ public class PositionConverter implements Function<Position, org.cqfn.patternika
             reset();
         }
         // Scroll the current position until it becomes equal to the target position.
-        while (line < pos.line || line == pos.line && column < pos.column) {
+        while (line != pos.line || column != pos.column) {
             final char val = iterator.getChar();
-            if (val == 0) {
+            if (val == 0 || line > pos.line) {
                 throw new IllegalStateException(
                         "Failed to find position " + pos + " in the source!");
             }

@@ -17,7 +17,8 @@ public class JavaParserAdapterTest {
      * Test code to be parsed.
      */
     private static final String CODE =
-          "@SuppressWarnings(\"PMD\") public class X<T extends Object> extends MyClass<T, String> {\n"
+          "@SuppressWarnings(\"PMD\")\n"
+        + "public class X<T extends Object> extends MyClass<T, String> {\n"
         + "    /** JavaDoc comment. */\n"
         + "    static { int z[] = new int[] {1, 2, 3}; T t = null; }\n"
         + "    public enum E implements Iterator<E> {\n"
@@ -44,6 +45,7 @@ public class JavaParserAdapterTest {
      *
      * @throws ParserException if the parser fails.
      */
+    @SuppressWarnings("PMD")
     @Test
     public void test() throws ParserException {
         final Source source = new SourceFile(CODE);
