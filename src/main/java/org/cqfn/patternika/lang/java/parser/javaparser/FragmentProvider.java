@@ -1,7 +1,6 @@
 package org.cqfn.patternika.lang.java.parser.javaparser;
 
 import com.github.javaparser.Range;
-import com.github.javaparser.ast.Node;
 
 import org.cqfn.patternika.source.Fragment;
 import org.cqfn.patternika.source.Position;
@@ -12,11 +11,11 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * Function that provides code fragments for JavaParser nodes.
+ * Function that provides code fragments for JavaParser ranges.
  *
  * @since 2021/01/28
  */
-public class FragmentProvider implements Function<Node, Fragment> {
+public class FragmentProvider implements Function<Optional<Range>, Fragment> {
     /** Source of code fragments. */
     private final Source source;
     /** Function that converts JavaParser positions to positions in the Patternika format. */
@@ -35,12 +34,11 @@ public class FragmentProvider implements Function<Node, Fragment> {
     /**
      * Provides provides a code fragment for specified JavaParser node.
      *
-     * @param node a JavaParser node.
-     * @return a code fragment for the specified JavaParser node.
+     * @param optionalRange the JavaParser range for the fragment.
+     * @return the code fragment for the specified range.
      */
     @Override
-    public Fragment apply(final Node node) {
-        final Optional<Range> optionalRange = node.getRange();
+    public Fragment apply(final Optional<Range> optionalRange) {
         if (!optionalRange.isPresent()) {
             throw new IllegalArgumentException();
         }
