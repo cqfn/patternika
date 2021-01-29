@@ -17,14 +17,15 @@ public class JavaParserAdapterTest {
      * Test code to be parsed.
      */
     private static final String CODE =
-          "class X {\n"
-        + "    static { int z[] = new int[] {1, 2, 3}; }\n"
-        + "    public enum E {\n"
+          "@SuppressWarnings(\"PMD\") public class X<T extends Object> extends MyClass<T, String> {\n"
+        + "    /** JavaDoc comment. */\n"
+        + "    static { int z[] = new int[] {1, 2, 3}; T t = null; }\n"
+        + "    public enum E implements Iterator<E> {\n"
         + "        ONE,\n"
         + "        TWO;\n"
         + "    }\n"
         + "\n"
-        + "    private final int x;\n"
+        + "    private final int x;// This is comment.\n"
         + "    private final Map<String, List<Integer>> y = new ArrayList<>();\n"
         + "\n"
         + "    public X(int x) {\n"
@@ -32,7 +33,7 @@ public class JavaParserAdapterTest {
         + "    }\n"
         + "\n"
         + "    public int getX() { return x; }\n"
-        + "    public int add(@NotNull Integer y) { return this.x + y + 10; }\n"
+        + "    public <U extends Integer> int add(@NotNull U y) { return this.x + y + 10; }\n"
         + "\n"
         + "    @Override\n"
         + "    public String toString() { return \"X{x=\" + x + '}'; }\n"
@@ -50,6 +51,7 @@ public class JavaParserAdapterTest {
         final Node root = parser.parse(source);
         Assert.assertNotNull(root);
         dumpTree(root, 0);
+        System.out.println(root.getFragment());
     }
 
     @SuppressWarnings("PMD")
