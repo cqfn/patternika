@@ -123,6 +123,7 @@ public class JavaNode implements org.cqfn.patternika.ast.Node {
         if (other == this) {
             return true;
         }
-        return this.getType().equals(other.getType()) && this.getData().equals(other.getData());
+        return this.getType().equals(other.getType())
+                && Objects.equals(this.getData(), other.getData());
     }
 }

@@ -36,7 +36,7 @@ public class TestNode implements Node {
             final List<Node> children) {
         this.fragment = fragment;
         this.type = Objects.requireNonNull(type);
-        this.data = Objects.requireNonNull(data);
+        this.data = data;
         this.children = Objects.requireNonNull(children);
     }
 
