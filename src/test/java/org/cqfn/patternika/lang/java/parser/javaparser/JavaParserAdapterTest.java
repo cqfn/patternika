@@ -3,6 +3,7 @@ package org.cqfn.patternika.lang.java.parser.javaparser;
 import org.cqfn.patternika.ast.Node;
 import org.cqfn.patternika.ast.iterator.Children;
 import org.cqfn.patternika.parser.ParserException;
+import org.cqfn.patternika.source.Fragment;
 import org.cqfn.patternika.source.Source;
 import org.cqfn.patternika.source.SourceFile;
 
@@ -52,6 +53,9 @@ public class JavaParserAdapterTest {
         final ParserJava parser = new ParserJava(new JavaParserAdapter());
         final Node root = parser.parse(source);
         Assert.assertNotNull(root);
+        final Fragment fragment = root.getFragment();
+        Assert.assertSame(fragment, root.getFragment());
+        Assert.assertEquals(CODE, fragment.toString());
         dumpTree(root, 0);
         System.out.println(root.getFragment());
     }

@@ -64,7 +64,7 @@ public class FragmentProviderTest {
         final int beginLine = 1;
         final int beginColumn = 1;
         final int endLine = 11;
-        final int endColumn = 2;
+        final int endColumn = 1;
         final SourceFile source = new SourceFile(TEXT);
         final FragmentProvider provider = new FragmentProvider(source);
         final Fragment fragment = getFragment(provider, beginLine, beginColumn, endLine, endColumn);
@@ -80,7 +80,7 @@ public class FragmentProviderTest {
         final int beginLine = 5;
         final int beginColumn = 9;
         final int endLine = 5;
-        final int endColumn = beginColumn + text.length();
+        final int endColumn = beginColumn + text.length() - 1;
         final SourceFile source = new SourceFile(TEXT);
         final FragmentProvider provider = new FragmentProvider(source);
         final Fragment fragment = getFragment(provider, beginLine, beginColumn, endLine, endColumn);

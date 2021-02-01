@@ -44,7 +44,8 @@ public class FragmentProvider implements Function<Optional<Range>, Fragment> {
         }
         final Range range = optionalRange.get();
         final Position start = converter.apply(range.begin);
-        final Position end = converter.apply(range.end);
+        // The end column is included in the range.
+        final Position end = converter.apply(range.end.withColumn(range.end.column + 1));
         return new Fragment(source, start, end);
     }
 }
