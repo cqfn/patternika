@@ -125,16 +125,6 @@ public class TestNode implements Node {
     }
 
     /**
-     * Returns the maximum possible number of children for this type of node.
-     *
-     * @return maximum possible child node count or {@code -1} if there is no limit on node count.
-     */
-    @Override
-    public int getMaxChildCount() {
-        return getChildCount();
-    }
-
-    /**
      * Gets a child by its index.
      *
      * @param index child index.

@@ -39,13 +39,6 @@ public interface Node {
     int getChildCount();
 
     /**
-     * Returns the maximum possible number of children for this type of node.
-     *
-     * @return maximum possible child node count or {@code -1} if there is no limit on node count.
-     */
-    int getMaxChildCount();
-
-    /**
      * Checks whether the node has limits on the number of its children.
      * When a node has no limits, it can have from 0 to N children, where N is any positive number.
      *
@@ -55,7 +48,7 @@ public interface Node {
      * @return {@code true} if there are no constraints on child count or {@code false} otherwise.
      */
     default boolean isChildCountLimitless() {
-        return getMaxChildCount() < 0;
+        return false;
     }
 
     /**

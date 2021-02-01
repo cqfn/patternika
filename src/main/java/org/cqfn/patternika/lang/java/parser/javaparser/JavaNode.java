@@ -87,16 +87,6 @@ public class JavaNode implements org.cqfn.patternika.ast.Node {
     }
 
     /**
-     * Returns the maximum possible number of children for this type of node.
-     *
-     * @return maximum possible child node count or {@code -1} if there is no limit on node count.
-     */
-    @Override
-    public int getMaxChildCount() {
-        return 0;
-    }
-
-    /**
      * Gets a child by its index.
      *
      * @param index child index.
