@@ -10,18 +10,11 @@ public class ParserException extends Exception {
 
     /**
      * Overridden constructor of a base class.
-     */
-    public ParserException() {
-        super();
-    }
-
-    /**
-     * Overridden constructor of a base class.
      *
      * @param message the exception message.
      */
     public ParserException(final String message) {
-        super(message);
+        this(message, null);
     }
 
     /**
@@ -34,12 +27,4 @@ public class ParserException extends Exception {
         super(message, cause);
     }
 
-    /**
-     * Overridden constructor of a base class.
-     *
-     * @param cause the cause of the problem.
-     */
-    public ParserException(final Throwable cause) {
-        super(cause);
-    }
 }
