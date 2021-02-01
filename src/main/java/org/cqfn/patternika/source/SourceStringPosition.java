@@ -5,7 +5,7 @@ package org.cqfn.patternika.source;
  *
  * @since 2019/10/28
  */
-class SourceStringPosition implements Position {
+public class SourceStringPosition implements Position {
     /** Index of the position (character index). */
     private final int index;
 
@@ -18,22 +18,45 @@ class SourceStringPosition implements Position {
         this.index = index;
     }
 
+    /**
+     * Index of the position (character index).
+     *
+     * @return index.
+     */
     @Override
     public int getIndex() {
         return index;
     }
 
+    /**
+     * Compares this position with the other position.
+     *
+     * @param other other position to be compared.
+     * @return a negative integer, zero, or a positive integer as this position
+     *         is less than, equal to, or greater than the other position.
+     */
     @Override
     public int compareTo(final Position other) {
         checkType(other);
         return Integer.compare(this.index, other.getIndex());
     }
 
+    /**
+     * Returns textual representation of this position.
+     *
+     * @return text.
+     */
     @Override
     public String toString() {
         return String.valueOf(index);
     }
 
+    /**
+     * Checks this and the specified position for equality.
+     *
+     * @param obj other position.
+     * @return {@code true} or {@code false}.
+     */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -46,6 +69,11 @@ class SourceStringPosition implements Position {
         return this.index == other.index;
     }
 
+    /**
+     * Returns the hash code.
+     *
+     * @return the hash code.
+     */
     @Override
     public int hashCode() {
         return index;
