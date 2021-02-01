@@ -16,8 +16,6 @@ import java.util.Optional;
  */
 public class JavaParserException extends ParserException {
     private static final long serialVersionUID = -7054849309442589653L;
-    /** Exception message. */
-    private final String message;
     /** The list of problems JavaParser encountered during parsing. */
     private final List<Problem> problems;
 
@@ -28,8 +26,7 @@ public class JavaParserException extends ParserException {
      * @param problems the list of problems JavaParser encountered during parsing.
      */
     public JavaParserException(final String message, final List<Problem> problems) {
-        super();
-        this.message = Objects.requireNonNull(message);
+        super(message);
         this.problems = Objects.requireNonNull(problems);
     }
 
@@ -51,7 +48,7 @@ public class JavaParserException extends ParserException {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(message);
+        builder.append(getMessage());
         for (final Problem problem : problems) {
             builder.append(System.lineSeparator());
             final Optional<TokenRange> location = problem.getLocation();
