@@ -1,13 +1,10 @@
 package org.cqfn.patternika.lang.java.parser.javaparser;
 
 import com.github.javaparser.Problem;
-import com.github.javaparser.Range;
-import com.github.javaparser.TokenRange;
 import org.cqfn.patternika.parser.ParserException;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Exception describing errors that have occurred in JavaParser.
@@ -51,11 +48,6 @@ public class JavaParserException extends ParserException {
         builder.append(getMessage());
         for (final Problem problem : problems) {
             builder.append(System.lineSeparator());
-            final Optional<TokenRange> location = problem.getLocation();
-            if (location.isPresent()) {
-                final Optional<Range> range = location.get().toRange();
-                range.ifPresent(value -> builder.append(String.format("[%s]", value)));
-            }
             builder.append(problem.getMessage());
         }
         return builder.toString();
