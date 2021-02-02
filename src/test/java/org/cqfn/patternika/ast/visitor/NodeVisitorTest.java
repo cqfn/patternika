@@ -111,6 +111,24 @@ public class NodeVisitorTest {
     }
 
     /**
+     * Test for reaching full coverage for the {@link NodeVisitorTypedLeaf} class.
+     * Tests the method {@link NodeVisitorTypedLeaf#leave} method that must not be called normally.
+     */
+    @Test
+    public void testVisitorLeaf() {
+        final TestNode testNode = new TestNode(0);
+        final NodeVisitor visitor = new NodeVisitorTypedLeaf<Node>() {
+            @Override
+            public void visitNode(final Node node) {
+                Assert.assertSame(testNode, node);
+            }
+        };
+        final boolean result = visitor.enter(testNode);
+        visitor.leave(new TestNode(1));
+        Assert.assertFalse(result);
+    }
+
+    /**
      * Custom test node.
      */
     private static class NodeA extends TestNode {
