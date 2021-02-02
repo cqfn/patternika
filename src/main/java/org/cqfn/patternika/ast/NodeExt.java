@@ -173,14 +173,30 @@ public class NodeExt implements Node {
     }
 
     /**
-     * Returns the maximum possible number of children for this type of node.
+     * Checks whether the node has limits on the number of its children.
+     * When a node has no limits, it can have from 0 to N children, where N is any positive number.
      *
-     * @return maximum possible child node count or {@code -1} if there is no limit on node count,
+     * <p>This information is needed when we want to get rid of some children.
+     * When there are no limits, we can safely exclude any number of children.
+     *
+     * @return {@code true} if there are no constraints on child count or {@code false} otherwise,
      *         taken from the wrapped {@link Node} object.
      */
     @Override
-    public int getMaxChildCount() {
-        return node.getMaxChildCount();
+    public boolean isChildCountLimitless() {
+        return node.isChildCountLimitless();
+    }
+
+    /**
+     * Checks whether the order of node children is strict.
+     * This means that children of specific types must be at specific positions.
+     *
+     * @return {@code true} if the order is strict or {@code false} otherwise,
+     *         taken from the wrapped {@link Node} object.
+     */
+    @Override
+    public boolean isChildOrderStrict() {
+        return node.isChildOrderStrict();
     }
 
     /**

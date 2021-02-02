@@ -7,7 +7,7 @@ import java.util.Objects;
  *
  * @since 2019/12/09
  **/
-class SourceFilePosition implements Position {
+public class SourceFilePosition implements Position {
     /** Character index. */
     private final int index;
     /** Row index. */
@@ -28,22 +28,63 @@ class SourceFilePosition implements Position {
         this.column = column;
     }
 
+    /**
+     * Returns the row index.
+     *
+     * @return the row index.
+     */
+    public int getRow() {
+        return row;
+    }
+
+    /**
+     * Returns the column index.
+     *
+     * @return the column index.
+     */
+    public int getColumn() {
+        return column;
+    }
+
+    /**
+     * Index of the position (character index).
+     *
+     * @return index.
+     */
     @Override
     public int getIndex() {
         return index;
     }
 
+    /**
+     * Compares this position with the other position.
+     *
+     * @param other other position to be compared.
+     * @return a negative integer, zero, or a positive integer as this position
+     *         is less than, equal to, or greater than the other position.
+     */
     @Override
     public int compareTo(final Position other) {
         checkType(other);
         return Integer.compare(this.index, other.getIndex());
     }
 
+    /**
+     * Returns textual representation of this position.
+     *
+     * @return text.
+     */
     @Override
     public String toString() {
         return String.valueOf(row) + '.' + column;
     }
 
+    /**
+     * Checks this and the specified position for equality.
+     *
+     * @param obj other position.
+     * @return {@code true} or {@code false}.
+     */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -58,6 +99,11 @@ class SourceFilePosition implements Position {
             && this.column == other.column;
     }
 
+    /**
+     * Returns the hash code.
+     *
+     * @return the hash code.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(index, row, column);

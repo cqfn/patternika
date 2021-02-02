@@ -82,8 +82,8 @@ public class NodeExtTest {
         Assert.assertEquals(node.getType(), nodeExt.getType());
         Assert.assertEquals(node.getData(), nodeExt.getData());
         Assert.assertEquals(node.getChildCount(), nodeExt.getChildCount());
-        Assert.assertEquals(node.getMaxChildCount(), nodeExt.getMaxChildCount());
         Assert.assertEquals(node.isChildCountLimitless(), nodeExt.isChildCountLimitless());
+        Assert.assertEquals(node.isChildOrderStrict(), nodeExt.isChildOrderStrict());
         Assert.assertSame(node.getFragment(), nodeExt.getFragment());
         Assert.assertTrue(nodeExt.matches(nodeExt));
         Assert.assertTrue(nodeExt.matches(node));

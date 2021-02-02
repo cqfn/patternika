@@ -17,8 +17,7 @@ public class NodeTest {
      */
     @Test
     public void testIsChildCountLimitless1() {
-        final Node node = createNode(-1);
-        Assert.assertEquals(-1, node.getMaxChildCount());
+        final Node node = createNode(true);
         Assert.assertTrue(node.isChildCountLimitless());
         Assert.assertFalse(node.isChildOrderStrict());
     }
@@ -29,8 +28,7 @@ public class NodeTest {
      */
     @Test
     public void testIsChildCountLimitless2() {
-        final Node node = createNode(0);
-        Assert.assertEquals(0, node.getMaxChildCount());
+        final Node node = createNode(false);
         Assert.assertFalse(node.isChildCountLimitless());
         Assert.assertTrue(node.isChildOrderStrict());
     }
@@ -38,10 +36,10 @@ public class NodeTest {
     /**
      * Creates a test node.
      *
-     * @param maxChildCount maximum child count.
+     * @param limitlessChilds whether the node has limits on the number of its children.
      * @return new node.
      */
-    private Node createNode(final int maxChildCount) {
+    private Node createNode(final boolean limitlessChilds) {
         return new Node() {
             @Override
             public String getType() {
@@ -64,11 +62,6 @@ public class NodeTest {
             }
 
             @Override
-            public int getMaxChildCount() {
-                return maxChildCount;
-            }
-
-            @Override
             public Node getChild(final int index) {
                 return null;
             }
@@ -76,6 +69,11 @@ public class NodeTest {
             @Override
             public boolean matches(final Node other) {
                 return false;
+            }
+
+            @Override
+            public boolean isChildCountLimitless() {
+                return limitlessChilds;
             }
         };
     }
