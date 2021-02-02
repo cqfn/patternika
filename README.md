@@ -1,7 +1,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![GitHub](https://github.com/patternika/patternika/workflows/Java%20CI%20with%20Gradle/badge.svg)](
   https://github.com/patternika/patternika/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
-[![codecov](https://codecov.io/gh/silverCase/patternika/branch/main/graph/badge.svg?token=NL1B02OXYX)](https://codecov.io/gh/silverCase/patternika)
+[![codecov](https://codecov.io/gh/patternika/patternika/branch/main/graph/badge.svg?token=0V10JBZRRO)](https://codecov.io/gh/patternika/patternika)
 ---
 
 # Patternika
