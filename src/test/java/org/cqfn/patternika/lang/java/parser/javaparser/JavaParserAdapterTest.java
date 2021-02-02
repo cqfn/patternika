@@ -30,7 +30,7 @@ public class JavaParserAdapterTest {
         + "    private final int x;// This is comment.\n"
         + "    private final Map<String, List<Integer>> y = new ArrayList<>();\n"
         + "\n"
-        + "    public X(int x) {\n"
+        + "    public X(int x, long y) {\n"
         + "        this.x = x;\n"
         + "    }\n"
         + "\n"
