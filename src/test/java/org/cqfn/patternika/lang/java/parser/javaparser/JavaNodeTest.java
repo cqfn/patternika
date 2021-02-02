@@ -36,6 +36,8 @@ public class JavaNodeTest {
         final ParserJava parser = new ParserJava(new JavaParserAdapter());
         final Node root = parser.parseSnippet(source);
         Assert.assertNotNull(root);
+        Assert.assertFalse(root.isChildCountLimitless());
+        Assert.assertTrue(root.isChildOrderStrict());
         Assert.assertTrue(root.matches(root));
         Assert.assertFalse(root.matches(null));
         Assert.assertTrue(root.matches(newTestNode("MethodDeclaration", null)));
