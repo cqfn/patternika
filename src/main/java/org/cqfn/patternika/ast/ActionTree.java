@@ -1,7 +1,10 @@
 package org.cqfn.patternika.ast;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -16,6 +19,10 @@ public class ActionTree {
     private final Node root;
     /** List of actions related to the AST. */
     private final List<Action> actions;
+    /** Actions grouped by the parent node. */
+    private final Map<Node, List<Action>> actionsByParent;
+    /** Actions grouped by the reference node. */
+    private final Map<Node, List<Action>> actionsByRef;
 
     /**
      * Constructor.
@@ -27,7 +34,18 @@ public class ActionTree {
     public ActionTree(final String language, final Node root, final List<Action> actions) {
         this.language = Objects.requireNonNull(language);
         this.root = Objects.requireNonNull(root);
-        this.actions = Collections.unmodifiableList(Objects.requireNonNull(actions));
+        this.actions = Collections.unmodifiableList(actions);
+        this.actionsByParent = new IdentityHashMap<>();
+        this.actionsByRef = new IdentityHashMap<>();
+        for (final Action action : actions) {
+            addToMap(actionsByParent, action.getParent(), action);
+            addToMap(actionsByRef, action.getRef(), action);
+        }
+    }
+
+    private static <K, V> void addToMap(final Map<K, List<V>> map, final K key, final V value) {
+        final List<V> values = map.computeIfAbsent(key, x -> new ArrayList<>());
+        values.add(value);
     }
 
     /**
@@ -55,5 +73,25 @@ public class ActionTree {
      */
     public List<Action> getActions() {
         return actions;
+    }
+
+    /**
+     * Returns an unmodifiable list of actions for the given parent.
+     *
+     * @param parent the parent node for actions.
+     * @return the unmodifiable list of actions for the given parent.
+     */
+    public List<Action> getActionsByParent(final Node parent) {
+        return Collections.unmodifiableList(actionsByParent.get(parent));
+    }
+
+    /**
+     * Returns an unmodifiable list of actions for the given reference node.
+     *
+     * @param ref the reference node for actions.
+     * @return the unmodifiable list of actions for the given reference node.
+     */
+    public List<Action> getActionsByRef(final Node ref) {
+        return Collections.unmodifiableList(actionsByRef.get(ref));
     }
 }

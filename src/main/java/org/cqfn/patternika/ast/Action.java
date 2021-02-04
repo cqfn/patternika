@@ -12,29 +12,29 @@ public class Action {
     /** Action type. */
     private final ActionType type;
     /** Parent node for the reference node (children of this node are updated on action). */
-    private final Node parentNode;
+    private final Node parent;
     /** Reference node for the action. */
-    private final Node refNode;
+    private final Node ref;
     /** Accept node tree for the action. */
-    private final Node acceptNode;
+    private final Node accept;
 
     /**
      * Constructor.
      *
      * @param type the action type.
-     * @param parentNode the parent node for the reference node.
-     * @param refNode the reference node for the action.
-     * @param acceptNode the accept node tree for the action.
+     * @param parent the parent node for the reference node.
+     * @param ref the reference node for the action.
+     * @param accept the accept node tree for the action.
      */
     public Action(
             final ActionType type,
-            final Node parentNode,
-            final Node refNode,
-            final Node acceptNode) {
+            final Node parent,
+            final Node ref,
+            final Node accept) {
         this.type = Objects.requireNonNull(type);
-        this.parentNode = Objects.requireNonNull(parentNode);
-        this.refNode = refNode;
-        this.acceptNode = acceptNode;
+        this.parent = Objects.requireNonNull(parent);
+        this.ref = ref;
+        this.accept = accept;
     }
 
     /**
@@ -51,8 +51,8 @@ public class Action {
      *
      * @return the parent node for the reference node.
      */
-    public Node getParentNode() {
-        return parentNode;
+    public Node getParent() {
+        return parent;
     }
 
     /**
@@ -60,8 +60,8 @@ public class Action {
      *
      * @return Reference node.
      */
-    public Node getRefNode() {
-        return refNode;
+    public Node getRef() {
+        return ref;
     }
 
     /**
@@ -69,8 +69,8 @@ public class Action {
      *
      * @return Accept node tree.
      */
-    public Node getAcceptNode() {
-        return acceptNode;
+    public Node getAccept() {
+        return accept;
     }
 
 }
