@@ -10,10 +10,10 @@ import java.util.Collections;
  */
 public class ActionTreeTest {
     /**
-     * Basic test for the {@link ActionTree} class.
+     * Test for an action tree without actions.
      */
     @Test
-    public void test() {
+    public void testEmpty() {
         final Node root = new TestNode(0);
         final ActionTree tree = new ActionTree("java", root, Collections.emptyList());
         Assert.assertSame("java", tree.getLanguage());
