@@ -1,5 +1,7 @@
 package org.cqfn.patternika.ast;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -12,16 +14,20 @@ public class ActionTree {
     private final String language;
     /** Root of the AST tree. */
     private final Node root;
+    /** List of actions related to the AST. */
+    private final List<Action> actions;
 
     /**
      * Constructor.
      *
-     * @param language language of the code represented by the tree, not {@code null}.
-     * @param root root of the AST tree, not {@code null}.
+     * @param language the language of the code represented by the tree, not {@code null}.
+     * @param root the root of the AST tree, not {@code null}.
+     * @param actions the list of actions related to the AST.
      */
-    public ActionTree(final String language, final Node root) {
+    public ActionTree(final String language, final Node root, final List<Action> actions) {
         this.language = Objects.requireNonNull(language);
         this.root = Objects.requireNonNull(root);
+        this.actions = Collections.unmodifiableList(Objects.requireNonNull(actions));
     }
 
     /**
@@ -42,4 +48,12 @@ public class ActionTree {
         return root;
     }
 
+    /**
+     * Returns an unmodifiable list of actions.
+     *
+     * @return the unmodifiable list of actions.
+     */
+    public List<Action> getActions() {
+        return actions;
+    }
 }

@@ -1,10 +1,15 @@
 package org.cqfn.patternika.lang.java.parser.javaparser;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
+import com.github.javaparser.ast.expr.ArrayInitializerExpr;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.LiteralStringValueExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithIdentifier;
+import com.github.javaparser.ast.nodeTypes.NodeWithStatements;
 import com.github.javaparser.ast.type.PrimitiveType;
 
 import org.cqfn.patternika.parser.Adapter;
@@ -43,9 +48,10 @@ public class JavaParserAdapter implements Adapter<Node> {
      */
     private JavaNode newJavaNode(final Node root, final FragmentProvider fragmentProvider)  {
         final String data = getData(root);
+        final boolean limitlessChildren = isChildCountLimitless(root);
         final Function<Node, JavaNode> factory = node -> newJavaNode(node, fragmentProvider);
         final Supplier<Fragment> fragment = new FragmentSupplier(root, fragmentProvider);
-        return new JavaNode(root, factory, data, fragment);
+        return new JavaNode(root, factory, data, limitlessChildren, fragment);
     }
 
     /**
@@ -71,6 +77,24 @@ public class JavaParserAdapter implements Adapter<Node> {
             return ((BinaryExpr) node).getOperator().asString();
         }
         return null;
+    }
+
+    /**
+     * Checks whether the node has limits on the number of its children.
+     * When a node has no limits, it can have from 0 to N children, where N is any positive number.
+     *
+     * <p>This information is needed when we want to get rid of some children.
+     * When there are no limits, we can safely exclude any number of children.
+     *
+     * @param node the JavaParser node.
+     * @return {@code true} if there are no constraints on child count or {@code false} otherwise.
+     */
+    private boolean isChildCountLimitless(final Node node) {
+        return node instanceof CompilationUnit
+                || node instanceof ClassOrInterfaceDeclaration
+                || node instanceof EnumDeclaration
+                || node instanceof NodeWithStatements
+                || node instanceof ArrayInitializerExpr;
     }
 
 }
