@@ -11,7 +11,7 @@ import java.util.function.BiPredicate;
 
 /**
  * Finds all possible matches between nodes in two node trees.
- * Contains just one public method {@link NodeMatcher#findAll()} that does all the job.
+ * Contains just one public method {@link MatchFinder#findAll()} that does all the job.
  * <p>
  * To match two nodes tress, the solution uses method {@link Node#matches(Node)},
  * which is called for all nodes in the trees (from roots to leaves).
@@ -20,7 +20,7 @@ import java.util.function.BiPredicate;
  *
  * @since 2020/11/11
  */
-public class NodeMatcher<T extends Node> {
+public class MatchFinder<T extends Node> {
     /** Root of the first node tree to compare. */
     private final T firstRoot;
     /** Root of the second node tree to compare. */
@@ -34,7 +34,7 @@ public class NodeMatcher<T extends Node> {
      * @param firstRoot the root of the first node tree to compare.
      * @param secondRoot the root of the second node tree to compare.
      */
-    public NodeMatcher(final T firstRoot, final T secondRoot) {
+    public MatchFinder(final T firstRoot, final T secondRoot) {
         this.firstRoot = Objects.requireNonNull(firstRoot);
         this.secondRoot = Objects.requireNonNull(secondRoot);
         this.deepMatches = new DeepMatchesAnyOrder();
