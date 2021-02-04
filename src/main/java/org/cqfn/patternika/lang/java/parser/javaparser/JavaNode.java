@@ -22,6 +22,8 @@ public class JavaNode implements org.cqfn.patternika.ast.Node {
     private final Function<Node, JavaNode> nodeFactory;
     /** Data associated with this node. */
     private final String data;
+    /** Flag that sates that the node has no limits on the number of its children. */
+    private final boolean limitlessChildren;
     /** Supplier of the source code fragment associated with this node. */
     private final Supplier<Fragment> fragment;
     /** Lazy list of node's children (initialized on the first access). */
@@ -33,16 +35,20 @@ public class JavaNode implements org.cqfn.patternika.ast.Node {
      * @param node a JavaParser node.
      * @param nodeFactory the factory that creates nodes for children of the JavaParser node.
      * @param data the data associated with the node.
+     * @param limitlessChildren the flag that states that the node
+     *        has no limits on the number of its children.
      * @param fragment the supplier of the source code fragment associated with this node.
      */
     public JavaNode(
             final Node node,
             final Function<Node, JavaNode> nodeFactory,
             final String data,
+            final boolean limitlessChildren,
             final Supplier<Fragment> fragment) {
         this.node = Objects.requireNonNull(node);
         this.nodeFactory = Objects.requireNonNull(nodeFactory);
         this.data = data;
+        this.limitlessChildren = limitlessChildren;
         this.fragment = Objects.requireNonNull(fragment);
     }
 
@@ -102,6 +108,20 @@ public class JavaNode implements org.cqfn.patternika.ast.Node {
             }
         }
         return children.get(index);
+    }
+
+    /**
+     * Checks whether the node has limits on the number of its children.
+     * When a node has no limits, it can have from 0 to N children, where N is any positive number.
+     *
+     * <p>This information is needed when we want to get rid of some children.
+     * When there are no limits, we can safely exclude any number of children.
+     *
+     * @return {@code true} if there are no constraints on child count or {@code false} otherwise.
+     */
+    @Override
+    public boolean isChildCountLimitless() {
+        return limitlessChildren;
     }
 
     /**
