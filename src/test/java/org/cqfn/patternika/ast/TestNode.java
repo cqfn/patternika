@@ -149,7 +149,8 @@ public class TestNode implements Node {
         if (other == this) {
             return true;
         }
-        return getType().equals(other.getType()) && getData().equals(other.getData());
+        return getType().equals(other.getType())
+                && Objects.equals(this.getData(), other.getData());
     }
 
     /**

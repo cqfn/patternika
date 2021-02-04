@@ -1,7 +1,7 @@
 package org.cqfn.patternika.lang.java.parser.javaparser;
 
 import org.cqfn.patternika.ast.Node;
-import org.cqfn.patternika.ast.iterator.Children;
+import org.cqfn.patternika.ast.TestNodeUtils;
 import org.cqfn.patternika.parser.ParserException;
 import org.cqfn.patternika.source.Fragment;
 import org.cqfn.patternika.source.Source;
@@ -56,24 +56,7 @@ public class JavaParserAdapterTest {
         final Fragment fragment = root.getFragment();
         Assert.assertSame(fragment, root.getFragment());
         Assert.assertEquals(CODE, fragment.toString());
-        dumpTree(root, 0);
-        System.out.println(root.getFragment());
-    }
-
-    @SuppressWarnings("PMD")
-    private void dumpTree(final Node root, final int level) {
-        for (int i = 0; i < level; ++i) {
-            System.out.print("    ");
-        }
-        System.out.print(root.getType());
-        final String data = root.getData();
-        if (data != null) {
-            System.out.print(" : " + root.getData());
-        }
-        System.out.println();
-        for (final Node child : new Children<>(root)) {
-            dumpTree(child, level + 1);
-        }
+        TestNodeUtils.dumpTree(root, 0);
     }
 
 }

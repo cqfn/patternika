@@ -1,5 +1,6 @@
 package org.cqfn.patternika.lang.java.parser.javaparser;
 
+import org.cqfn.patternika.ast.DeepMatches;
 import org.cqfn.patternika.ast.Node;
 import org.cqfn.patternika.ast.TestNode;
 import org.cqfn.patternika.parser.ParserException;
@@ -9,7 +10,7 @@ import org.cqfn.patternika.source.SourceFile;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Collections;
+import java.util.Arrays;
 
 /**
  * Tests for the {@link JavaNode} class.
@@ -43,6 +44,44 @@ public class JavaNodeTest {
         Assert.assertTrue(root.matches(newTestNode("MethodDeclaration", null)));
         Assert.assertFalse(root.matches(newTestNode("SimpleName", null)));
         Assert.assertFalse(root.matches(newTestNode("MethodDeclaration", "invalid")));
+        final Node expectedTree =
+                newTestNode("MethodDeclaration", null,
+                        newTestNode("SimpleName", "sub"),
+                        newTestNode("Parameter", null,
+                                newTestNode("PrimitiveType", "int"),
+                                newTestNode("SimpleName", "a")),
+                        newTestNode("Parameter", null,
+                                newTestNode("PrimitiveType", "int"),
+                                newTestNode("SimpleName", "b")),
+                        newTestNode("PrimitiveType", "int"),
+        newTestNode("BlockStmt", null,
+                newTestNode("IfStmt", null,
+                        newTestNode("BinaryExpr", ">",
+                                newTestNode("NameExpr", null,
+                                        newTestNode("SimpleName", "a")),
+                                newTestNode("NameExpr", null,
+                                        newTestNode("SimpleName", "b"))
+                        ),
+                newTestNode("BlockStmt", null,
+                        newTestNode("ReturnStmt", null,
+                                newTestNode("BinaryExpr", "-",
+                                        newTestNode("NameExpr", null,
+                                                newTestNode("SimpleName", "a")),
+                                        newTestNode("NameExpr", null,
+                                                newTestNode("SimpleName", "b"))
+                                )
+                )),
+                newTestNode("BlockStmt", null,
+                        newTestNode("ReturnStmt", null,
+                            newTestNode("BinaryExpr", "-",
+                                    newTestNode("NameExpr", null,
+                                            newTestNode("SimpleName", "b")),
+                                    newTestNode("NameExpr", null,
+                                            newTestNode("SimpleName", "a"))
+                            )
+                ))
+        )));
+        Assert.assertTrue(new DeepMatches().test(expectedTree, root));
     }
 
     /**
@@ -50,9 +89,10 @@ public class JavaNodeTest {
      *
      * @param type the node type.
      * @param data the node data.
+     * @param children the children of the node.
      * @return a new test node.
      */
-    private Node newTestNode(final String type, final String data) {
-        return new TestNode(null, type, data, Collections.emptyList());
+    private Node newTestNode(final String type, final String data, final Node... children) {
+        return new TestNode(null, type, data, Arrays.asList(children));
     }
 }
