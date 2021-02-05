@@ -43,11 +43,6 @@ public class ActionTree {
         }
     }
 
-    private static <K, V> void addToMap(final Map<K, List<V>> map, final K key, final V value) {
-        final List<V> values = map.computeIfAbsent(key, x -> new ArrayList<>());
-        values.add(value);
-    }
-
     /**
      * Returns the language of the code represented by the node tree.
      *
@@ -79,19 +74,32 @@ public class ActionTree {
      * Returns an unmodifiable list of actions for the given parent.
      *
      * @param parent the parent node for actions.
-     * @return the unmodifiable list of actions for the given parent.
+     * @return the unmodifiable list of actions for the given parent or empty list.
      */
     public List<Action> getActionsByParent(final Node parent) {
-        return Collections.unmodifiableList(actionsByParent.get(parent));
+        return getFromMap(actionsByParent, parent);
     }
 
     /**
      * Returns an unmodifiable list of actions for the given reference node.
      *
      * @param ref the reference node for actions.
-     * @return the unmodifiable list of actions for the given reference node.
+     * @return the unmodifiable list of actions for the given reference node or empty list.
      */
     public List<Action> getActionsByRef(final Node ref) {
-        return Collections.unmodifiableList(actionsByRef.get(ref));
+        return getFromMap(actionsByRef, ref);
+    }
+
+    private static <K, V> void addToMap(final Map<K, List<V>> map, final K key, final V value) {
+        if (key != null) {
+            final List<V> values = map.computeIfAbsent(key, x -> new ArrayList<>());
+            values.add(value);
+        }
+    }
+
+    private static <K, V> List<V> getFromMap(final Map<K, List<V>> map, final K key) {
+        final List<V> values = map.get(key);
+        return values == null ? Collections.emptyList()
+                              : Collections.unmodifiableList(values);
     }
 }

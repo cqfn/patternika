@@ -32,7 +32,7 @@ public class Action {
             final Node ref,
             final Node accept) {
         this.type = Objects.requireNonNull(type);
-        this.parent = Objects.requireNonNull(parent);
+        this.parent = parent;
         this.ref = ref;
         this.accept = accept;
     }
