@@ -11,14 +11,14 @@ import org.cqfn.patternika.ast.Node;
  *
  * @since 2020/5/12
  */
-public abstract class NodeVisitorTyped<T extends Node> implements NodeVisitor {
+public abstract class VisitorTyped<T extends Node> implements Visitor {
 
     /**
      * Converts node to class T and start visiting it.
      * Node must be convertible to type T or an exception will occur.
      *
      * @throws ClassCastException if node cannot be case to type T.
-     * @see NodeVisitor#enter(Node)
+     * @see Visitor#enter(Node)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -31,7 +31,7 @@ public abstract class NodeVisitorTyped<T extends Node> implements NodeVisitor {
      * Node must be convertible to type T or an exception will occur.
      *
      * @throws ClassCastException if node cannot be case to type T.
-     * @see NodeVisitor#leave(Node)
+     * @see Visitor#leave(Node)
      */
     @Override
     @SuppressWarnings("unchecked")

@@ -12,10 +12,10 @@ import java.util.Objects;
  *
  * @since 2020/5/12
  */
-public class NodeVisitorComposite implements NodeVisitor {
+public class VisitorComposite implements Visitor {
 
     /** Visitors for specific node types. Key: node class, value: visitor for this class. */
-    private final Map<Class<? extends Node>, NodeVisitor> visitors = new IdentityHashMap<>();
+    private final Map<Class<? extends Node>, Visitor> visitors = new IdentityHashMap<>();
 
     /**
      * Finds a proper visitor, applies it, and returns its result.
@@ -23,11 +23,11 @@ public class NodeVisitorComposite implements NodeVisitor {
      * <p>If no visitor is found, {@code true} is returned. This means
      * that if not visitor is defined for a node, its children are always traversed.
      *
-     * @see NodeVisitor#enter(Node)
+     * @see Visitor#enter(Node)
      */
     @Override
     public boolean enter(final Node node) {
-        final NodeVisitor visitor = findNodeVisitor(node.getClass());
+        final Visitor visitor = findNodeVisitor(node.getClass());
         if (visitor != null) {
             return visitor.enter(node);
         }
@@ -37,11 +37,11 @@ public class NodeVisitorComposite implements NodeVisitor {
     /**
      * Finds a proper visitor and applies it.
      *
-     * See also {@link NodeVisitor#leave(Node)}.
+     * See also {@link Visitor#leave(Node)}.
      */
     @Override
     public void leave(final Node node) {
-        final NodeVisitor visitor = findNodeVisitor(node.getClass());
+        final Visitor visitor = findNodeVisitor(node.getClass());
         if (visitor != null) {
             visitor.leave(node);
         }
@@ -54,9 +54,9 @@ public class NodeVisitorComposite implements NodeVisitor {
      * @param visitor visitor for this node class, not {@code null}.
      * @return this object.
      */
-    public NodeVisitorComposite register(
+    public VisitorComposite register(
             final Class<? extends Node> nodeClass,
-            final NodeVisitor visitor) {
+            final Visitor visitor) {
         Objects.requireNonNull(nodeClass);
         Objects.requireNonNull(visitor);
         visitors.put(nodeClass, visitor);
@@ -70,8 +70,8 @@ public class NodeVisitorComposite implements NodeVisitor {
      * @param nodeClass node class, not {@code null}.
      * @return visitor or {@code null} if not found.
      */
-    public NodeVisitor findNodeVisitor(final Class<? extends Node> nodeClass) {
-        NodeVisitor visitor = null;
+    public Visitor findNodeVisitor(final Class<? extends Node> nodeClass) {
+        Visitor visitor = null;
         Class<?> clazz = nodeClass;
         while (visitor == null && clazz != null) {
             visitor = visitors.get(clazz);

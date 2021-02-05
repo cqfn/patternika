@@ -9,14 +9,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests NodeMatcher class.
+ * Tests for the {@link MatchFinder} class.
  *
  * @since 2020/11/11
  */
-public class NodeMatcherTest {
+public class MatchFinderTest {
 
     /**
-     * Tests {@link NodeMatcher#findAll()}.
+     * Tests {@link MatchFinder#findAll()}.
      */
     @Test
     public void findAllTest() {
@@ -66,7 +66,7 @@ public class NodeMatcherTest {
             ),
             new TestNode("green", 1)
         );
-        final Map<Node, List<Node>> matches = new NodeMatcher(firstNode, secondNode).findAll();
+        final Map<Node, List<Node>> matches = new MatchFinder<>(firstNode, secondNode).findAll();
         final int numberOfMatches = 4;
         assertEquals(numberOfMatches, matches.size());
 

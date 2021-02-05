@@ -10,23 +10,23 @@ import java.util.Objects;
  *
  * @since 2020/5/12
  */
-public class NodeTraversal {
+public class Traversal {
     /** Visitor to be applied to nodes. */
-    private final NodeVisitor visitor;
+    private final Visitor visitor;
 
     /**
      * Constructs a traversal object.
      *
      * @param visitor Visitor to be applied to traversed nodes, not {@code null}.
      */
-    public NodeTraversal(final NodeVisitor visitor) {
+    public Traversal(final Visitor visitor) {
         this.visitor = Objects.requireNonNull(visitor);
     }
 
     /**
      * Traverses the specified tree from root to leaves and applies the visitor to all nodes.
      *
-     * <p>If {@link NodeVisitor#enter(Node)} returns {@code false} for some node,
+     * <p>If {@link Visitor#enter(Node)} returns {@code false} for some node,
      * children of this node are not traversed.
      *
      * @param root Root of the node tree to be traversed, not {@code null}.

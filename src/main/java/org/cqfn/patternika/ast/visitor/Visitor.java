@@ -8,7 +8,7 @@ import org.cqfn.patternika.ast.Node;
  *
  * @since 2020/5/8
  */
-public interface NodeVisitor {
+public interface Visitor {
 
     /**
      * Starts visiting a node.

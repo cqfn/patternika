@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @since 2020/12/18
  */
-public class NodeVisitorTest {
+public class VisitorTest {
     /** Node visiting log. **/
     private final List<String> log = new ArrayList<>();
 
@@ -88,36 +88,36 @@ public class NodeVisitorTest {
                 )
             );
         final List<String> expectedLog = Arrays.asList(
-            "NodeAVisitor-E-NodeA{A,0}",
-                "NodeBVisitor-E-NodeB{B,0}",
-                "NodeBVisitor-L-NodeB{B,0}",
-                "NodeCVisitor-V-NodeC{C,0}",
-                    "NodeBVisitor-E-NodeB{B,1}",
-                    "NodeBVisitor-L-NodeB{B,1}",
-                    "NodeBVisitor-E-NodeD{D,0}",
-                        "NodeAVisitor-E-NodeA{A,2}",
-                        "NodeAVisitor-L-NodeA{A,2}",
-                        "NodeCVisitor-V-NodeC{C,1}",
-                    "NodeBVisitor-L-NodeD{D,0}",
-            "NodeAVisitor-L-NodeA{A,0}"
+            "VisitorA-E-NodeA{A,0}",
+                "VisitorB-E-NodeB{B,0}",
+                "VisitorB-L-NodeB{B,0}",
+                "VisitorC-V-NodeC{C,0}",
+                    "VisitorB-E-NodeB{B,1}",
+                    "VisitorB-L-NodeB{B,1}",
+                    "VisitorB-E-NodeD{D,0}",
+                        "VisitorA-E-NodeA{A,2}",
+                        "VisitorA-L-NodeA{A,2}",
+                        "VisitorC-V-NodeC{C,1}",
+                    "VisitorB-L-NodeD{D,0}",
+            "VisitorA-L-NodeA{A,0}"
         );
-        final NodeVisitor visitor = new NodeVisitorComposite()
-                .register(NodeA.class, new NodeAVisitor())
-                .register(NodeB.class, new NodeBVisitor())
-                .register(NodeC.class, new NodeCVisitor());
-        final NodeTraversal traversal = new NodeTraversal(visitor);
+        final Visitor visitor = new VisitorComposite()
+                .register(NodeA.class, new VisitorA())
+                .register(NodeB.class, new VisitorB())
+                .register(NodeC.class, new VisitorC());
+        final Traversal traversal = new Traversal(visitor);
         traversal.process(root);
         Assert.assertEquals(expectedLog, log);
     }
 
     /**
-     * Test for reaching full coverage for the {@link NodeVisitorTypedLeaf} class.
-     * Tests the method {@link NodeVisitorTypedLeaf#leave} method that must not be called normally.
+     * Test for reaching full coverage for the {@link VisitorTypedLeaf} class.
+     * Tests the method {@link VisitorTypedLeaf#leave} method that must not be called normally.
      */
     @Test
     public void testVisitorLeaf() {
         final TestNode testNode = new TestNode(0);
-        final NodeVisitor visitor = new NodeVisitorTypedLeaf<Node>() {
+        final Visitor visitor = new VisitorTypedLeaf<Node>() {
             @Override
             public void visitNode(final Node node) {
                 Assert.assertSame(testNode, node);
@@ -167,7 +167,7 @@ public class NodeVisitorTest {
     /**
      * Visitor for {@link NodeA}.
      */
-    private class NodeAVisitor extends NodeVisitorTyped<NodeA> {
+    private class VisitorA extends VisitorTyped<NodeA> {
         @Override
         public boolean enterNode(final NodeA node) {
             addToLog(getClass(), Act.ENTER, node);
@@ -183,7 +183,7 @@ public class NodeVisitorTest {
     /**
      * Visitor for {@link NodeB}.
      */
-    private class NodeBVisitor extends NodeVisitorTyped<NodeB> {
+    private class VisitorB extends VisitorTyped<NodeB> {
         @Override
         public boolean enterNode(final NodeB node) {
             addToLog(getClass(), Act.ENTER, node);
@@ -199,7 +199,7 @@ public class NodeVisitorTest {
     /**
      * Visitor for {@link NodeC}.
      */
-    private class NodeCVisitor extends NodeVisitorTypedLeaf<NodeC> {
+    private class VisitorC extends VisitorTypedLeaf<NodeC> {
         @Override
         public void visitNode(final NodeC node) {
             addToLog(getClass(), Act.VISIT, node);

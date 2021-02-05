@@ -1,7 +1,7 @@
 package org.cqfn.patternika.ast.mapper;
 
 import org.cqfn.patternika.ast.NodeExt;
-import org.cqfn.patternika.ast.NodeMatcher;
+import org.cqfn.patternika.ast.MatchFinder;
 import org.cqfn.patternika.ast.TestNode;
 import org.cqfn.patternika.ast.iterator.Bfs;
 
@@ -149,7 +149,7 @@ public class MapperTest {
             final Mapping<NodeExt> mapping,
             final NodeExt root1,
             final NodeExt root2) {
-        final Map<NodeExt, List<NodeExt>> matches = new NodeMatcher<>(root1, root2).findAll();
+        final Map<NodeExt, List<NodeExt>> matches = new MatchFinder<>(root1, root2).findAll();
         for (final Map.Entry<NodeExt, List<NodeExt>> entry : matches.entrySet()) {
             final NodeExt source = entry.getKey();
             final List<NodeExt> targets = entry.getValue();
