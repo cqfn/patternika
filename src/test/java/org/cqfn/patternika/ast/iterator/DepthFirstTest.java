@@ -12,31 +12,31 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
- * Tests for {@link Dfs} and {@link DfsIterator}.
+ * Tests for {@link DepthFirst} and {@link DepthFirstIterator}.
  *
  * @since 2020/11/23
  */
-public class DfsTest {
+public class DepthFirstTest {
 
     /**
-     * Tests {@link Dfs} and {@link DfsIterator} - single node.
+     * Tests {@link DepthFirst} and {@link DepthFirstIterator} - single node.
      */
     @Test
-    public void testDfsSingle() {
+    public void testSingle() {
         final Node root = new TestNode(0);
-        final Dfs<Node> children = new Dfs<>(root);
+        final DepthFirst<Node> children = new DepthFirst<>(root);
         final Iterator<Node> iterator = children.iterator();
         Assert.assertTrue(iterator.hasNext());
         Assert.assertSame(root, iterator.next());
     }
 
     /**
-     * Tests {@link Dfs} and {@link DfsIterator} - single node.
+     * Tests {@link DepthFirst} and {@link DepthFirstIterator} - single node.
      */
     @Test(expected = NoSuchElementException.class)
-    public void testDfsNoElement() {
+    public void testNoElement() {
         final Node root = new TestNode(0);
-        final Dfs<Node> children = new Dfs<>(root);
+        final DepthFirst<Node> children = new DepthFirst<>(root);
         final Iterator<Node> iterator = children.iterator();
         Assert.assertTrue(iterator.hasNext());
         Assert.assertSame(root, iterator.next());
@@ -45,10 +45,10 @@ public class DfsTest {
     }
 
     /**
-     * Tests {@link Dfs} and {@link DfsIterator} - positive test.
+     * Tests {@link DepthFirst} and {@link DepthFirstIterator} - positive test.
      */
     @Test
-    public void testDfs() {
+    public void test() {
         final TestNode root = new TestNode(
                0,
                 new TestNode(
@@ -81,7 +81,7 @@ public class DfsTest {
                             "3",
                         "0"
                     );
-        final List<Node> nodes = new Dfs<>((Node) root).toList();
+        final List<Node> nodes = new DepthFirst<>((Node) root).toList();
         final List<String> data = nodes.stream().map(Node::getData).collect(Collectors.toList());
         Assert.assertEquals("Wrong element order!", expectedData, data);
     }
