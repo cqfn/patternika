@@ -1,7 +1,7 @@
 package org.cqfn.patternika.ast.mapper;
 
 import org.cqfn.patternika.ast.NodeExt;
-import org.cqfn.patternika.ast.iterator.Bfs;
+import org.cqfn.patternika.ast.iterator.BreadthFirst;
 import org.cqfn.patternika.ast.iterator.Children;
 
 import java.util.Objects;
@@ -9,8 +9,8 @@ import java.util.Objects;
 /**
  * This class implements the algorithm that removes weak connections from a mapping.
  * <p>
- * The algorithm iterates over nodes of a mapped tree
- * (first tree describing code before changes) in the BFS order and removes nodes from the mapping
+ * The algorithm iterates over nodes of a mapped tree (first tree describing code before changes)
+ * in the breadth-first order and removes nodes from the mapping
  * if they mismatch their mapped nodes and if one of the following conditions is met:
  * <p>
  * 1. Node and its mapped node have a different number of children.
@@ -41,16 +41,16 @@ public class WeakChain {
      * @param root the node tree root.
      */
     public void disconnect(final NodeExt root) {
-        disconnect(new Bfs<>(root));
+        disconnect(new BreadthFirst<>(root));
     }
 
     /**
      * Processes nodes to remove weak connections from the mapping for these nodes.
      *
-     * @param bfsNodes tree nodes in the BFS order.
+     * @param nodes nodes to be disconnected.
      */
-    public void disconnect(final Iterable<NodeExt> bfsNodes) {
-        for (final NodeExt node : bfsNodes) {
+    public void disconnect(final Iterable<NodeExt> nodes) {
+        for (final NodeExt node : nodes) {
             if (needToDisconnect(node)) {
                 mapping.disconnect(node);
             }
