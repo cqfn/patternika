@@ -1,6 +1,6 @@
 package org.cqfn.patternika.ast;
 
-import org.cqfn.patternika.ast.iterator.Dfs;
+import org.cqfn.patternika.ast.iterator.DepthFirst;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,8 +48,8 @@ public class MatchFinder<T extends Node> {
      */
     public Map<T, List<T>> findAll() {
         final Map<T, List<T>> allMatches = new HashMap<>();
-        final Iterable<T> firstTreeNodes = new Dfs<>(this.firstRoot);
-        final List<T> secondTreeNodes = new Dfs<>(this.secondRoot).toList();
+        final Iterable<T> firstTreeNodes = new DepthFirst<>(this.firstRoot);
+        final List<T> secondTreeNodes = new DepthFirst<>(this.secondRoot).toList();
         for (final T firstTreeNode : firstTreeNodes) {
             for (final T secondTreeNode : secondTreeNodes) {
                 if (deepMatches.test(firstTreeNode, secondTreeNode)) {

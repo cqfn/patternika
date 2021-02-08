@@ -1,6 +1,6 @@
 package org.cqfn.patternika.ast;
 
-import org.cqfn.patternika.ast.iterator.BfsIterator;
+import org.cqfn.patternika.ast.iterator.BreadthFirstIterator;
 import org.cqfn.patternika.ast.iterator.Children;
 import org.junit.Assert;
 import org.junit.Test;
@@ -54,14 +54,15 @@ public class NodeExtTest {
 
     /**
      * Test that a NodeExt tree has the same structure as the wrapped node tree.
-     * Both node trees are traversed in a BFS manner and node properties are checked for equality.
+     * Both node trees are traversed in the breadth-first order and node properties
+     * are checked for equality.
      */
     @Test
     public void testNodeExt() {
         final Node root = createTree();
         final NodeExt rootExt = new NodeExt(root);
-        final Iterator<Node> iterator = new BfsIterator<>(root);
-        final Iterator<NodeExt> iteratorExt = new BfsIterator<>(rootExt);
+        final Iterator<Node> iterator = new BreadthFirstIterator<>(root);
+        final Iterator<NodeExt> iteratorExt = new BreadthFirstIterator<>(rootExt);
         while (iterator.hasNext() && iteratorExt.hasNext()) {
             assertEquals(iterator.next(), iteratorExt.next());
         }
