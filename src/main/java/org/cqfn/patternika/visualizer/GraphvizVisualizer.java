@@ -55,10 +55,11 @@ public class GraphvizVisualizer implements Visualizer {
      * Main constructor.
      *
      * @param tree the action tree to be visualized.
+     * @param builder the builder for saving text for a Graphviz file.
      */
-    public GraphvizVisualizer(final ActionTree tree) {
+    public GraphvizVisualizer(final ActionTree tree, final StringBuilder builder) {
         this.tree = Objects.requireNonNull(tree);
-        this.builder = new StringBuilder();
+        this.builder = Objects.requireNonNull(builder);
         this.nodeIndexes = new IdentityHashMap<>();
         this.actionIndexes = new IdentityHashMap<>();
     }
@@ -67,9 +68,10 @@ public class GraphvizVisualizer implements Visualizer {
      * Additional constructor for an abstract syntax tree.
      *
      * @param root the root of the abstract syntax tree to be visualized.
+     * @param builder the builder for saving text for a Graphviz file.
      */
-    public GraphvizVisualizer(final Node root) {
-        this(new ActionTree("", root, Collections.emptyList()));
+    public GraphvizVisualizer(final Node root, final StringBuilder builder) {
+        this(new ActionTree("", root, Collections.emptyList()), builder);
     }
 
     /**
