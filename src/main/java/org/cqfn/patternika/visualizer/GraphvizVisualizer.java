@@ -8,6 +8,7 @@ import org.cqfn.patternika.ast.iterator.Children;
 
 import java.util.Collections;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -43,36 +44,53 @@ public class GraphvizVisualizer implements Visualizer {
         "indianred"
     };
 
-    /** Action tree to be visualized. */
-    private final ActionTree tree;
     /** Builds text for a Graphviz file. */
     private final StringBuilder builder;
+    /** Action tree to be visualized. */
+    private final ActionTree tree;
+    /** Markers. */
+    private final Map<Node, List<Integer>> markers;
     /** Stores indices of nodes. */
     private final Map<Node, Integer> nodeIndexes;
     /** Stores indices of actions. */
     private final Map<Action, Integer> actionIndexes;
+    /** Processed nodes. */
+    private final Map<Node, Node> processedNodes;
+    /** Last index used for a node or an action. */
+    private int lastIndex;
 
     /**
      * Main constructor.
      *
-     * @param tree the action tree to be visualized.
      * @param builder the builder for saving text for a Graphviz file.
+     * @param tree the action tree to be visualized.
+     * @param markers markers.
      */
-    public GraphvizVisualizer(final ActionTree tree, final StringBuilder builder) {
-        this.tree = Objects.requireNonNull(tree);
+    public GraphvizVisualizer(
+            final StringBuilder builder,
+            final ActionTree tree,
+            final Map<Node, List<Integer>> markers) {
         this.builder = Objects.requireNonNull(builder);
+        this.tree = Objects.requireNonNull(tree);
+        this.markers = Objects.requireNonNull(markers);
         this.nodeIndexes = new IdentityHashMap<>();
         this.actionIndexes = new IdentityHashMap<>();
+        this.processedNodes = new IdentityHashMap<>();
+        this.lastIndex = -1;
     }
 
     /**
      * Additional constructor for an abstract syntax tree.
      *
-     * @param root the root of the abstract syntax tree to be visualized.
      * @param builder the builder for saving text for a Graphviz file.
+     * @param root the root of the abstract syntax tree to be visualized.
+     * @param markers markers.
      */
-    public GraphvizVisualizer(final Node root, final StringBuilder builder) {
-        this(new ActionTree("", root, Collections.emptyList()), builder);
+    public GraphvizVisualizer(
+            final StringBuilder builder,
+            final Node root,
+            final Map<Node, List<Integer>> markers) {
+        this(builder, new ActionTree("", root, Collections.emptyList()), markers);
     }
 
     /**
@@ -85,32 +103,111 @@ public class GraphvizVisualizer implements Visualizer {
             return;
         }
         final Node root = tree.getRoot();
-        buildIndexes(root, -1);
+        buildIndexes(root);
         builder.append("digraph AST {\n");
         builder.append("  node [shape=box style=rounded];\n");
         visualizeNode(root, null, -1);
         builder.append("}\n");
     }
 
-    private int buildIndexes(final Node node, final int lastIndex) {
+    private void buildIndexes(final Node node) {
         if (node == null || nodeIndexes.containsKey(node)) {
-            return lastIndex;
+            return;
         }
-        int currentIndex = lastIndex + 1;
-        nodeIndexes.put(node, currentIndex);
+        nodeIndexes.put(node, ++lastIndex);
         for (final Node child : new Children<>(node)) {
-            currentIndex = buildIndexes(child, currentIndex);
+            buildIndexes(child);
         }
         for (final Action action : tree.getActionsByParent(node)) {
-            actionIndexes.put(action, ++currentIndex);
-            currentIndex = buildIndexes(action.getRef(), currentIndex);
-            currentIndex = buildIndexes(action.getAccept(), currentIndex);
+            actionIndexes.put(action, ++lastIndex);
+            buildIndexes(action.getRef());
+            buildIndexes(action.getAccept());
         }
-        return currentIndex;
     }
 
     private void visualizeNode(final Node node, final Node parentNode, final int childIndex) {
+        final int currentIndex;
+        if (node != null) {
+            if (processedNodes.putIfAbsent(node, node) != null) {
+                return;
+            }
+            currentIndex = nodeIndexes.get(node);
+            visualizeNode(node, currentIndex);
+        } else {
+            currentIndex = ++lastIndex;
+            builder
+                .append("  node_")
+                .append(currentIndex)
+                .append(" [label=<<b>NULL</b>>]; // NODE\n");
+        }
+        if (parentNode != null) {
+            final int parentIndex = nodeIndexes.get(parentNode);
+            builder
+                .append("  node_")
+                .append(parentIndex)
+                .append(" -> node_")
+                .append(currentIndex)
+                .append(" [label=\" ")
+                .append(childIndex)
+                .append("\"];\n");
+        }
+        if (node != null) {
+            for (int i = 0; i < node.getChildCount(); i++) {
+                visualizeNode(node.getChild(i), node, i);
+            }
+        }
+    }
 
+    private void visualizeNode(final Node node, final int currentIndex) {
+        /*
+        final String type = node.getType();
+        final String data = node.getData();
+        if (data != null) {
+            label = Text.escapeHtmlEntities(label);
+        }
+        builder
+            .append("  node_")
+            .append(currentIndex)
+            .append(" [");
+        if (node instanceof Hole) {
+            result.append("style=\"rounded,filled\" color=\"mediumpurple\" fillcolor=\"")
+                    .append(((Hole)node).getNumber() < 0 ? "thistle1" : "thistle")
+                    .append("\" penwidth=2 ");
+        } else {
+            String shape = node.getShape();
+            if (shape != null) {
+                result.append("shape=").append(shape).append(' ');
+            }
+            if (markers != null && markers.containsKey(node)) {
+                StringBuilder colors = new StringBuilder();
+                int count = 0;
+                for (Integer marker : markers.get(node)) {
+                    if (count > 0)
+                        colors.append(':');
+                    count++;
+                    colors.append(getColor(marker));
+                }
+                if (count == 1) {
+                    result.append("style=\"rounded,filled\" fillcolor=\"")
+                          .append(colors.toString()).append("\" ");
+                }
+                else {
+                    result.append("style=striped penwidth=2 fillcolor=\"")
+                          .append(colors.toString()).append("\" ");
+                }
+            }
+        }
+        if (label != null && label.length() > 0) {
+            result.append("label=<")
+                    .append(type)
+                    .append("<br/><font color=\"blue\">")
+                    .append(label)
+                    .append("</font>>]; // NODE\n");
+        }
+        else {
+            result.append("label=<").append(type).append(">]; // NODE\n");
+        }
+        */
     }
 
     private void visualizeAction(final Action action, final Node parentNode) {
