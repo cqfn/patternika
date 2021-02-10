@@ -2,6 +2,7 @@ package org.cqfn.patternika.visualizer;
 
 import org.cqfn.patternika.ast.Action;
 import org.cqfn.patternika.ast.ActionTree;
+import org.cqfn.patternika.ast.ActionType;
 import org.cqfn.patternika.ast.Node;
 import org.cqfn.patternika.ast.iterator.Children;
 
@@ -83,9 +84,11 @@ public class GraphvizVisualizer implements Visualizer {
             // Already done.
             return;
         }
-        buildIndexes(tree.getRoot(), -1);
+        final Node root = tree.getRoot();
+        buildIndexes(root, -1);
         builder.append("digraph AST {\n");
         builder.append("  node [shape=box style=rounded];\n");
+        visualizeNode(root, null, -1);
         builder.append("}\n");
     }
 
@@ -104,6 +107,68 @@ public class GraphvizVisualizer implements Visualizer {
             currentIndex = buildIndexes(action.getAccept(), currentIndex);
         }
         return currentIndex;
+    }
+
+    private void visualizeNode(final Node node, final Node parentNode, final int childIndex) {
+
+    }
+
+    private void visualizeAction(final Action action, final Node parentNode) {
+        final int currentIndex = actionIndexes.get(action);
+        final ActionType type = action.getType();
+        final String color = getActionColor(type);
+        builder
+            .append("  action_")
+            .append(currentIndex)
+            .append(" [shape=note color=")
+            .append(color)
+            .append(" label=<")
+            .append(type)
+            .append(">];\n");
+        if (parentNode != null) {
+            final int parentNodeIndex = nodeIndexes.get(parentNode);
+            builder
+                .append("  node_")
+                .append(parentNodeIndex).append(" -> action_")
+                .append(currentIndex)
+                .append(";\n");
+        }
+        final Node ref = action.getRef();
+        if (ref != null) {
+            final int refIndex = nodeIndexes.get(ref);
+            visualizeNode(ref, null, -1);
+            builder
+                .append("  action_")
+                .append(currentIndex)
+                .append(" -> node_")
+                .append(refIndex)
+                .append(" [label=\" ref\"];\n");
+        }
+        final Node accept = action.getAccept();
+        if (accept != null) {
+            int acceptIndex = nodeIndexes.get(accept);
+            visualizeNode(accept, null, -1);
+            builder
+                .append("  action_")
+                .append(currentIndex)
+                .append(" -> node_")
+                .append(acceptIndex)
+                .append(" [label=\" accept\"];\n");
+        }
+    }
+
+    private static String getActionColor(final ActionType type) {
+        switch (type) {
+            case DELETE:
+                return "red";
+            case INSERT_AFTER:
+            case INSERT_BEFORE:
+                return "skyblue";
+            case UPDATE:
+                return "forestgreen";
+            default:
+                return "gray";
+        }
     }
 
     private String getColor(final int index) {
