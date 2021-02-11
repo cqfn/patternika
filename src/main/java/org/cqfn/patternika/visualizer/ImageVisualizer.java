@@ -14,7 +14,7 @@ import java.util.Objects;
  *
  * @since 2021/02/11
  */
-public class GraphvizImageVisualizer implements Visualizer {
+public class ImageVisualizer implements Visualizer {
     /** Name of the file to save the image.*/
     private final String fileName;
     /** Buffer that stores Graphviz text. */
@@ -30,13 +30,13 @@ public class GraphvizImageVisualizer implements Visualizer {
      * @param tree the action tree to be visualized.
      * @param markers markers.
      */
-    public GraphvizImageVisualizer(
+    public ImageVisualizer(
             final String fileName,
             final ActionTree tree,
             final Map<Node, List<Integer>> markers) {
         this.fileName = Objects.requireNonNull(fileName);
         this.textBuilder = new StringBuilder();
-        this.textVisualizer = new GraphvizTextVisualizer(textBuilder, tree, markers);
+        this.textVisualizer = new TextVisualizer(textBuilder, tree, markers);
     }
 
     /**
@@ -46,7 +46,7 @@ public class GraphvizImageVisualizer implements Visualizer {
      * @param root the root of the node tree to be visualized.
      * @param markers markers.
      */
-    public GraphvizImageVisualizer(
+    public ImageVisualizer(
             final String fileName,
             final Node root,
             final Map<Node, List<Integer>> markers) {

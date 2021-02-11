@@ -3,8 +3,10 @@ package org.cqfn.patternika.visualizer;
 import org.cqfn.patternika.ast.Action;
 import org.cqfn.patternika.ast.ActionTree;
 import org.cqfn.patternika.ast.ActionType;
+import org.cqfn.patternika.ast.Hole;
 import org.cqfn.patternika.ast.Node;
 import org.cqfn.patternika.ast.iterator.Children;
+import org.cqfn.patternika.util.TextUtils;
 
 import java.util.Collections;
 import java.util.IdentityHashMap;
@@ -18,32 +20,9 @@ import java.util.Objects;
  * @since 2021/02/08
  */
 @SuppressWarnings("PMD")
-public class GraphvizTextVisualizer implements Visualizer {
-    /** Color names. */
-    private static final String[] COLORS = {
-        "gold",
-        "darkolivegreen3",
-        "aquamarine3",
-        "bisque2",
-        "burlywood1",
-        "cornsilk2",
-        "lightpink2",
-        "lightgoldenrod1",
-        "lightskyblue2",
-        "plum3",
-        "rosybrown",
-        "seagreen3",
-        "sandybrown",
-        "peachpuff3",
-        "darkseagreen",
-        "tomato",
-        "mediumslateblue",
-        "khaki",
-        "cadetblue",
-        "powderblue",
-        "indianred"
-    };
-
+public class TextVisualizer implements Visualizer {
+    /** Colors. */
+    private static final Colors COLORS = new Colors();
     /** Builds text for a Graphviz file. */
     private final StringBuilder builder;
     /** Action tree to be visualized. */
@@ -66,7 +45,7 @@ public class GraphvizTextVisualizer implements Visualizer {
      * @param tree the action tree to be visualized.
      * @param markers markers.
      */
-    public GraphvizTextVisualizer(
+    public TextVisualizer(
             final StringBuilder builder,
             final ActionTree tree,
             final Map<Node, List<Integer>> markers) {
@@ -86,7 +65,7 @@ public class GraphvizTextVisualizer implements Visualizer {
      * @param root the root of the node tree to be visualized.
      * @param markers markers.
      */
-    public GraphvizTextVisualizer(
+    public TextVisualizer(
             final StringBuilder builder,
             final Node root,
             final Map<Node, List<Integer>> markers) {
@@ -135,21 +114,19 @@ public class GraphvizTextVisualizer implements Visualizer {
             visualizeNode(node, currentIndex);
         } else {
             currentIndex = ++lastIndex;
-            builder
-                .append("  node_")
-                .append(currentIndex)
-                .append(" [label=<<b>NULL</b>>]; // NODE\n");
+            builder.append("  node_")
+                   .append(currentIndex)
+                   .append(" [label=<<b>NULL</b>>]; // NODE\n");
         }
         if (parentNode != null) {
             final int parentIndex = nodeIndexes.get(parentNode);
-            builder
-                .append("  node_")
-                .append(parentIndex)
-                .append(" -> node_")
-                .append(currentIndex)
-                .append(" [label=\" ")
-                .append(childIndex)
-                .append("\"];\n");
+            builder.append("  node_")
+                   .append(parentIndex)
+                   .append(" -> node_")
+                   .append(currentIndex)
+                   .append(" [label=\" ")
+                   .append(childIndex)
+                   .append("\"];\n");
         }
         if (node != null) {
             for (int i = 0; i < node.getChildCount(); i++) {
@@ -159,98 +136,93 @@ public class GraphvizTextVisualizer implements Visualizer {
     }
 
     private void visualizeNode(final Node node, final int currentIndex) {
-        /*
-        final String type = node.getType();
-        final String data = node.getData();
-        if (data != null) {
-            label = Text.escapeHtmlEntities(label);
-        }
-        builder
-            .append("  node_")
-            .append(currentIndex)
-            .append(" [");
+        builder.append("  node_")
+               .append(currentIndex)
+               .append(" [");
         if (node instanceof Hole) {
-            result.append("style=\"rounded,filled\" color=\"mediumpurple\" fillcolor=\"")
-                    .append(((Hole)node).getNumber() < 0 ? "thistle1" : "thistle")
-                    .append("\" penwidth=2 ");
+            visualizeHoleStyle((Hole) node);
         } else {
-            String shape = node.getShape();
-            if (shape != null) {
-                result.append("shape=").append(shape).append(' ');
+            visualizeNodeStyle(node);
+        }
+        final String type = node.getType();
+        builder.append("label=<")
+               .append(type);
+        final String data = node.getData();
+        if (data != null && data.isEmpty()) {
+            builder.append("<br/><font color=\"blue\">")
+                   .append(TextUtils.encodeHtml(data))
+                   .append("</font>");
+        }
+        builder.append(">]; // NODE\n");
+    }
+
+    private void visualizeHoleStyle(final Hole hole) {
+        builder.append("style=\"rounded,filled\" color=\"mediumpurple\" fillcolor=\"")
+               .append(hole.getNumber() < 0 ? "thistle1" : "thistle")
+               .append("\" penwidth=2 ");
+    }
+
+    private void visualizeNodeStyle(final Node node) {
+        // String shape = node.getShape();
+        // if (shape != null) {
+        //    result.append("shape=").append(shape).append(' ');
+        //}
+        if (markers.containsKey(node)) {
+            final StringBuilder colors = new StringBuilder();
+            int count = 0;
+            for (Integer marker : markers.get(node)) {
+                if (count > 0) {
+                    colors.append(':');
+                }
+                count++;
+                colors.append(COLORS.getColor(marker));
             }
-            if (markers != null && markers.containsKey(node)) {
-                StringBuilder colors = new StringBuilder();
-                int count = 0;
-                for (Integer marker : markers.get(node)) {
-                    if (count > 0)
-                        colors.append(':');
-                    count++;
-                    colors.append(getColor(marker));
-                }
-                if (count == 1) {
-                    result.append("style=\"rounded,filled\" fillcolor=\"")
-                          .append(colors.toString()).append("\" ");
-                }
-                else {
-                    result.append("style=striped penwidth=2 fillcolor=\"")
-                          .append(colors.toString()).append("\" ");
-                }
+            if (count == 1) {
+                builder.append("style=\"rounded,filled\" fillcolor=\"");
+            } else {
+                builder.append("style=striped penwidth=2 fillcolor=\"");
             }
+            builder.append(colors.toString()).append("\" ");
         }
-        if (label != null && label.length() > 0) {
-            result.append("label=<")
-                    .append(type)
-                    .append("<br/><font color=\"blue\">")
-                    .append(label)
-                    .append("</font>>]; // NODE\n");
-        }
-        else {
-            result.append("label=<").append(type).append(">]; // NODE\n");
-        }
-        */
     }
 
     private void visualizeAction(final Action action, final Node parentNode) {
         final int currentIndex = actionIndexes.get(action);
         final ActionType type = action.getType();
         final String color = getActionColor(type);
-        builder
-            .append("  action_")
-            .append(currentIndex)
-            .append(" [shape=note color=")
-            .append(color)
-            .append(" label=<")
-            .append(type)
-            .append(">];\n");
+        builder.append("  action_")
+               .append(currentIndex)
+               .append(" [shape=note color=")
+               .append(color)
+               .append(" label=<")
+               .append(type)
+               .append(">];\n");
         if (parentNode != null) {
             final int parentNodeIndex = nodeIndexes.get(parentNode);
-            builder
-                .append("  node_")
-                .append(parentNodeIndex).append(" -> action_")
-                .append(currentIndex)
-                .append(";\n");
+            builder.append("  node_")
+                   .append(parentNodeIndex).append(" -> action_")
+                   .append(currentIndex)
+                   .append(";\n");
         }
         final Node ref = action.getRef();
         if (ref != null) {
             final int refIndex = nodeIndexes.get(ref);
             visualizeNode(ref, null, -1);
-            builder
-                .append("  action_")
-                .append(currentIndex)
-                .append(" -> node_")
-                .append(refIndex)
-                .append(" [label=\" ref\"];\n");
+            builder.append("  action_")
+                   .append(currentIndex)
+                   .append(" -> node_")
+                   .append(refIndex)
+                   .append(" [label=\" ref\"];\n");
         }
         final Node accept = action.getAccept();
         if (accept != null) {
             int acceptIndex = nodeIndexes.get(accept);
             visualizeNode(accept, null, -1);
-            builder
-                .append("  action_")
-                .append(currentIndex)
-                .append(" -> node_")
-                .append(acceptIndex)
-                .append(" [label=\" accept\"];\n");
+            builder.append("  action_")
+                   .append(currentIndex)
+                   .append(" -> node_")
+                   .append(acceptIndex)
+                   .append(" [label=\" accept\"];\n");
         }
     }
 
@@ -266,10 +238,6 @@ public class GraphvizTextVisualizer implements Visualizer {
             default:
                 return "gray";
         }
-    }
-
-    private String getColor(final int index) {
-        return index < COLORS.length ? COLORS[index] : "coral";
     }
 
 }
