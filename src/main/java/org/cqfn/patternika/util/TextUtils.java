@@ -30,7 +30,7 @@ public final class TextUtils {
      * @param str text to be encoded in HTML.
      * @return the encoded text.
      */
-    public static String escapeHtmlEntities(final String str) {
+    public static String encodeHtml(final String str) {
         final StringBuilder result = new StringBuilder();
         final int len = str.length();
         for (int i = 0; i < len; i++) {
@@ -65,7 +65,7 @@ public final class TextUtils {
      * @param str the HTML text to be decoded.
      * @return the decoded text.
      */
-    public static String decodeHtmlEntities(final String str) {
+    public static String decodeHtml(final String str) {
         return str
                 .replaceAll("<.*?>", "")
                 .replace("&lt;", "<")
