@@ -1,5 +1,7 @@
 package org.cqfn.patternika.visualizer;
 
+import java.io.IOException;
+
 /**
  * Interfaces for visualizer objects, which are responsible
  * for saving abstract-syntax trees to graphical formats.
@@ -10,7 +12,9 @@ public interface Visualizer {
 
     /**
      * Renders data a graphical format.
+     *
+     * @throws IOException if fails to save rendered data.
      */
-    void visualize();
+    void visualize() throws IOException;
 
 }

@@ -13,12 +13,12 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Visualizer based on the Graphviz visualization tool from Java.
+ * Renders an abstract syntax tree to a Graphviz text.
  *
  * @since 2021/02/08
  */
 @SuppressWarnings("PMD")
-public class GraphvizVisualizer implements Visualizer {
+public class GraphvizTextVisualizer implements Visualizer {
     /** Color names. */
     private static final String[] COLORS = {
         "gold",
@@ -66,7 +66,7 @@ public class GraphvizVisualizer implements Visualizer {
      * @param tree the action tree to be visualized.
      * @param markers markers.
      */
-    public GraphvizVisualizer(
+    public GraphvizTextVisualizer(
             final StringBuilder builder,
             final ActionTree tree,
             final Map<Node, List<Integer>> markers) {
@@ -80,13 +80,13 @@ public class GraphvizVisualizer implements Visualizer {
     }
 
     /**
-     * Additional constructor for an abstract syntax tree.
+     * Additional constructor for a node tree.
      *
      * @param builder the builder for saving text for a Graphviz file.
-     * @param root the root of the abstract syntax tree to be visualized.
+     * @param root the root of the node tree to be visualized.
      * @param markers markers.
      */
-    public GraphvizVisualizer(
+    public GraphvizTextVisualizer(
             final StringBuilder builder,
             final Node root,
             final Map<Node, List<Integer>> markers) {
