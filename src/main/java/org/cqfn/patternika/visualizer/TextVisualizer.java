@@ -85,7 +85,7 @@ public class TextVisualizer implements Visualizer {
         buildIndexes(root);
         builder.append("digraph AST {\n");
         builder.append("  node [shape=box style=rounded];\n");
-        visualizeNode(root, null, -1);
+        appendNode(root, null, -1);
         builder.append("}\n");
     }
 
@@ -104,14 +104,17 @@ public class TextVisualizer implements Visualizer {
         }
     }
 
-    private void visualizeNode(final Node node, final Node parentNode, final int childIndex) {
+    private void appendNode(
+            final Node node,
+            final Node parentNode,
+            final int childIndex) {
         final int currentIndex;
         if (node != null) {
             if (processedNodes.putIfAbsent(node, node) != null) {
                 return;
             }
             currentIndex = nodeIndexes.get(node);
-            visualizeNode(node, currentIndex);
+            appendNodeHeader(node, currentIndex);
         } else {
             currentIndex = ++lastIndex;
             builder.append("  node_")
@@ -129,26 +132,53 @@ public class TextVisualizer implements Visualizer {
                    .append("\"];\n");
         }
         if (node != null) {
-            for (int i = 0; i < node.getChildCount(); i++) {
-                visualizeNode(node.getChild(i), node, i);
-            }
+            appendNodeChildren(node);
+            appendNodeActions(node);
         }
     }
 
-    private void visualizeNode(final Node node, final int currentIndex) {
+    private void appendNodeChildren(final Node node) {
+        for (int i = 0; i < node.getChildCount(); i++) {
+            appendNode(node.getChild(i), node, i);
+        }
+    }
+
+    private void appendNodeActions(final Node node) {
+        final List<Action> actions = tree.getActionsByParent(node);
+        if (!actions.isEmpty()) {
+            for (int i = 0; i < actions.size(); i++) {
+                appendAction(actions.get(i), i == 0 ? node : null);
+            }
+            if (actions.size() > 1) {
+                builder.append("  action_").append(actionIndexes.get(actions.get(0)));
+                for (int i = 1; i < actions.size(); i++) {
+                    builder.append(" -> action_").append(actionIndexes.get(actions.get(i)));
+                }
+                builder.append("\n");
+            }
+            final int currentIndex = nodeIndexes.get(node);
+            builder.append("  { rank=same; node_").append(currentIndex).append(";");
+            for (Action action : actions) {
+                builder.append(" action_").append(actionIndexes.get(action)).append(";");
+            }
+            builder.append(" }\n");
+        }
+    }
+
+    private void appendNodeHeader(final Node node, final int currentIndex) {
         builder.append("  node_")
                .append(currentIndex)
                .append(" [");
         if (node instanceof Hole) {
-            visualizeHoleStyle((Hole) node);
+            appendHoleStyle((Hole) node);
         } else {
-            visualizeNodeStyle(node);
+            appendNodeStyle(node);
         }
         final String type = node.getType();
         builder.append("label=<")
                .append(type);
         final String data = node.getData();
-        if (data != null && data.isEmpty()) {
+        if (data != null && !data.isEmpty()) {
             builder.append("<br/><font color=\"blue\">")
                    .append(TextUtils.encodeHtml(data))
                    .append("</font>");
@@ -156,13 +186,13 @@ public class TextVisualizer implements Visualizer {
         builder.append(">]; // NODE\n");
     }
 
-    private void visualizeHoleStyle(final Hole hole) {
+    private void appendHoleStyle(final Hole hole) {
         builder.append("style=\"rounded,filled\" color=\"mediumpurple\" fillcolor=\"")
                .append(hole.getNumber() < 0 ? "thistle1" : "thistle")
                .append("\" penwidth=2 ");
     }
 
-    private void visualizeNodeStyle(final Node node) {
+    private void appendNodeStyle(final Node node) {
         // String shape = node.getShape();
         // if (shape != null) {
         //    result.append("shape=").append(shape).append(' ');
@@ -186,7 +216,7 @@ public class TextVisualizer implements Visualizer {
         }
     }
 
-    private void visualizeAction(final Action action, final Node parentNode) {
+    private void appendAction(final Action action, final Node parentNode) {
         final int currentIndex = actionIndexes.get(action);
         final ActionType type = action.getType();
         final String color = getActionColor(type);
@@ -207,7 +237,7 @@ public class TextVisualizer implements Visualizer {
         final Node ref = action.getRef();
         if (ref != null) {
             final int refIndex = nodeIndexes.get(ref);
-            visualizeNode(ref, null, -1);
+            appendNode(ref, null, -1);
             builder.append("  action_")
                    .append(currentIndex)
                    .append(" -> node_")
@@ -217,7 +247,7 @@ public class TextVisualizer implements Visualizer {
         final Node accept = action.getAccept();
         if (accept != null) {
             int acceptIndex = nodeIndexes.get(accept);
-            visualizeNode(accept, null, -1);
+            appendNode(accept, null, -1);
             builder.append("  action_")
                    .append(currentIndex)
                    .append(" -> node_")
