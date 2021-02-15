@@ -8,6 +8,7 @@ import org.cqfn.patternika.ast.Node;
 import org.cqfn.patternika.ast.iterator.Children;
 import org.cqfn.patternika.util.TextUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -21,10 +22,10 @@ import java.util.Objects;
  */
 @SuppressWarnings("PMD")
 public class TextVisualizer implements Visualizer {
-    /** Colors. */
-    private static final Colors COLORS = new Colors();
     /** Builds text for a Graphviz file. */
     private final StringBuilder builder;
+    /** Another builder. */
+    private final GraphvizBuilder builder2;
     /** Action tree to be visualized. */
     private final ActionTree tree;
     /** Markers. */
@@ -50,6 +51,7 @@ public class TextVisualizer implements Visualizer {
             final ActionTree tree,
             final Map<Node, List<Integer>> markers) {
         this.builder = Objects.requireNonNull(builder);
+        this.builder2 = new GraphvizBuilder(builder);
         this.tree = Objects.requireNonNull(tree);
         this.markers = Objects.requireNonNull(markers);
         this.nodeIndexes = new IdentityHashMap<>();
@@ -83,20 +85,9 @@ public class TextVisualizer implements Visualizer {
         }
         final Node root = tree.getRoot();
         buildIndexes(root);
-        append("digraph AST {\n");
-        append("  node [shape=box style=rounded];\n");
+        builder2.appendStart();
         appendNode(root, null, -1);
-        append("}\n");
-    }
-
-    private TextVisualizer append(final String text) {
-        builder.append(text);
-        return this;
-    }
-
-    private TextVisualizer append(final String text, final int index) {
-        builder.append(text).append(index);
-        return this;
+        builder2.appendEnd();
     }
 
     private void buildIndexes(final Node node) {
@@ -127,141 +118,95 @@ public class TextVisualizer implements Visualizer {
             appendNodeHeader(node, currentIndex);
         } else {
             currentIndex = ++lastIndex;
-            append("  node_", currentIndex);
-            append(" [label=<<b>NULL</b>>]; // NODE\n");
+            builder2.appendNullNode(childIndex);
         }
         if (parentNode != null) {
             final int parentIndex = nodeIndexes.get(parentNode);
-            append("  node_", parentIndex);
-            append(" -> node_", currentIndex);
-            append(" [label=\" ", childIndex);
-            append("\"];\n");
+            builder2.appendParentNodeLink(parentIndex, currentIndex, childIndex);
         }
         if (node != null) {
-            appendNodeChildren(node);
-            appendNodeActions(node);
-        }
-    }
-
-    private void appendNodeChildren(final Node node) {
-        for (int i = 0; i < node.getChildCount(); i++) {
-            appendNode(node.getChild(i), node, i);
-        }
-    }
-
-    private void appendNodeActions(final Node node) {
-        final List<Action> actions = tree.getActionsByParent(node);
-        if (!actions.isEmpty()) {
-            for (int i = 0; i < actions.size(); i++) {
-                appendAction(actions.get(i), i == 0 ? node : null);
+            for (int i = 0; i < node.getChildCount(); ++i) {
+                appendNode(node.getChild(i), node, i);
             }
-            if (actions.size() > 1) {
-                builder.append("  action_").append(actionIndexes.get(actions.get(0)));
-                for (int i = 1; i < actions.size(); i++) {
-                    builder.append(" -> action_").append(actionIndexes.get(actions.get(i)));
-                }
-                builder.append("\n");
-            }
-            final int currentIndex = nodeIndexes.get(node);
-            builder.append("  { rank=same; node_").append(currentIndex).append(";");
-            for (Action action : actions) {
-                builder.append(" action_").append(actionIndexes.get(action)).append(";");
-            }
-            builder.append(" }\n");
+            appendActions(node);
         }
     }
 
     private void appendNodeHeader(final Node node, final int currentIndex) {
-        append("  node_", currentIndex).append(" [");
-        if (node instanceof Hole) {
-            appendHoleStyle((Hole) node);
-        } else {
-            appendNodeStyle(node);
-        }
+        builder.append("  node_").append(currentIndex).append(" [");
+        appendNodeStyle(node);
         final String type = node.getType();
-        append("label=<").append(type);
+        builder.append("label=<").append(type);
         final String data = node.getData();
         if (data != null && !data.isEmpty()) {
-            append("<br/><font color=\"blue\">");
-            append(TextUtils.encodeHtml(data));
-            append("</font>");
+            builder.append("<br/><font color=\"blue\">");
+            builder.append(TextUtils.encodeHtml(data));
+            builder.append("</font>");
         }
-        append(">]; // NODE\n");
-    }
-
-    private void appendHoleStyle(final Hole hole) {
-        append("style=\"rounded,filled\" color=\"mediumpurple\" fillcolor=\"");
-        append(hole.getNumber() < 0 ? "thistle1" : "thistle");
-        append("\" penwidth=2 ");
+        builder.append(">]; // NODE\n");
     }
 
     private void appendNodeStyle(final Node node) {
-        // String shape = node.getShape();
-        // if (shape != null) {
-        //    result.append("shape=").append(shape).append(' ');
-        //}
-        if (markers.containsKey(node)) {
-            final StringBuilder colors = new StringBuilder();
-            int count = 0;
-            for (Integer marker : markers.get(node)) {
-                if (count > 0) {
-                    colors.append(':');
-                }
-                count++;
-                colors.append(COLORS.getColor(marker));
+        if (node instanceof Hole) {
+            builder.append("style=\"rounded,filled\" color=\"mediumpurple\" fillcolor=\"")
+                   .append(((Hole) node).getNumber() < 0 ? "thistle1" : "thistle")
+                   .append("\" penwidth=2 ");
+        } else {
+            // String shape = node.getShape();
+            // if (shape != null) {
+            //    result.append("shape=").append(shape).append(' ');
+            //}
+            final List<Integer> nodeMarkers = markers.get(node);
+            if (nodeMarkers != null) {
+                builder2.appendMarkerStyle(nodeMarkers);
             }
-            if (count == 1) {
-                builder.append("style=\"rounded,filled\" fillcolor=\"");
-            } else {
-                builder.append("style=striped penwidth=2 fillcolor=\"");
-            }
-            builder.append(colors.toString()).append("\" ");
         }
     }
 
+    /**
+     * Appends all actions of the specified node if there are any.
+     *
+     * @param node the node that can have actions.
+     */
+    private void appendActions(final Node node) {
+        final List<Action> actions = tree.getActionsByParent(node);
+        if (actions.isEmpty()) {
+            return;
+        }
+        final List<Integer> indexes = new ArrayList<>(actions.size());
+        for (int i = 0; i < actions.size(); i++) {
+            final Action action = actions.get(i);
+            appendAction(action, i == 0 ? node : null);
+            indexes.add(actionIndexes.get(action));
+        }
+        final int currentIndex = nodeIndexes.get(node);
+        builder2.appendNodeActionLinks(currentIndex, indexes);
+    }
+
+    /**
+     * Appends an action.
+     *
+     * @param action the action.
+     * @param parentNode the parent node the action is connected to.
+     */
     private void appendAction(final Action action, final Node parentNode) {
         final int currentIndex = actionIndexes.get(action);
         final ActionType type = action.getType();
-        final String color = getActionColor(type);
-        append("  action_", currentIndex);
-        append(" [shape=note color=").append(color);
-        append(" label=<").append(type.getText());
-        append(">];\n");
+        builder2.appendAction(currentIndex, type);
         if (parentNode != null) {
             final int parentNodeIndex = nodeIndexes.get(parentNode);
-            append("  node_", parentNodeIndex);
-            append(" -> action_", currentIndex);
-            append(";\n");
+            builder2.appendNodeActionLink(parentNodeIndex, currentIndex);
         }
         final Node ref = action.getRef();
         if (ref != null) {
             final int refIndex = nodeIndexes.get(ref);
-            appendNode(ref, null, -1);
-            append("  action_", currentIndex);
-            append(" -> node_", refIndex);
-            append(" [label=\" ref\"];\n");
+            builder2.appendActionNodeLink(currentIndex, refIndex, "ref");
         }
         final Node accept = action.getAccept();
         if (accept != null) {
-            int acceptIndex = nodeIndexes.get(accept);
             appendNode(accept, null, -1);
-            append("  action_", currentIndex);
-            append(" -> node_", acceptIndex);
-            append(" [label=\" accept\"];\n");
-        }
-    }
-
-    private static String getActionColor(final ActionType type) {
-        switch (type) {
-            case DELETE:
-                return "red";
-            case INSERT_AFTER:
-            case INSERT_BEFORE:
-                return "skyblue";
-            case UPDATE:
-                return "forestgreen";
-            default:
-                return "gray";
+            final int acceptIndex = nodeIndexes.get(accept);
+            builder2.appendActionNodeLink(currentIndex, acceptIndex, "accept");
         }
     }
 

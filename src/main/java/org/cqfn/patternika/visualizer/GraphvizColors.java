@@ -1,11 +1,13 @@
 package org.cqfn.patternika.visualizer;
 
+import org.cqfn.patternika.ast.ActionType;
+
 /**
- * Colors to be used to highlight nodes, which are accessed by their index.
+ * Graphviz colors to be used to highlight nodes, which are accessed by their index.
  *
  * @since 2021/02/11
  */
-public class Colors {
+final class GraphvizColors {
     /** Color names. */
     private final String[] colorNames = {
             "gold",
@@ -39,6 +41,26 @@ public class Colors {
      */
     public String getColor(final int index) {
         return index < colorNames.length ? colorNames[index] : "coral";
+    }
+
+    /**
+     * Returns a color for the specified action type.
+     *
+     * @param type the action type.
+     * @return the color name.
+     */
+    public String getActionColor(final ActionType type) {
+        switch (type) {
+            case DELETE:
+                return "red";
+            case INSERT_AFTER:
+            case INSERT_BEFORE:
+                return "skyblue";
+            case UPDATE:
+                return "forestgreen";
+            default:
+                return "gray";
+        }
     }
 
 }
