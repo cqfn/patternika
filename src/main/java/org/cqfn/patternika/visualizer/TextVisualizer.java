@@ -83,10 +83,20 @@ public class TextVisualizer implements Visualizer {
         }
         final Node root = tree.getRoot();
         buildIndexes(root);
-        builder.append("digraph AST {\n");
-        builder.append("  node [shape=box style=rounded];\n");
+        append("digraph AST {\n");
+        append("  node [shape=box style=rounded];\n");
         appendNode(root, null, -1);
-        builder.append("}\n");
+        append("}\n");
+    }
+
+    private TextVisualizer append(final String text) {
+        builder.append(text);
+        return this;
+    }
+
+    private TextVisualizer append(final String text, final int index) {
+        builder.append(text).append(index);
+        return this;
     }
 
     private void buildIndexes(final Node node) {
@@ -117,19 +127,15 @@ public class TextVisualizer implements Visualizer {
             appendNodeHeader(node, currentIndex);
         } else {
             currentIndex = ++lastIndex;
-            builder.append("  node_")
-                   .append(currentIndex)
-                   .append(" [label=<<b>NULL</b>>]; // NODE\n");
+            append("  node_", currentIndex);
+            append(" [label=<<b>NULL</b>>]; // NODE\n");
         }
         if (parentNode != null) {
             final int parentIndex = nodeIndexes.get(parentNode);
-            builder.append("  node_")
-                   .append(parentIndex)
-                   .append(" -> node_")
-                   .append(currentIndex)
-                   .append(" [label=\" ")
-                   .append(childIndex)
-                   .append("\"];\n");
+            append("  node_", parentIndex);
+            append(" -> node_", currentIndex);
+            append(" [label=\" ", childIndex);
+            append("\"];\n");
         }
         if (node != null) {
             appendNodeChildren(node);
@@ -166,30 +172,27 @@ public class TextVisualizer implements Visualizer {
     }
 
     private void appendNodeHeader(final Node node, final int currentIndex) {
-        builder.append("  node_")
-               .append(currentIndex)
-               .append(" [");
+        append("  node_", currentIndex).append(" [");
         if (node instanceof Hole) {
             appendHoleStyle((Hole) node);
         } else {
             appendNodeStyle(node);
         }
         final String type = node.getType();
-        builder.append("label=<")
-               .append(type);
+        append("label=<").append(type);
         final String data = node.getData();
         if (data != null && !data.isEmpty()) {
-            builder.append("<br/><font color=\"blue\">")
-                   .append(TextUtils.encodeHtml(data))
-                   .append("</font>");
+            append("<br/><font color=\"blue\">");
+            append(TextUtils.encodeHtml(data));
+            append("</font>");
         }
-        builder.append(">]; // NODE\n");
+        append(">]; // NODE\n");
     }
 
     private void appendHoleStyle(final Hole hole) {
-        builder.append("style=\"rounded,filled\" color=\"mediumpurple\" fillcolor=\"")
-               .append(hole.getNumber() < 0 ? "thistle1" : "thistle")
-               .append("\" penwidth=2 ");
+        append("style=\"rounded,filled\" color=\"mediumpurple\" fillcolor=\"");
+        append(hole.getNumber() < 0 ? "thistle1" : "thistle");
+        append("\" penwidth=2 ");
     }
 
     private void appendNodeStyle(final Node node) {
@@ -220,39 +223,31 @@ public class TextVisualizer implements Visualizer {
         final int currentIndex = actionIndexes.get(action);
         final ActionType type = action.getType();
         final String color = getActionColor(type);
-        builder.append("  action_")
-               .append(currentIndex)
-               .append(" [shape=note color=")
-               .append(color)
-               .append(" label=<")
-               .append(type)
-               .append(">];\n");
+        append("  action_", currentIndex);
+        append(" [shape=note color=").append(color);
+        append(" label=<").append(type.getText());
+        append(">];\n");
         if (parentNode != null) {
             final int parentNodeIndex = nodeIndexes.get(parentNode);
-            builder.append("  node_")
-                   .append(parentNodeIndex).append(" -> action_")
-                   .append(currentIndex)
-                   .append(";\n");
+            append("  node_", parentNodeIndex);
+            append(" -> action_", currentIndex);
+            append(";\n");
         }
         final Node ref = action.getRef();
         if (ref != null) {
             final int refIndex = nodeIndexes.get(ref);
             appendNode(ref, null, -1);
-            builder.append("  action_")
-                   .append(currentIndex)
-                   .append(" -> node_")
-                   .append(refIndex)
-                   .append(" [label=\" ref\"];\n");
+            append("  action_", currentIndex);
+            append(" -> node_", refIndex);
+            append(" [label=\" ref\"];\n");
         }
         final Node accept = action.getAccept();
         if (accept != null) {
             int acceptIndex = nodeIndexes.get(accept);
             appendNode(accept, null, -1);
-            builder.append("  action_")
-                   .append(currentIndex)
-                   .append(" -> node_")
-                   .append(acceptIndex)
-                   .append(" [label=\" accept\"];\n");
+            append("  action_", currentIndex);
+            append(" -> node_", acceptIndex);
+            append(" [label=\" accept\"];\n");
         }
     }
 
