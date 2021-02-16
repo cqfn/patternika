@@ -1,9 +1,8 @@
 package org.cqfn.patternika.visualizer;
 
-import org.cqfn.patternika.ast.ActionType;
-
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * Helps build Dot text for an action tree.
@@ -42,38 +41,12 @@ final class DotBuilder {
     }
 
     /**
-     * Appends a NULL node.
+     * Applied a writer to append some text.
      *
-     * @param nodeIndex the node index.
+     * @param writer the writer that appends a portion of text.
      */
-    public void appendNullNode(final int nodeIndex) {
-        builder.append("  node_")
-               .append(nodeIndex)
-               .append(" [label=<<b>NULL</b>>]; // NODE\n");
-    }
-
-    /**
-     * Appends an action.
-     *
-     * @param index the action node index.
-     * @param type the action type.
-     */
-    public void appendAction(
-            final int index,
-            final ActionType type) {
-        builder.append("  action_").append(index)
-               .append(" [shape=note color=").append(COLORS.getActionColor(type))
-               .append(" label=<").append(type.getText())
-               .append(">];\n");
-    }
-
-    /**
-     * Appends a link.
-     *
-     * @param link the link that connects two nodes.
-     */
-    public void appendLink(final DotLink link) {
-        link.write(builder);
+    public void append(final Consumer<StringBuilder> writer) {
+        writer.accept(builder);
     }
 
     /**

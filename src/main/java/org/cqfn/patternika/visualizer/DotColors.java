@@ -1,7 +1,5 @@
 package org.cqfn.patternika.visualizer;
 
-import org.cqfn.patternika.ast.ActionType;
-
 /**
  * Dot colors to be used to highlight nodes, which are accessed by their index.
  *
@@ -41,26 +39,6 @@ final class DotColors {
      */
     public String getColor(final int index) {
         return index < colorNames.length ? colorNames[index] : "coral";
-    }
-
-    /**
-     * Returns a color for the specified action type.
-     *
-     * @param type the action type.
-     * @return the color name.
-     */
-    public String getActionColor(final ActionType type) {
-        switch (type) {
-            case DELETE:
-                return "red";
-            case INSERT_AFTER:
-            case INSERT_BEFORE:
-                return "skyblue";
-            case UPDATE:
-                return "forestgreen";
-            default:
-                return "gray";
-        }
     }
 
 }

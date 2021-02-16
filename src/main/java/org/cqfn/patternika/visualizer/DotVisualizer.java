@@ -118,11 +118,11 @@ public class DotVisualizer implements Visualizer {
             appendNodeHeader(node, currentIndex);
         } else {
             currentIndex = ++lastIndex;
-            builder2.appendNullNode(childIndex);
+            builder2.append(new DotNullNode(childIndex));
         }
         if (parentNode != null) {
             final int parentIndex = nodeIndexes.get(parentNode);
-            builder2.appendLink(DotLink.newNodeToNode(parentIndex, currentIndex, childIndex));
+            builder2.append(DotLink.newNodeToNode(parentIndex, currentIndex, childIndex));
         }
         if (node != null) {
             for (int i = 0; i < node.getChildCount(); ++i) {
@@ -192,21 +192,21 @@ public class DotVisualizer implements Visualizer {
     private void appendAction(final Action action, final Node parentNode) {
         final int currentIndex = actionIndexes.get(action);
         final ActionType type = action.getType();
-        builder2.appendAction(currentIndex, type);
+        builder2.append(new DotAction(currentIndex, type));
         if (parentNode != null) {
             final int parentNodeIndex = nodeIndexes.get(parentNode);
-            builder2.appendLink(DotLink.newNodeToAction(parentNodeIndex, currentIndex));
+            builder2.append(DotLink.newNodeToAction(parentNodeIndex, currentIndex));
         }
         final Node ref = action.getRef();
         if (ref != null) {
             final int refIndex = nodeIndexes.get(ref);
-            builder2.appendLink(DotLink.newActionToNode(currentIndex, refIndex, "ref"));
+            builder2.append(DotLink.newActionToNode(currentIndex, refIndex, "ref"));
         }
         final Node accept = action.getAccept();
         if (accept != null) {
             appendNode(accept, null, -1);
             final int acceptIndex = nodeIndexes.get(accept);
-            builder2.appendLink(DotLink.newActionToNode(currentIndex, acceptIndex, "accept"));
+            builder2.append(DotLink.newActionToNode(currentIndex, acceptIndex, "accept"));
         }
     }
 

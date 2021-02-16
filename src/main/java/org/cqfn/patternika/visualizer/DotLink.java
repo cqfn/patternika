@@ -1,13 +1,14 @@
 package org.cqfn.patternika.visualizer;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * Link between nodes in a Dot graph.
  *
  * @since 2021/02/16
  */
-final class DotLink {
+public class DotLink implements Consumer<StringBuilder> {
     /** Constant name for a node. */
     private static final String NODE = "node";
     /** Constant name for an action node. */
@@ -32,7 +33,7 @@ final class DotLink {
      * @param toIndex the "to" node index.
      * @param label the label for the link.
      */
-    private DotLink(
+    public DotLink(
             final String fromName,
             final int fromIndex,
             final String toName,
@@ -89,11 +90,12 @@ final class DotLink {
     }
 
     /**
-     * Write link for a string builder.
+     * Writes the link to a string builder.
      *
      * @param builder the string builder.
      */
-    public void write(final StringBuilder builder) {
+    @Override
+    public void accept(final StringBuilder builder) {
         builder.append(fromName)
                .append('_')
                .append(fromIndex)
