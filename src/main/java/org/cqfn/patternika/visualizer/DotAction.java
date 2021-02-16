@@ -36,7 +36,7 @@ public class DotAction implements Consumer<StringBuilder> {
     public void accept(final StringBuilder builder) {
         builder.append("  action_").append(index)
                .append(" [shape=note color=")
-               .append(getActionColor())
+               .append(getColor())
                .append(" label=<")
                .append(type.getText())
                .append(">];\n");
@@ -47,7 +47,7 @@ public class DotAction implements Consumer<StringBuilder> {
      *
      * @return the color name.
      */
-    private String getActionColor() {
+    private String getColor() {
         switch (type) {
             case DELETE:
                 return "red";

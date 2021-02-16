@@ -14,6 +14,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * Renders an abstract syntax tree to a Dot text.
@@ -24,8 +25,6 @@ import java.util.Objects;
 public class DotVisualizer implements Visualizer {
     /** Builds text for a Graphviz file. */
     private final StringBuilder builder;
-    /** Another builder. */
-    private final DotBuilder builder2;
     /** Action tree to be visualized. */
     private final ActionTree tree;
     /** Markers. */
@@ -51,7 +50,6 @@ public class DotVisualizer implements Visualizer {
             final ActionTree tree,
             final Map<Node, List<Integer>> markers) {
         this.builder = Objects.requireNonNull(builder);
-        this.builder2 = new DotBuilder(builder);
         this.tree = Objects.requireNonNull(tree);
         this.markers = Objects.requireNonNull(markers);
         this.nodeIndexes = new IdentityHashMap<>();
@@ -85,9 +83,9 @@ public class DotVisualizer implements Visualizer {
         }
         final Node root = tree.getRoot();
         buildIndexes(root);
-        builder2.appendStart();
+        appendStart();
         appendNode(root, null, -1);
-        builder2.appendEnd();
+        appendEnd();
     }
 
     private void buildIndexes(final Node node) {
@@ -118,11 +116,11 @@ public class DotVisualizer implements Visualizer {
             appendNodeHeader(node, currentIndex);
         } else {
             currentIndex = ++lastIndex;
-            builder2.append(new DotNullNode(childIndex));
+            append(new DotNullNode(childIndex));
         }
         if (parentNode != null) {
             final int parentIndex = nodeIndexes.get(parentNode);
-            builder2.append(DotLink.newNodeToNode(parentIndex, currentIndex, childIndex));
+            append(DotLink.newNodeToNode(parentIndex, currentIndex, childIndex));
         }
         if (node != null) {
             for (int i = 0; i < node.getChildCount(); ++i) {
@@ -134,7 +132,7 @@ public class DotVisualizer implements Visualizer {
 
     private void appendNodeHeader(final Node node, final int currentIndex) {
         builder.append("  node_").append(currentIndex).append(" [");
-        appendNodeStyle(node);
+        append(getNodeStyle(node));
         final String type = node.getType();
         builder.append("label=<").append(type);
         final String data = node.getData();
@@ -146,21 +144,19 @@ public class DotVisualizer implements Visualizer {
         builder.append(">]; // NODE\n");
     }
 
-    private void appendNodeStyle(final Node node) {
+    private Consumer<StringBuilder> getNodeStyle(final Node node) {
         if (node instanceof Hole) {
-            builder.append("style=\"rounded,filled\" color=\"mediumpurple\" fillcolor=\"")
-                   .append(((Hole) node).getNumber() < 0 ? "thistle1" : "thistle")
-                   .append("\" penwidth=2 ");
-        } else {
-            // String shape = node.getShape();
-            // if (shape != null) {
-            //    result.append("shape=").append(shape).append(' ');
-            //}
-            final List<Integer> nodeMarkers = markers.get(node);
-            if (nodeMarkers != null) {
-                builder2.appendMarkerStyle(nodeMarkers);
-            }
+            return new DotHoleStyle((Hole) node);
         }
+        // String shape = node.getShape();
+        // if (shape != null) {
+        //    result.append("shape=").append(shape).append(' ');
+        //}
+        final List<Integer> nodeMarkers = markers.get(node);
+        if (nodeMarkers != null) {
+            return new DotMarkerStyle(nodeMarkers);
+        }
+        return b -> { };
     }
 
     /**
@@ -180,7 +176,7 @@ public class DotVisualizer implements Visualizer {
             indexes.add(actionIndexes.get(action));
         }
         final int currentIndex = nodeIndexes.get(node);
-        builder2.appendNodeActionLinks(currentIndex, indexes);
+        appendNodeActionLinks(currentIndex, indexes);
     }
 
     /**
@@ -192,22 +188,71 @@ public class DotVisualizer implements Visualizer {
     private void appendAction(final Action action, final Node parentNode) {
         final int currentIndex = actionIndexes.get(action);
         final ActionType type = action.getType();
-        builder2.append(new DotAction(currentIndex, type));
+        append(new DotAction(currentIndex, type));
         if (parentNode != null) {
             final int parentNodeIndex = nodeIndexes.get(parentNode);
-            builder2.append(DotLink.newNodeToAction(parentNodeIndex, currentIndex));
+            append(DotLink.newNodeToAction(parentNodeIndex, currentIndex));
         }
         final Node ref = action.getRef();
         if (ref != null) {
             final int refIndex = nodeIndexes.get(ref);
-            builder2.append(DotLink.newActionToNode(currentIndex, refIndex, "ref"));
+            append(DotLink.newActionToNode(currentIndex, refIndex, "ref"));
         }
         final Node accept = action.getAccept();
         if (accept != null) {
             appendNode(accept, null, -1);
             final int acceptIndex = nodeIndexes.get(accept);
-            builder2.append(DotLink.newActionToNode(currentIndex, acceptIndex, "accept"));
+            append(DotLink.newActionToNode(currentIndex, acceptIndex, "accept"));
         }
+    }
+
+    /**
+     * Appends graph start.
+     */
+    public void appendStart() {
+        builder.append("digraph AST {\n")
+               .append("  node [shape=box style=rounded];\n");
+    }
+
+    /**
+     * Appends graph end.
+     */
+    public void appendEnd() {
+        builder.append("}\n");
+    }
+
+    /**
+     * Applied a writer to append some text.
+     *
+     * @param writer the writer that appends a portion of text.
+     */
+    public void append(final Consumer<StringBuilder> writer) {
+        writer.accept(builder);
+    }
+
+    /**
+     * Appends a link from a node to a list of actions.
+     *
+     * @param nodeIndex the node index.
+     * @param actionIndices the list of action indexes.
+     */
+    public void appendNodeActionLinks(
+            final int nodeIndex,
+            final List<Integer> actionIndices) {
+        final int actionCount = actionIndices.size();
+        final boolean isMultipleActions = actionCount > 1;
+        if (isMultipleActions) {
+            builder.append("  action_").append(actionIndices.get(0));
+            for (int i = 1; i < actionCount; i++) {
+                builder.append(" -> action_").append(actionIndices.get(i));
+            }
+            builder.append("\n");
+        }
+        builder.append("  { rank=same; node_").append(nodeIndex).append(";");
+        for (final int actionIndex : actionIndices) {
+            builder.append(" action_").append(actionIndex).append(";");
+        }
+        builder.append(" }\n");
     }
 
 }
