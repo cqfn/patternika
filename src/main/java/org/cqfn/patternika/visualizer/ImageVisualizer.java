@@ -36,7 +36,7 @@ public class ImageVisualizer implements Visualizer {
             final Map<Node, List<Integer>> markers) {
         this.fileName = Objects.requireNonNull(fileName);
         this.textBuilder = new StringBuilder();
-        this.textVisualizer = new TextVisualizer(textBuilder, tree, markers);
+        this.textVisualizer = new DotVisualizer(textBuilder, tree, markers);
     }
 
     /**

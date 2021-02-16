@@ -3,11 +3,11 @@ package org.cqfn.patternika.visualizer;
 import org.cqfn.patternika.ast.ActionType;
 
 /**
- * Graphviz colors to be used to highlight nodes, which are accessed by their index.
+ * Dot colors to be used to highlight nodes, which are accessed by their index.
  *
  * @since 2021/02/11
  */
-final class GraphvizColors {
+final class DotColors {
     /** Color names. */
     private final String[] colorNames = {
             "gold",

@@ -6,23 +6,23 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Helps build Graphviz text for an action tree.
+ * Helps build Dot text for an action tree.
  *
  * @since 2021/02/15
  */
-final class GraphvizBuilder {
+final class DotBuilder {
     /** Builder for Graphviz text. */
     @SuppressWarnings("PMD.AvoidStringBufferField")
     private final StringBuilder builder;
     /** Graphviz colors. */
-    private static final GraphvizColors COLORS = new GraphvizColors();
+    private static final DotColors COLORS = new DotColors();
 
     /**
      * Constructor.
      *
      * @param builder the buffer to save Graphviz text.
      */
-    GraphvizBuilder(final StringBuilder builder) {
+    DotBuilder(final StringBuilder builder) {
         this.builder = Objects.requireNonNull(builder);
     }
 

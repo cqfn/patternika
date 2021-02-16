@@ -16,16 +16,16 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Renders an abstract syntax tree to a Graphviz text.
+ * Renders an abstract syntax tree to a Dot text.
  *
  * @since 2021/02/08
  */
 @SuppressWarnings("PMD")
-public class TextVisualizer implements Visualizer {
+public class DotVisualizer implements Visualizer {
     /** Builds text for a Graphviz file. */
     private final StringBuilder builder;
     /** Another builder. */
-    private final GraphvizBuilder builder2;
+    private final DotBuilder builder2;
     /** Action tree to be visualized. */
     private final ActionTree tree;
     /** Markers. */
@@ -46,12 +46,12 @@ public class TextVisualizer implements Visualizer {
      * @param tree the action tree to be visualized.
      * @param markers markers.
      */
-    public TextVisualizer(
+    public DotVisualizer(
             final StringBuilder builder,
             final ActionTree tree,
             final Map<Node, List<Integer>> markers) {
         this.builder = Objects.requireNonNull(builder);
-        this.builder2 = new GraphvizBuilder(builder);
+        this.builder2 = new DotBuilder(builder);
         this.tree = Objects.requireNonNull(tree);
         this.markers = Objects.requireNonNull(markers);
         this.nodeIndexes = new IdentityHashMap<>();
@@ -67,7 +67,7 @@ public class TextVisualizer implements Visualizer {
      * @param root the root of the node tree to be visualized.
      * @param markers markers.
      */
-    public TextVisualizer(
+    public DotVisualizer(
             final StringBuilder builder,
             final Node root,
             final Map<Node, List<Integer>> markers) {
