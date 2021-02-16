@@ -122,7 +122,7 @@ public class DotVisualizer implements Visualizer {
         }
         if (parentNode != null) {
             final int parentIndex = nodeIndexes.get(parentNode);
-            builder2.appendParentNodeLink(parentIndex, currentIndex, childIndex);
+            builder2.appendLink(DotLink.newNodeToNode(parentIndex, currentIndex, childIndex));
         }
         if (node != null) {
             for (int i = 0; i < node.getChildCount(); ++i) {
@@ -195,18 +195,18 @@ public class DotVisualizer implements Visualizer {
         builder2.appendAction(currentIndex, type);
         if (parentNode != null) {
             final int parentNodeIndex = nodeIndexes.get(parentNode);
-            builder2.appendNodeActionLink(parentNodeIndex, currentIndex);
+            builder2.appendLink(DotLink.newNodeToAction(parentNodeIndex, currentIndex));
         }
         final Node ref = action.getRef();
         if (ref != null) {
             final int refIndex = nodeIndexes.get(ref);
-            builder2.appendActionNodeLink(currentIndex, refIndex, "ref");
+            builder2.appendLink(DotLink.newActionToNode(currentIndex, refIndex, "ref"));
         }
         final Node accept = action.getAccept();
         if (accept != null) {
             appendNode(accept, null, -1);
             final int acceptIndex = nodeIndexes.get(accept);
-            builder2.appendActionNodeLink(currentIndex, acceptIndex, "accept");
+            builder2.appendLink(DotLink.newActionToNode(currentIndex, acceptIndex, "accept"));
         }
     }
 

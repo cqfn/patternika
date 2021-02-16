@@ -42,26 +42,6 @@ final class DotBuilder {
     }
 
     /**
-     * Appends a link from a parent node to a child node.
-     *
-     * @param parentIndex the parent node index.
-     * @param currentIndex the current node index.
-     * @param childIndex the index of the current node in the list of parent node children.
-     */
-    public void appendParentNodeLink(
-            final int parentIndex,
-            final int currentIndex,
-            final int childIndex) {
-        builder.append("  node_")
-               .append(parentIndex)
-               .append(" -> node_")
-               .append(currentIndex)
-               .append(" [label=\" ")
-               .append(childIndex)
-               .append("\"];\n");
-    }
-
-    /**
      * Appends a NULL node.
      *
      * @param nodeIndex the node index.
@@ -88,40 +68,12 @@ final class DotBuilder {
     }
 
     /**
-     * Appends a link from action to a node.
+     * Appends a link.
      *
-     * @param actionIndex the action index.
-     * @param nodeIndex the node index.
-     * @param label the label for the link.
+     * @param link the link that connects two nodes.
      */
-    public void appendActionNodeLink(
-            final int actionIndex,
-            final int nodeIndex,
-            final String label) {
-        builder.append("  action_")
-               .append(actionIndex)
-               .append(" -> node_")
-               .append(nodeIndex)
-               .append(" [label=\" ")
-               .append(label)
-               .append("\"]")
-               .append(";\n");
-    }
-
-    /**
-     * Appends a link from a node to an action.
-     *
-     * @param nodeIndex the node index.
-     * @param actionIndex the action index.
-     */
-    public void appendNodeActionLink(
-            final int nodeIndex,
-            final int actionIndex) {
-        builder.append("  node_")
-               .append(nodeIndex)
-               .append(" -> action_")
-               .append(actionIndex)
-               .append(";\n");
+    public void appendLink(final DotLink link) {
+        link.write(builder);
     }
 
     /**
