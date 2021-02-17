@@ -2,6 +2,7 @@ package org.cqfn.patternika.visualizer;
 
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.engine.Renderer;
 import guru.nidi.graphviz.model.MutableGraph;
 import guru.nidi.graphviz.parse.Parser;
 
@@ -30,7 +31,7 @@ public final class GraphvizUtils {
                                    final String targetImagePath) throws IOException {
         try (InputStream dot = GraphvizUtils.class.getResourceAsStream(dotFilePath)) {
             final MutableGraph graph = new Parser().read(dot);
-            Graphviz.fromGraph(graph).render(Format.PNG).toFile(new File(targetImagePath));
+            renderToImage(graph, targetImagePath);
         }
     }
 
@@ -44,6 +45,14 @@ public final class GraphvizUtils {
     public static void fromDotContent(final String dotContent,
                                       final String targetImagePath) throws IOException {
         final MutableGraph graph = new Parser().read(dotContent);
-        Graphviz.fromGraph(graph).render(Format.PNG).toFile(new File(targetImagePath));
+        renderToImage(graph, targetImagePath);
+    }
+
+    private static void renderToImage(
+            final MutableGraph graph,
+            final String targetImagePath) throws IOException {
+        final Graphviz graphviz = Graphviz.fromGraph(graph);
+        final Renderer render = graphviz.render(Format.PNG);
+        render.toFile(new File(targetImagePath));
     }
 }
