@@ -97,6 +97,11 @@ public class DotVisualizer implements Visualizer {
         appendEnd();
     }
 
+    /**
+     * Traverses the action tree and assigns all nodes and actions unique indexes.
+     *
+     * @param node the root node the tree.
+     */
     private void buildIndexes(final Node node) {
         if (node == null || nodeIndexes.containsKey(node)) {
             return;
@@ -112,10 +117,14 @@ public class DotVisualizer implements Visualizer {
         }
     }
 
-    private void appendNode(
-            final Node node,
-            final Node parentNode,
-            final int childIndex) {
+    /**
+     * Appends a node with all its actions and children.
+     *
+     * @param node the node.
+     * @param parentNode the parent of the node.
+     * @param childIndex the index of the node in the list of children of the parent.
+     */
+    private void appendNode(final Node node, final Node parentNode, final int childIndex) {
         if (processedNodes.putIfAbsent(node, node) != null) {
             return;
         }
@@ -132,26 +141,38 @@ public class DotVisualizer implements Visualizer {
             append(DotLink.newNodeToNode(parentIndex, currentIndex, childIndex));
         }
         if (node != null) {
-            for (int i = 0; i < node.getChildCount(); ++i) {
-                appendNode(node.getChild(i), node, i);
-            }
+            appendChildren(node);
             appendActions(node);
         }
     }
 
+    /**
+     * Returns the writer for the node style.
+     *
+     * @param node the node.
+     * @return the writer for the node style.
+     */
     private Consumer<StringBuilder> getNodeStyle(final Node node) {
         if (node instanceof Hole) {
             return new DotHoleStyle((Hole) node);
         }
-        // String shape = node.getShape();
-        // if (shape != null) {
-        //    result.append("shape=").append(shape).append(' ');
-        //}
+        Consumer<StringBuilder> result = new DotNodeShape(node.getType());
         final List<Integer> nodeMarkers = markers.get(node);
         if (nodeMarkers != null) {
-            return new DotMarkerStyle(nodeMarkers);
+            result = result.andThen(new DotMarkerStyle(nodeMarkers));
         }
-        return b -> { };
+        return result;
+    }
+
+    /**
+     * Appends all children of the specified node if there are any.
+     *
+     * @param node the node that can have children.
+     */
+    private void appendChildren(final Node node) {
+        for (int i = 0; i < node.getChildCount(); ++i) {
+            appendNode(node.getChild(i), node, i);
+        }
     }
 
     /**
@@ -171,7 +192,7 @@ public class DotVisualizer implements Visualizer {
             indexes.add(actionIndexes.get(action));
         }
         final int currentIndex = nodeIndexes.get(node);
-        appendNodeActionLinks(currentIndex, indexes);
+        append(DotMultiLink.newNodeToActions(currentIndex, indexes));
     }
 
     /**
@@ -214,31 +235,6 @@ public class DotVisualizer implements Visualizer {
      */
     private void appendEnd() {
         builder.append("}\n");
-    }
-
-    /**
-     * Appends a link from a node to a list of actions.
-     *
-     * @param nodeIndex the node index.
-     * @param actionIndices the list of action indexes.
-     */
-    private void appendNodeActionLinks(
-            final int nodeIndex,
-            final List<Integer> actionIndices) {
-        final int actionCount = actionIndices.size();
-        final boolean isMultipleActions = actionCount > 1;
-        if (isMultipleActions) {
-            builder.append("  action_").append(actionIndices.get(0));
-            for (int i = 1; i < actionCount; i++) {
-                builder.append(" -> action_").append(actionIndices.get(i));
-            }
-            builder.append("\n");
-        }
-        builder.append("  { rank=same; node_").append(nodeIndex).append(";");
-        for (final int actionIndex : actionIndices) {
-            builder.append(" action_").append(actionIndex).append(";");
-        }
-        builder.append(" }\n");
     }
 
 }
