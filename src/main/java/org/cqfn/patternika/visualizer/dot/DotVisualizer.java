@@ -1,4 +1,4 @@
-package org.cqfn.patternika.visualizer;
+package org.cqfn.patternika.visualizer.dot;
 
 import org.cqfn.patternika.ast.Action;
 import org.cqfn.patternika.ast.ActionTree;
@@ -6,7 +6,7 @@ import org.cqfn.patternika.ast.ActionType;
 import org.cqfn.patternika.ast.Hole;
 import org.cqfn.patternika.ast.Node;
 import org.cqfn.patternika.ast.iterator.Children;
-import org.cqfn.patternika.util.TextUtils;
+import org.cqfn.patternika.visualizer.Visualizer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,9 +21,9 @@ import java.util.function.Consumer;
  *
  * @since 2021/02/08
  */
-@SuppressWarnings("PMD")
 public class DotVisualizer implements Visualizer {
     /** Builds text for a Graphviz file. */
+    @SuppressWarnings("PMD.AvoidStringBufferField")
     private final StringBuilder builder;
     /** Action tree to be visualized. */
     private final ActionTree tree;
@@ -73,6 +73,15 @@ public class DotVisualizer implements Visualizer {
     }
 
     /**
+     * Applies a writer to append some text.
+     *
+     * @param writer the writer that appends a portion of text.
+     */
+    private void append(final Consumer<StringBuilder> writer) {
+        writer.accept(builder);
+    }
+
+    /**
      * Renders data a graphical format.
      */
     @Override
@@ -107,16 +116,16 @@ public class DotVisualizer implements Visualizer {
             final Node node,
             final Node parentNode,
             final int childIndex) {
+        if (processedNodes.putIfAbsent(node, node) != null) {
+            return;
+        }
         final int currentIndex;
-        if (node != null) {
-            if (processedNodes.putIfAbsent(node, node) != null) {
-                return;
-            }
-            currentIndex = nodeIndexes.get(node);
-            appendNodeHeader(node, currentIndex);
-        } else {
+        if (node == null) {
             currentIndex = ++lastIndex;
             append(new DotNullNode(childIndex));
+        } else {
+            currentIndex = nodeIndexes.get(node);
+            append(new DotNode(currentIndex, node.getType(), node.getData(), getNodeStyle(node)));
         }
         if (parentNode != null) {
             final int parentIndex = nodeIndexes.get(parentNode);
@@ -128,20 +137,6 @@ public class DotVisualizer implements Visualizer {
             }
             appendActions(node);
         }
-    }
-
-    private void appendNodeHeader(final Node node, final int currentIndex) {
-        builder.append("  node_").append(currentIndex).append(" [");
-        append(getNodeStyle(node));
-        final String type = node.getType();
-        builder.append("label=<").append(type);
-        final String data = node.getData();
-        if (data != null && !data.isEmpty()) {
-            builder.append("<br/><font color=\"blue\">");
-            builder.append(TextUtils.encodeHtml(data));
-            builder.append("</font>");
-        }
-        builder.append(">]; // NODE\n");
     }
 
     private Consumer<StringBuilder> getNodeStyle(final Node node) {
@@ -209,7 +204,7 @@ public class DotVisualizer implements Visualizer {
     /**
      * Appends graph start.
      */
-    public void appendStart() {
+    private void appendStart() {
         builder.append("digraph AST {\n")
                .append("  node [shape=box style=rounded];\n");
     }
@@ -217,17 +212,8 @@ public class DotVisualizer implements Visualizer {
     /**
      * Appends graph end.
      */
-    public void appendEnd() {
+    private void appendEnd() {
         builder.append("}\n");
-    }
-
-    /**
-     * Applied a writer to append some text.
-     *
-     * @param writer the writer that appends a portion of text.
-     */
-    public void append(final Consumer<StringBuilder> writer) {
-        writer.accept(builder);
     }
 
     /**
@@ -236,7 +222,7 @@ public class DotVisualizer implements Visualizer {
      * @param nodeIndex the node index.
      * @param actionIndices the list of action indexes.
      */
-    public void appendNodeActionLinks(
+    private void appendNodeActionLinks(
             final int nodeIndex,
             final List<Integer> actionIndices) {
         final int actionCount = actionIndices.size();

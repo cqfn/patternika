@@ -2,6 +2,7 @@ package org.cqfn.patternika.visualizer;
 
 import org.cqfn.patternika.ast.ActionTree;
 import org.cqfn.patternika.ast.Node;
+import org.cqfn.patternika.visualizer.dot.DotVisualizer;
 
 import java.io.IOException;
 import java.util.Collections;

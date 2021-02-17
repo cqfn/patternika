@@ -1,4 +1,4 @@
-package org.cqfn.patternika.visualizer;
+package org.cqfn.patternika.visualizer.dot;
 
 import java.util.function.Consumer;
 
