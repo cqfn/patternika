@@ -12,31 +12,31 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
- * Tests for {@link Dfs} and {@link DfsIterator}.
+ * Tests for {@link BreadthFirst} and {@link BreadthFirstIterator}.
  *
  * @since 2020/11/23
  */
-public class DfsTest {
+public class BreadthFirstTest {
 
     /**
-     * Tests {@link Dfs} and {@link DfsIterator} - single node.
+     * Tests {@link BreadthFirst} and {@link BreadthFirstIterator} - single node.
      */
     @Test
-    public void testDfsSingle() {
+    public void testSingle() {
         final Node root = new TestNode(0);
-        final Dfs<Node> children = new Dfs<>(root);
+        final BreadthFirst<Node> children = new BreadthFirst<>(root);
         final Iterator<Node> iterator = children.iterator();
         Assert.assertTrue(iterator.hasNext());
         Assert.assertSame(root, iterator.next());
     }
 
     /**
-     * Tests {@link Dfs} and {@link DfsIterator} - single node.
+     * Tests {@link BreadthFirst} and {@link BreadthFirstIterator} - single node.
      */
     @Test(expected = NoSuchElementException.class)
-    public void testDfsNoElement() {
+    public void testNoElement() {
         final Node root = new TestNode(0);
-        final Dfs<Node> children = new Dfs<>(root);
+        final BreadthFirst<Node> children = new BreadthFirst<>(root);
         final Iterator<Node> iterator = children.iterator();
         Assert.assertTrue(iterator.hasNext());
         Assert.assertSame(root, iterator.next());
@@ -45,10 +45,10 @@ public class DfsTest {
     }
 
     /**
-     * Tests {@link Dfs} and {@link DfsIterator} - positive test.
+     * Tests {@link BreadthFirst} and {@link BreadthFirstIterator} - positive test.
      */
     @Test
-    public void testDfs() {
+    public void test() {
         final TestNode root = new TestNode(
                0,
                 new TestNode(
@@ -68,20 +68,10 @@ public class DfsTest {
                         new TestNode(32)
                         )
             );
-        final List<String> expectedData =
-                Arrays.asList(
-                                "11",
-                                "121", "12",
-                                "13",
-                            "1",
-                                "2111", "211", "21",
-                                "22",
-                            "2",
-                                "31", "32",
-                            "3",
-                        "0"
-                    );
-        final List<Node> nodes = new Dfs<>((Node) root).toList();
+        final List<String> expectedData = Arrays.asList(
+                "0", "1", "2", "3", "11", "12", "13", "21", "22", "31", "32", "121", "211", "2111"
+            );
+        final List<Node> nodes = new BreadthFirst<>((Node) root).toList();
         final List<String> data = nodes.stream().map(Node::getData).collect(Collectors.toList());
         Assert.assertEquals("Wrong element order!", expectedData, data);
     }

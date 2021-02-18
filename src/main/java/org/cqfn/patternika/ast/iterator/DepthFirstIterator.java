@@ -9,13 +9,13 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
- * Iterator that iterates over a node tree in a DFS (depth-first search) manner.
+ * Iterator that iterates over a node tree in the depth-first order.
  *
  * @param <T> Exact node type, {@link Node} or its subclass.
  *
  * @since 2020/11/3
  */
-public class DfsIterator<T extends Node> implements Iterator<T> {
+public class DepthFirstIterator<T extends Node> implements Iterator<T> {
     /** Stack of nodes and iterators over their children. */
     private final Deque<Entry<T>> entries = new LinkedList<>();
 
@@ -24,7 +24,7 @@ public class DfsIterator<T extends Node> implements Iterator<T> {
      *
      * @param root Root node.
      */
-    public DfsIterator(final T root) {
+    public DepthFirstIterator(final T root) {
         entries.push(new Entry<>(root));
     }
 

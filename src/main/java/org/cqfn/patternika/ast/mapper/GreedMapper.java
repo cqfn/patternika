@@ -2,7 +2,7 @@ package org.cqfn.patternika.ast.mapper;
 
 import org.cqfn.patternika.ast.NodeExt;
 import org.cqfn.patternika.ast.hash.SimilarityHash;
-import org.cqfn.patternika.ast.iterator.Bfs;
+import org.cqfn.patternika.ast.iterator.BreadthFirst;
 
 import java.util.List;
 import java.util.Objects;
@@ -42,10 +42,10 @@ public class GreedMapper implements Mapper<NodeExt> {
         // Builds connection starting from root (a fast way).
         downstairs.connect(root1, root2);
         // Adds additional connections where possible.
-        final List<NodeExt> bfsNodes = new Bfs<>(root1).toList();
-        downstairs.connectAll(bfsNodes);
+        final List<NodeExt> nodes = new BreadthFirst<>(root1).toList();
+        downstairs.connectAll(nodes);
         // Remove weak chain connections.
-        weakChain.disconnect(bfsNodes);
+        weakChain.disconnect(nodes);
         return mapping;
     }
 

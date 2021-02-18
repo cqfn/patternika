@@ -8,13 +8,13 @@ import java.util.Objects;
 import java.util.Queue;
 
 /**
- * Iterator that iterates over a node tree in a BFS (breadth-first search) manner.
+ * Iterator that iterates over a node tree in the breadth-first order.
  *
  * @param <T> Exact node type, {@link Node} or its subclass.
  *
  * @since 2020/11/3
  */
-public class BfsIterator<T extends Node> implements Iterator<T> {
+public class BreadthFirstIterator<T extends Node> implements Iterator<T> {
     /** Queue of nodes to be returned and iterated. */
     private final Queue<T> queue = new LinkedList<>();
 
@@ -23,7 +23,7 @@ public class BfsIterator<T extends Node> implements Iterator<T> {
      *
      * @param root Root node.
      */
-    public BfsIterator(final T root) {
+    public BreadthFirstIterator(final T root) {
         queue.add(Objects.requireNonNull(root));
     }
 

@@ -48,13 +48,13 @@ public class Downstairs {
     }
 
     /**
-     * Processes nodes in the BFS order to extend mapping.
-     * If a node is not connected, tries to extend mapping starting from their parents.
+     * Processes nodes in to extend the mapping.
+     * If a node is not connected, tries to extend mapping starting from its parents.
      *
-     * @param bfsNodes tree nodes in the BFS order.
+     * @param nodes nodes to be connected.
      */
-    public void connectAll(final Iterable<NodeExt> bfsNodes) {
-        for (final NodeExt node : bfsNodes) {
+    public void connectAll(final Iterable<NodeExt> nodes) {
+        for (final NodeExt node : nodes) {
             if (!mapping.contains(node)) {
                 connect(node.getParent());
             }

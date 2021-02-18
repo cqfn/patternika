@@ -3,7 +3,7 @@ package org.cqfn.patternika.ast.mapper;
 import org.cqfn.patternika.ast.NodeExt;
 import org.cqfn.patternika.ast.hash.Hash;
 import org.cqfn.patternika.ast.hash.SimilarityHash;
-import org.cqfn.patternika.ast.iterator.Bfs;
+import org.cqfn.patternika.ast.iterator.BreadthFirst;
 
 import java.util.List;
 import java.util.Objects;
@@ -46,10 +46,10 @@ public class HashMapper implements Mapper<NodeExt> {
         final Downstairs downstairs = new Downstairs(mapping, similarity);
         downstairs.connect(root1, root2);
         // ToDo
-        final List<NodeExt> bfsNodes = new Bfs<>(root1).toList();
-        downstairs.connectAll(bfsNodes);
+        final List<NodeExt> nodes = new BreadthFirst<>(root1).toList();
+        downstairs.connectAll(nodes);
         final WeakChain weakChain = new WeakChain(mapping);
-        weakChain.disconnect(bfsNodes);
+        weakChain.disconnect(nodes);
         return mapping;
     }
 

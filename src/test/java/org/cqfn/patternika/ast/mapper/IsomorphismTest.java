@@ -2,7 +2,7 @@ package org.cqfn.patternika.ast.mapper;
 
 import org.cqfn.patternika.ast.Node;
 import org.cqfn.patternika.ast.TestNode;
-import org.cqfn.patternika.ast.iterator.Dfs;
+import org.cqfn.patternika.ast.iterator.DepthFirst;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,7 +43,7 @@ public class IsomorphismTest {
         final Isomorphism isomorphism = new Isomorphism();
         Assert.assertNull(isomorphism.getGroup(0));
         Assert.assertNull(isomorphism.getGroup(new TestNode(0)));
-        new Dfs<>(tree).forEach(isomorphism::add);
+        new DepthFirst<>(tree).forEach(isomorphism::add);
         Assert.assertNull(isomorphism.getGroup(new TestNode(0)));
         Assert.assertEquals(
                 Collections.singleton(tree),

@@ -3,7 +3,7 @@ package org.cqfn.patternika.ast.mapper;
 import org.cqfn.patternika.ast.NodeExt;
 import org.cqfn.patternika.ast.MatchFinder;
 import org.cqfn.patternika.ast.TestNode;
-import org.cqfn.patternika.ast.iterator.Bfs;
+import org.cqfn.patternika.ast.iterator.BreadthFirst;
 
 import org.junit.Test;
 
@@ -71,13 +71,13 @@ public class MapperTest {
     }
 
     /**
-     * BFS test 1 for functionality of {@link GreedMapper}.
+     * Breadth-first test 1 for functionality of {@link GreedMapper}.
      * <p>
-     * Checks that two trees, nodes of which match in the BFS order,
+     * Checks that two trees, nodes of which match in the breadth-first order,
      * are correctly connected in the mapping.
      */
     @Test
-    public void testBfs1() {
+    public void testBreadthFirst1() {
         final NodeExt root1 = new NodeExt(
             new TestNode("a", 0,
                 new TestNode("a", 1,
@@ -99,18 +99,18 @@ public class MapperTest {
         final Mapping<NodeExt> mapping = new GreedMapper(root1, root2).buildMapping();
         // Recursively matching subtrees of the two trees must be connected.
         assertMatchesConnected(mapping, root1, root2);
-        // Nodes of the two trees traversed in the BFS order must be connected.
-        assertBfsConnected(mapping, root1, root2);
+        // Nodes of the two trees traversed in the breadth-first order must be connected.
+        assertBreadthFirstConnected(mapping, root1, root2);
     }
 
     /**
-     * BFS test 2 for functionality of {@link GreedMapper}.
+     * Breadth-first test 2 for functionality of {@link GreedMapper}.
      * <p>
-     * Checks that two trees, nodes of which match in the BFS order,
+     * Checks that two trees, nodes of which match in the breadth-first order,
      * are correctly connected in the mapping.
      */
     @Test
-    public void testBfs2() {
+    public void testBreadthFirst2() {
         final NodeExt root1 = new NodeExt(
             new TestNode("a", 0,
                 new TestNode("a", 1,
@@ -132,8 +132,8 @@ public class MapperTest {
         final Mapping<NodeExt> mapping = new GreedMapper(root1, root2).buildMapping();
         // Recursively matching subtrees of the two trees must be connected.
         assertMatchesConnected(mapping, root1, root2);
-        // Nodes of the two trees traversed in the BFS order must be connected.
-        assertBfsConnected(mapping, root1, root2);
+        // Nodes of the two trees traversed in the breadth-first order must be connected.
+        assertBreadthFirstConnected(mapping, root1, root2);
     }
 
     /**
@@ -166,20 +166,21 @@ public class MapperTest {
     }
 
     /**
-     * Checks that two trees, nodes of which match in the BFS order,
+     * Checks that two trees, nodes of which match in the breadth-first order,
      * are correctly connected in the mapping.
      *
      * @param mapping mapping to be checked.
      * @param root1 first tree root.
      * @param root2 second tree root.
-     * @throws AssertionError if at least one pair of nodes traversed in BFS order is not connected.
+     * @throws AssertionError if at least one pair of nodes traversed in
+     *         the breadth-first order is not connected.
      */
-    private static void assertBfsConnected(
+    private static void assertBreadthFirstConnected(
             final Mapping<NodeExt> mapping,
             final NodeExt root1,
             final NodeExt root2) {
-        final Iterator<NodeExt> it1 = new Bfs<>(root1).iterator();
-        final Iterator<NodeExt> it2 = new Bfs<>(root2).iterator();
+        final Iterator<NodeExt> it1 = new BreadthFirst<>(root1).iterator();
+        final Iterator<NodeExt> it2 = new BreadthFirst<>(root2).iterator();
         while (it1.hasNext() && it2.hasNext()) {
             assertConnected(mapping, it1.next(), it2.next());
         }
@@ -191,7 +192,7 @@ public class MapperTest {
      * @param mapping mapping to be checked.
      * @param node1 first node.
      * @param node2 second node.
-     * @throws AssertionError if at least one pair of nodes traversed in BFS order is not connected.
+     * @throws AssertionError if the nodes are not connected at least in one direction.
      */
     private static void assertConnected(
             final Mapping<NodeExt> mapping,

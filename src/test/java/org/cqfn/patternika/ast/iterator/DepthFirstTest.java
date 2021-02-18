@@ -12,31 +12,31 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
- * Tests for {@link Bfs} and {@link BfsIterator}.
+ * Tests for {@link DepthFirst} and {@link DepthFirstIterator}.
  *
  * @since 2020/11/23
  */
-public class BfsTest {
+public class DepthFirstTest {
 
     /**
-     * Tests {@link Bfs} and {@link BfsIterator} - single node.
+     * Tests {@link DepthFirst} and {@link DepthFirstIterator} - single node.
      */
     @Test
-    public void testBfsSingle() {
+    public void testSingle() {
         final Node root = new TestNode(0);
-        final Bfs<Node> children = new Bfs<>(root);
+        final DepthFirst<Node> children = new DepthFirst<>(root);
         final Iterator<Node> iterator = children.iterator();
         Assert.assertTrue(iterator.hasNext());
         Assert.assertSame(root, iterator.next());
     }
 
     /**
-     * Tests {@link Bfs} and {@link BfsIterator} - single node.
+     * Tests {@link DepthFirst} and {@link DepthFirstIterator} - single node.
      */
     @Test(expected = NoSuchElementException.class)
-    public void testBfsNoElement() {
+    public void testNoElement() {
         final Node root = new TestNode(0);
-        final Bfs<Node> children = new Bfs<>(root);
+        final DepthFirst<Node> children = new DepthFirst<>(root);
         final Iterator<Node> iterator = children.iterator();
         Assert.assertTrue(iterator.hasNext());
         Assert.assertSame(root, iterator.next());
@@ -45,10 +45,10 @@ public class BfsTest {
     }
 
     /**
-     * Tests {@link Bfs} and {@link BfsIterator} - positive test.
+     * Tests {@link DepthFirst} and {@link DepthFirstIterator} - positive test.
      */
     @Test
-    public void testBfs() {
+    public void test() {
         final TestNode root = new TestNode(
                0,
                 new TestNode(
@@ -68,10 +68,20 @@ public class BfsTest {
                         new TestNode(32)
                         )
             );
-        final List<String> expectedData = Arrays.asList(
-                "0", "1", "2", "3", "11", "12", "13", "21", "22", "31", "32", "121", "211", "2111"
-            );
-        final List<Node> nodes = new Bfs<>((Node) root).toList();
+        final List<String> expectedData =
+                Arrays.asList(
+                                "11",
+                                "121", "12",
+                                "13",
+                            "1",
+                                "2111", "211", "21",
+                                "22",
+                            "2",
+                                "31", "32",
+                            "3",
+                        "0"
+                    );
+        final List<Node> nodes = new DepthFirst<>((Node) root).toList();
         final List<String> data = nodes.stream().map(Node::getData).collect(Collectors.toList());
         Assert.assertEquals("Wrong element order!", expectedData, data);
     }
