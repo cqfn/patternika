@@ -18,8 +18,6 @@ pattern designing and visualisation.
 
 ## Usage
 
-`ToDo: this section will be filled later, because the project is not ready for usage yet.`
-
 * [Main concepts](docs/DESCRIPTION.md)
 * [Command-line interface](docs/CLI.md)
 
@@ -47,4 +45,3 @@ review the [guidelines for contributing](docs/CONTRIBUTING.md).
 
 IMPORTANT: By submitting any contribution, you agree to allow the project owner to
 license your work under the same [license](LICENSE) as that used for the project.
-
