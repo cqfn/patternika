@@ -26,9 +26,6 @@ plugins {
     id 'pmd'
 }
 
-group 'patternika'
-version '1.0-SNAPSHOT'
-
 // To compile files that may contain non-English characters, UTF-8 must be used.
 // Java source code must be compatible with JDK 1.8.
 compileJava {
@@ -57,10 +54,14 @@ dependencies {
 }
 
 jar {
-    archiveName 'patternika.jar'
+    archiveName projectName + '.jar'
     manifest {
         attributes 'Manifest-Version': '1.0'
-//      attributes 'Main-Class': 'org.cqfn.patternika.launcher.Main'
+        attributes 'Title'  : projectTitle
+        attributes 'Version': projectVersion
+        attributes 'Built-JDK': System.getProperty('java.version')
+        attributes 'Main-Class': mainClassName
+        attributes 'Class-Path': configurations.compile.collect { it.getName() }.join(' ')
     }
 }
 
