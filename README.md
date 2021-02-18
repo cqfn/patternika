@@ -16,6 +16,11 @@ in **any** project with **any** programming language.
 That's not all! Patternika is also a powerful instrument for source-code tree analysis, code patching, 
 pattern designing and visualisation. 
 
+## Usage
+
+* [Main concepts](docs/DESCRIPTION.md)
+* [Command-line interface](docs/CLI.md)
+
 ## Building
 
 The project is built using the Gradle build automation tool.
@@ -40,11 +45,3 @@ review the [guidelines for contributing](docs/CONTRIBUTING.md).
 
 IMPORTANT: By submitting any contribution, you agree to allow the project owner to
 license your work under the same [license](LICENSE) as that used for the project.
-
-## How to use
-
-`ToDo: this section will be filled later, because the project is not ready for usage yet.`
-
-* [White paper]()
-
-* [Main concepts](docs/DESCRIPTION.md)
