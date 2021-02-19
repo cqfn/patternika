@@ -38,7 +38,7 @@ public class DotAction implements Consumer<StringBuilder> {
                .append(" [shape=note color=")
                .append(getColor())
                .append(" label=<")
-               .append(type.getText())
+               .append(type)
                .append(">];\n");
     }
 
@@ -51,13 +51,10 @@ public class DotAction implements Consumer<StringBuilder> {
         switch (type) {
             case DELETE:
                 return "red";
-            case INSERT_AFTER:
-            case INSERT_BEFORE:
-                return "skyblue";
             case UPDATE:
                 return "forestgreen";
             default:
-                return "gray";
+                return "skyblue";
         }
     }
 

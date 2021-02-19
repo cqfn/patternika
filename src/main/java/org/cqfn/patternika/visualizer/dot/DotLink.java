@@ -96,7 +96,8 @@ public class DotLink implements Consumer<StringBuilder> {
      */
     @Override
     public void accept(final StringBuilder builder) {
-        builder.append(fromName)
+        builder.append("  ")
+               .append(fromName)
                .append('_')
                .append(fromIndex)
                .append(" -> ")

@@ -33,8 +33,6 @@ public class DotVisualizer implements Visualizer {
     private final Map<Node, Integer> nodeIndexes;
     /** Stores indices of actions. */
     private final Map<Action, Integer> actionIndexes;
-    /** Processed nodes. */
-    private final Map<Node, Node> processedNodes;
     /** Last index used for a node or an action. */
     private int lastIndex;
 
@@ -54,7 +52,6 @@ public class DotVisualizer implements Visualizer {
         this.markers = Objects.requireNonNull(markers);
         this.nodeIndexes = new IdentityHashMap<>();
         this.actionIndexes = new IdentityHashMap<>();
-        this.processedNodes = new IdentityHashMap<>();
         this.lastIndex = -1;
     }
 
@@ -125,13 +122,10 @@ public class DotVisualizer implements Visualizer {
      * @param childIndex the index of the node in the list of children of the parent.
      */
     private void appendNode(final Node node, final Node parentNode, final int childIndex) {
-        if (processedNodes.putIfAbsent(node, node) != null) {
-            return;
-        }
         final int currentIndex;
         if (node == null) {
             currentIndex = ++lastIndex;
-            append(new DotNullNode(childIndex));
+            append(new DotNullNode(currentIndex));
         } else {
             currentIndex = nodeIndexes.get(node);
             append(new DotNode(currentIndex, node.getType(), node.getData(), getNodeStyle(node)));

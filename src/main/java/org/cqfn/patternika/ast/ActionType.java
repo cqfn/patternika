@@ -37,7 +37,8 @@ public enum ActionType {
      *
      * @return the printable identifier of the action type.
      */
-    public String getText() {
+    @Override
+    public String toString() {
         return text;
     }
 }

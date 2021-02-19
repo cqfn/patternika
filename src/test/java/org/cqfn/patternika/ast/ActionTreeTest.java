@@ -20,10 +20,10 @@ public class ActionTreeTest {
         // DELETE, INSERT_BEFORE, INSERT_AFTER, UPDATE
         final int actionTypeCount = 4;
         Assert.assertEquals(actionTypeCount, ActionType.values().length);
-        Assert.assertEquals("ActionDelete", ActionType.DELETE.getText());
-        Assert.assertEquals("ActionInsertBefore", ActionType.INSERT_BEFORE.getText());
-        Assert.assertEquals("ActionInsertAfter", ActionType.INSERT_AFTER.getText());
-        Assert.assertEquals("ActionUpdate", ActionType.UPDATE.getText());
+        Assert.assertEquals("ActionDelete", ActionType.DELETE.toString());
+        Assert.assertEquals("ActionInsertBefore", ActionType.INSERT_BEFORE.toString());
+        Assert.assertEquals("ActionInsertAfter", ActionType.INSERT_AFTER.toString());
+        Assert.assertEquals("ActionUpdate", ActionType.UPDATE.toString());
     }
 
     /**
@@ -98,7 +98,7 @@ public class ActionTreeTest {
             new TestNode(0,
                 new TestNode(10,
                     new TestNode(100),
-                    new TestNode(101, new TestNode(1010))
+                    new TestNode("TraitBlock", 101, new TestNode("Trait", 1010))
                 ),
                 new TestNode(11,
                     new TestNode(110)
