@@ -22,7 +22,7 @@ import java.util.function.Consumer;
  * @since 2021/02/08
  */
 public class DotVisualizer implements Visualizer {
-    /** Builds text for a Graphviz file. */
+    /** Stores the generates DOT text and stores the result. */
     @SuppressWarnings("PMD.AvoidStringBufferField")
     private final StringBuilder builder;
     /** Action tree to be visualized. */
