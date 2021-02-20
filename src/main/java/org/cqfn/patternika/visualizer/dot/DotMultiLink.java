@@ -10,32 +10,32 @@ import java.util.function.Consumer;
  * @since 2021/02/17
  */
 public class DotMultiLink implements Consumer<StringBuilder> {
-    /** The source node name. */
-    private final String source;
-    /** The source node index. */
-    private final int sourceIndex;
-    /** The target node name. */
-    private final String target;
-    /** The target node indexes. */
-    private final List<Integer> targetIndexes;
+    /** The "from" node name. */
+    private final String fromName;
+    /** The "from" node index. */
+    private final int fromIndex;
+    /** The "to" node name. */
+    private final String toName;
+    /** The "to" node indexes. */
+    private final List<Integer> toIndexes;
 
     /**
      * Constructor.
      *
-     * @param source the source node name.
-     * @param sourceIndex the source node index.
-     * @param target the target node name.
-     * @param targetIndexes the target node indexes.
+     * @param fromName the "from" node name.
+     * @param fromIndex the "from" node index.
+     * @param toName the "to" node name.
+     * @param toIndexes the "to" node indexes.
      */
     public DotMultiLink(
-            final String source,
-            final int sourceIndex,
-            final String target,
-            final List<Integer> targetIndexes) {
-        this.source = Objects.requireNonNull(source);
-        this.sourceIndex = sourceIndex;
-        this.target = Objects.requireNonNull(target);
-        this.targetIndexes = Objects.requireNonNull(targetIndexes);
+            final String fromName,
+            final int fromIndex,
+            final String toName,
+            final List<Integer> toIndexes) {
+        this.fromName = Objects.requireNonNull(fromName);
+        this.fromIndex = fromIndex;
+        this.toName = Objects.requireNonNull(toName);
+        this.toIndexes = Objects.requireNonNull(toIndexes);
     }
 
     /**
@@ -58,31 +58,31 @@ public class DotMultiLink implements Consumer<StringBuilder> {
      */
     @Override
     public void accept(final StringBuilder builder) {
-        final int targetCount = targetIndexes.size();
-        final boolean isMultipleTargets = targetCount > 1;
+        final int toCount = toIndexes.size();
+        final boolean isMultipleTargets = toCount > 1;
         if (isMultipleTargets) {
             builder.append("  ")
-                   .append(target)
+                   .append(toName)
                    .append('_')
-                   .append(targetIndexes.get(0));
-            for (int i = 1; i < targetCount; i++) {
+                   .append(toIndexes.get(0));
+            for (int i = 1; i < toCount; i++) {
                 builder.append(" -> ")
-                       .append(target)
+                       .append(toName)
                        .append('_')
-                       .append(targetIndexes.get(i));
+                       .append(toIndexes.get(i));
             }
             builder.append('\n');
         }
         builder.append("  { rank=same; ")
-               .append(source)
+               .append(fromName)
                .append('_')
-               .append(sourceIndex)
+               .append(fromIndex)
                .append(";");
-        for (final int targetIndex : targetIndexes) {
+        for (final int toIndex : toIndexes) {
             builder.append(' ')
-                   .append(target)
+                   .append(toName)
                    .append('_')
-                   .append(targetIndex)
+                   .append(toIndex)
                    .append(';');
         }
         builder.append(" }\n");

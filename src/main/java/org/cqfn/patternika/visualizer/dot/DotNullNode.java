@@ -3,7 +3,7 @@ package org.cqfn.patternika.visualizer.dot;
 import java.util.function.Consumer;
 
 /**
- * Null node for a Dot graph.
+ * Null node for a DOT graph.
  *
  * @since 2021/02/16
  */

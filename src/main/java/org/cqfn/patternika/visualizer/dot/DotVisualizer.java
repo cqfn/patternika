@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * Renders an abstract syntax tree to a Dot text.
+ * Renders an abstract syntax tree to a DOT text.
  *
  * @since 2021/02/08
  */

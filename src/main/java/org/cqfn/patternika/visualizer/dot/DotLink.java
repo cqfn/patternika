@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * Link between nodes in a Dot graph.
+ * Link between nodes in a DOT graph.
  *
  * @since 2021/02/16
  */

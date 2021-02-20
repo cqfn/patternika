@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * Hole style for a Dot graph.
+ * Hole style for a DOT graph.
  *
  * @since 2021/02/16
  */

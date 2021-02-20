@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * Action for a Dot graph.
+ * Action for a DOT graph.
  *
  * @since 2021/02/16
  */
