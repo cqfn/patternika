@@ -3,14 +3,13 @@ package org.cqfn.patternika.visualizer.dot;
 import org.cqfn.patternika.ast.Hole;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * Hole style for a DOT graph.
  *
  * @since 2021/02/16
  */
-public class DotHoleStyle implements Consumer<StringBuilder> {
+public class DotHoleStyle implements DotWriter {
     /** The hole. */
     private final Hole hole;
 
@@ -29,7 +28,7 @@ public class DotHoleStyle implements Consumer<StringBuilder> {
      * @param builder the string builder.
      */
     @Override
-    public void accept(final StringBuilder builder) {
+    public void write(final StringBuilder builder) {
         builder.append("style=\"rounded,filled\" color=\"mediumpurple\" fillcolor=\"")
                .append(hole.getNumber() < 0 ? "thistle1" : "thistle")
                .append("\" penwidth=2 ");

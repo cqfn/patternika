@@ -2,14 +2,13 @@ package org.cqfn.patternika.visualizer.dot;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * Link between a node and multiple nodes of the same rank.
  *
  * @since 2021/02/17
  */
-public class DotMultiLink implements Consumer<StringBuilder> {
+public class DotMultiLink implements DotWriter {
     /** The "from" node name. */
     private final String fromName;
     /** The "from" node index. */
@@ -52,12 +51,12 @@ public class DotMultiLink implements Consumer<StringBuilder> {
     }
 
     /**
-     * Writes the link to a string builder.
+     * Writes the link to the string builder.
      *
      * @param builder the string builder.
      */
     @Override
-    public void accept(final StringBuilder builder) {
+    public void write(final StringBuilder builder) {
         final int toCount = toIndexes.size();
         final boolean isMultipleTargets = toCount > 1;
         if (isMultipleTargets) {

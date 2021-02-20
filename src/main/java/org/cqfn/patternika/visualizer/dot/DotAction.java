@@ -3,14 +3,13 @@ package org.cqfn.patternika.visualizer.dot;
 import org.cqfn.patternika.ast.ActionType;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * Action for a DOT graph.
  *
  * @since 2021/02/16
  */
-public class DotAction implements Consumer<StringBuilder> {
+public class DotAction implements DotWriter {
     /** The action node index. */
     private final int index;
     /** The action type. */
@@ -33,7 +32,7 @@ public class DotAction implements Consumer<StringBuilder> {
      * @param builder the string builder.
      */
     @Override
-    public void accept(final StringBuilder builder) {
+    public void write(final StringBuilder builder) {
         builder.append("  action_").append(index)
                .append(" [shape=note color=")
                .append(getColor())

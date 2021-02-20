@@ -14,7 +14,6 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * Renders an abstract syntax tree to a DOT text.
@@ -70,12 +69,12 @@ public class DotVisualizer implements Visualizer {
     }
 
     /**
-     * Applies a writer to append some text.
+     * Applies the specified writer to append some text.
      *
      * @param writer the writer that appends a portion of text.
      */
-    private void append(final Consumer<StringBuilder> writer) {
-        writer.accept(builder);
+    private void append(final DotWriter writer) {
+        writer.write(builder);
     }
 
     /**
@@ -146,16 +145,20 @@ public class DotVisualizer implements Visualizer {
      * @param node the node.
      * @return the writer for the node style.
      */
-    private Consumer<StringBuilder> getNodeStyle(final Node node) {
+    private DotWriter getNodeStyle(final Node node) {
         if (node instanceof Hole) {
             return new DotHoleStyle((Hole) node);
         }
-        Consumer<StringBuilder> result = new DotNodeShape(node.getType());
+        final DotWriter shapeWriter = new DotNodeShape(node.getType());
         final List<Integer> nodeMarkers = markers.get(node);
-        if (nodeMarkers != null) {
-            result = result.andThen(new DotMarkerStyle(nodeMarkers));
+        if (nodeMarkers == null) {
+            return shapeWriter;
         }
-        return result;
+        final DotWriter markerWriter = new DotMarkerStyle(nodeMarkers);
+        return sb -> {
+            shapeWriter.write(sb);
+            markerWriter.write(sb);
+        };
     }
 
     /**

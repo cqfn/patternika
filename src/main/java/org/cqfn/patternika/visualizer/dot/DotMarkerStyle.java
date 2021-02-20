@@ -2,14 +2,13 @@ package org.cqfn.patternika.visualizer.dot;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * Style for a node markered with multiple colors.
  *
  * @since 2021/02/16
  */
-public class DotMarkerStyle implements Consumer<StringBuilder> {
+public class DotMarkerStyle implements DotWriter {
     /** Color names. */
     private final String[] colorNames = {
             "gold",
@@ -48,12 +47,12 @@ public class DotMarkerStyle implements Consumer<StringBuilder> {
     }
 
     /**
-     * Performs this operation on the given argument.
+     * Writes the marker style to the string builder.
      *
-     * @param builder the input argument
+     * @param builder the string builder.
      */
     @Override
-    public void accept(final StringBuilder builder) {
+    public void write(final StringBuilder builder) {
         final boolean isSingle = markers.size() == 1;
         if (isSingle) {
             builder.append("style=\"rounded,filled\"");

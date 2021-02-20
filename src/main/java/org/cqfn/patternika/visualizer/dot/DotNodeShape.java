@@ -1,14 +1,13 @@
 package org.cqfn.patternika.visualizer.dot;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * Shape for nodes.
  *
  * @since 2021/02/17
  */
-public class DotNodeShape implements Consumer<StringBuilder> {
+public class DotNodeShape implements DotWriter {
     /** The node type. */
     private final String nodeType;
 
@@ -22,12 +21,12 @@ public class DotNodeShape implements Consumer<StringBuilder> {
     }
 
     /**
-     * Writes the shape to a string builder.
+     * Writes the shape to the string builder.
      *
      * @param builder the string builder.
      */
     @Override
-    public void accept(final StringBuilder builder) {
+    public void write(final StringBuilder builder) {
         final String shape = getShape();
         if (shape != null) {
             builder.append("shape=")

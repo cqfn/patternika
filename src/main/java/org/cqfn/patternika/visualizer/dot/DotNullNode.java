@@ -1,13 +1,11 @@
 package org.cqfn.patternika.visualizer.dot;
 
-import java.util.function.Consumer;
-
 /**
  * Null node for a DOT graph.
  *
  * @since 2021/02/16
  */
-public class DotNullNode implements Consumer<StringBuilder> {
+public class DotNullNode implements DotWriter {
     /** The node index. */
     private final int nodeIndex;
 
@@ -26,9 +24,9 @@ public class DotNullNode implements Consumer<StringBuilder> {
      * @param builder the string builder.
      */
     @Override
-    public void accept(final StringBuilder builder) {
+    public void write(final StringBuilder builder) {
         builder.append("  node_")
-                .append(nodeIndex)
-                .append(" [label=<<b>NULL</b>>]; // NODE\n");
+               .append(nodeIndex)
+               .append(" [label=<<b>NULL</b>>]; // NODE\n");
     }
 }
