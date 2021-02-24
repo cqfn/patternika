@@ -12,7 +12,9 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Tests for the {@link DotVisualizer} class.
@@ -184,6 +186,56 @@ public class DotVisualizerTest {
                 + "}\n";
         final String dotText = getDotText(root);
         Assert.assertEquals(text, dotText);
+    }
+
+    /**
+     * Tests highlighting nodes with markers..
+     */
+    @Test
+    public void testMarkers() {
+        final Node root =
+            new TestNode(0,
+                    new TestNode(10),
+                    new TestNode(11, new TestNode(111)),
+                    new TestNode(12, new TestNode(121)),
+                    new TestNode(13)
+               );
+        final int maxMarkerIndex = 21;
+        final Map<Node, List<Integer>> markers = new IdentityHashMap<>();
+        markers.put(root, Collections.singletonList(0));
+        markers.put(root.getChild(0), Collections.singletonList(1));
+        markers.put(root.getChild(1), Arrays.asList(1, 2));
+        markers.put(root.getChild(1).getChild(0), Arrays.asList(0, 1, 2));
+        markers.put(root.getChild(2), Collections.singletonList(2));
+        markers.put(root.getChild(root.getChildCount() - 1),
+                    Collections.singletonList(maxMarkerIndex));
+        final String text =
+              "digraph AST {\n"
+            + "  node [shape=box style=rounded];\n"
+            + "  node_0 [style=\"rounded,filled\" fillcolor=\"gold\""
+            + " label=<TestNode<br/><font color=\"blue\">0</font>>]; // NODE\n"
+            + "  node_1 [style=\"rounded,filled\" fillcolor=\"darkolivegreen3\""
+            + " label=<TestNode<br/><font color=\"blue\">10</font>>]; // NODE\n"
+            + "  node_0 -> node_1 [label=\" 0\"];\n"
+            + "  node_2 [style=striped penwidth=2 fillcolor=\"darkolivegreen3:aquamarine3\""
+            + " label=<TestNode<br/><font color=\"blue\">11</font>>]; // NODE\n"
+            + "  node_0 -> node_2 [label=\" 1\"];\n"
+            + "  node_3 [style=striped penwidth=2 fillcolor=\"gold:darkolivegreen3:aquamarine3\""
+            + " label=<TestNode<br/><font color=\"blue\">111</font>>]; // NODE\n"
+            + "  node_2 -> node_3 [label=\" 0\"];\n"
+            + "  node_4 [style=\"rounded,filled\" fillcolor=\"aquamarine3\""
+            + " label=<TestNode<br/><font color=\"blue\">12</font>>]; // NODE\n"
+            + "  node_0 -> node_4 [label=\" 2\"];\n"
+            + "  node_5 [label=<TestNode<br/><font color=\"blue\">121</font>>]; // NODE\n"
+            + "  node_4 -> node_5 [label=\" 0\"];\n"
+            + "  node_6 [style=\"rounded,filled\" fillcolor=\"coral\""
+            + " label=<TestNode<br/><font color=\"blue\">13</font>>]; // NODE\n"
+            + "  node_0 -> node_6 [label=\" 3\"];\n"
+            + "}\n";
+        final StringBuilder builder = new StringBuilder();
+        final DotVisualizer visualizer = new DotVisualizer(builder, root, markers);
+        visualizer.visualize();
+        Assert.assertEquals(text, builder.toString());
     }
 
     /**

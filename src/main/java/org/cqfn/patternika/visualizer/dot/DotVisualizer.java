@@ -26,7 +26,7 @@ public class DotVisualizer implements Visualizer {
     private final StringBuilder builder;
     /** Action tree to be visualized. */
     private final ActionTree tree;
-    /** Markers. */
+    /** Markers to highlight certain nodes (possibly with multiple colors). */
     private final Map<Node, List<Integer>> markers;
     /** Stores indices of nodes. */
     private final Map<Node, Integer> nodeIndexes;
@@ -40,7 +40,7 @@ public class DotVisualizer implements Visualizer {
      *
      * @param builder the builder for saving text for a Graphviz file.
      * @param tree the action tree to be visualized.
-     * @param markers markers.
+     * @param markers markers to highlight certain nodes (possibly with multiple colors).
      */
     public DotVisualizer(
             final StringBuilder builder,
@@ -59,7 +59,7 @@ public class DotVisualizer implements Visualizer {
      *
      * @param builder the builder for saving text for a Graphviz file.
      * @param root the root of the node tree to be visualized.
-     * @param markers markers.
+     * @param markers markers to highlight certain nodes (possibly with multiple colors).
      */
     public DotVisualizer(
             final StringBuilder builder,
@@ -140,20 +140,24 @@ public class DotVisualizer implements Visualizer {
     }
 
     /**
-     * Returns the writer for the node style.
+     * Returns the writer that generates node style description for the node
+     * depending on the node type and marker (if they are assigned to that node).
      *
      * @param node the node.
      * @return the writer for the node style.
      */
     private DotWriter getNodeStyle(final Node node) {
         if (node instanceof Hole) {
+            // Holes have a special style.
             return new DotHoleStyle((Hole) node);
         }
+        // Nodes have a shape. Most use default shape, some other use a custom shape.
         final DotWriter shapeWriter = new DotNodeShape(node.getType());
         final List<Integer> nodeMarkers = markers.get(node);
         if (nodeMarkers == null) {
             return shapeWriter;
         }
+        // Markered nodes have an additional style tag that highlights these nodes.
         final DotWriter markerWriter = new DotMarkerStyle(nodeMarkers);
         return sb -> {
             shapeWriter.write(sb);

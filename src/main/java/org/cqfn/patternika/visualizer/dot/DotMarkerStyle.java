@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Style for a node markered with multiple colors.
+ * Style for markers that are used to highlight nodes (possibly with multiple colors).
  *
  * @since 2021/02/16
  */
