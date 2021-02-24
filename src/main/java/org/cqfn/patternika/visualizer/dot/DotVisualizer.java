@@ -21,7 +21,7 @@ import java.util.Objects;
  * @since 2021/02/08
  */
 public class DotVisualizer implements Visualizer {
-    /** Stores the generates DOT text and stores the result. */
+    /** Stores the generated DOT text and stores the result. */
     @SuppressWarnings("PMD.AvoidStringBufferField")
     private final StringBuilder builder;
     /** Action tree to be visualized. */
