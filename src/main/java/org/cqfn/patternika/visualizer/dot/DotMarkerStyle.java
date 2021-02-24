@@ -55,11 +55,16 @@ public class DotMarkerStyle implements DotWriter {
     public void write(final StringBuilder builder) {
         final boolean isSingle = markers.size() == 1;
         if (isSingle) {
+            // Style for a single color.
             builder.append("style=\"rounded,filled\"");
         } else {
+            // Striped style for multiple marker colors.
             builder.append("style=striped penwidth=2");
         }
         builder.append(" fillcolor=\"");
+        // When multiple marker colors are used, they are separated with ':'.
+        // ':' is appended to separate the current color from the previous.
+        // This means that it is not appended before the first color.
         boolean isFirst = true;
         for (final Integer marker : markers) {
             if (isFirst) {
