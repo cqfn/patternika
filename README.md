@@ -2,6 +2,8 @@
 [![GitHub](https://github.com/patternika/patternika/workflows/Java%20CI%20with%20Gradle/badge.svg)](
   https://github.com/patternika/patternika/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
 [![codecov](https://codecov.io/gh/patternika/patternika/branch/main/graph/badge.svg?token=0V10JBZRRO)](https://codecov.io/gh/patternika/patternika)
+[![Hits-of-Code](https://hitsofcode.com/github/cqfn/patternika?branch=main)](https://hitsofcode.com/github/cqfn/patternika?branch=main/view?branch=main)
+
 
 There are a lot of tools dedicated to library migrations, like 
 [ORMIT](https://renaps.com/en/products/ormit-java), 
