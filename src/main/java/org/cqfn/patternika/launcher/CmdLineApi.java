@@ -124,7 +124,7 @@ public class CmdLineApi {
                    .append(prefix)
                    .append("--")
                    .append(option.getName());
-            if (option.getArgumentsCount() > 0) {
+            if (option.getArgumentCount() > 0) {
                 builder.append(" ...");
             }
             builder.append(suffix);

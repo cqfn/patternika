@@ -16,7 +16,7 @@ public interface Option {
     /**
      * @return the count of arguments required for the option.
      */
-    int getArgumentsCount();
+    int getArgumentCount();
 
     /**
      * @return the list of options that must be specified together with this option.
