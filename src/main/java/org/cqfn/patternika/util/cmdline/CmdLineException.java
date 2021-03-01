@@ -1,4 +1,4 @@
-package org.cqfn.patternika.launcher;
+package org.cqfn.patternika.util.cmdline;
 
 /**
  * Exception caused by an issue in command line parsing.

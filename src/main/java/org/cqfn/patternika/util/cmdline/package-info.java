@@ -5,4 +5,4 @@
  * @since 2021/02/25
  */
 
-package org.cqfn.patternika.launcher;
+package org.cqfn.patternika.util.cmdline;

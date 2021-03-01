@@ -1,9 +1,9 @@
 package org.cqfn.patternika;
 
-import org.cqfn.patternika.launcher.CmdLine;
-import org.cqfn.patternika.launcher.CmdLineApi;
-import org.cqfn.patternika.launcher.CmdLineException;
-import org.cqfn.patternika.launcher.CmdLineParser;
+import org.cqfn.patternika.util.cmdline.CmdLine;
+import org.cqfn.patternika.util.cmdline.CmdLineApi;
+import org.cqfn.patternika.util.cmdline.CmdLineException;
+import org.cqfn.patternika.util.cmdline.CmdLineParser;
 
 /**
  * The main class (entry point) for the tool.

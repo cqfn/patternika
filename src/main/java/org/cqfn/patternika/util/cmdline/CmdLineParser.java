@@ -1,4 +1,4 @@
-package org.cqfn.patternika.launcher;
+package org.cqfn.patternika.util.cmdline;
 
 import java.util.ArrayList;
 import java.util.Arrays;
