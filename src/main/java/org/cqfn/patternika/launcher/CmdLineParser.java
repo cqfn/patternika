@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  *
  * @since 2020/11/18
  */
-@SuppressWarnings("PMD")
 public class CmdLineParser {
     /** The command-line API configuration. */
     private final CmdLineApi api;
@@ -37,12 +36,16 @@ public class CmdLineParser {
      * @return the parsed command line.
      * @throws CmdLineException if the command-line contains wrong arguments or options.
      */
-    public CmdLine parse(final String[] args) throws CmdLineException {
+    public CmdLine parse(final String... args) throws CmdLineException {
         if (args.length == 0) {
             throw new CmdLineException("No action specified.");
         }
         // The 0-th argument is always the action name.
-        final Action action = getAction(args[0]);
+        final String actionName = args[0];
+        final Action action = api.getAction(actionName);
+        if (action == null) {
+            throw new CmdLineException("Unknown action: '" + actionName +  "'.");
+        }
         final List<String> arguments = new ArrayList<>();
         final Map<Option, List<String>> options = new IdentityHashMap<>();
         int argIndex = 1;
@@ -79,41 +82,51 @@ public class CmdLineParser {
      */
     private Map<String, List<String>> getOptionMap(
             final Action action,
-            final Map<Option, List<String>> options) {
-        return new HashMap<>();
-        /*
-        Set<Option> ignoredOptions = new HashSet<>();
-        for (final Option option : optionsList) {
-            Option descriptor = option.getDescriptor();
-            if (!descriptor.isGlobal())
-                ignoredOptions.add(option);
-        }
-
-        for (final Option option : action.getRelatedRequiredOptions()) {
-            if (options.containsKey(option)) {
-                ignoredOptions.remove(option);
-            } else {
-                throw new CmdLineException(
-                        "Action '" + action.getName() + "' requires option '--"
-                                + option.getName() + "' to be specified");
+            final Map<Option, List<String>> options) throws CmdLineException {
+        final Map<String, List<String>> result = new HashMap<>();
+        // Add all global options (and their dependencies).
+        for (final Option option : options.keySet()) {
+            if (option.isGlobal()) {
+                addOption("", result, option, options);
             }
         }
+        // Add all options required by the action (and their dependencies).
+        for (final Option option : action.getRelatedRequiredOptions()) {
+            addOption("Action " + action.getName(), result, option, options);
+        }
+        // Add all additional options for the action if they are provided (and their dependencies).
         for (final Option option : action.getRelatedAdditionalOptions()) {
             if (options.containsKey(option)) {
-                ignoredOptions.remove(option);
+                addOption("", result, option, options);
             }
         }
+        return result;
+    }
 
-        for (OptionDescriptor dependentOption :  descriptor.getRelatedRequiredOptions()) {
-            String dependentOptionName = dependentOption.getName();
-            if (!optionsMap.containsKey(dependentOptionName)) {
-                System.err.println("The '--" + option.getDescriptor().getName() +
-                        "' option requires the '--" + dependentOptionName + "' option specified");
-                return null;
+    /**
+     * Adds the specified option to the target map.
+     *
+     * @param dependency the action or options that depends on the current option.
+     * @param target the map that stores the result.
+     * @param option the option.
+     * @param options the map of all options provided by the command line.
+     */
+    private static void addOption(
+            final String dependency,
+            final Map<String, List<String>> target,
+            final Option option,
+            final Map<Option, List<String>> options) throws CmdLineException {
+        if (!target.containsKey(option.getName())) {
+            final List<String> optionValues = options.get(option);
+            if (optionValues == null) {
+                throw new CmdLineException(
+                        dependency + "' requires option '--"
+                                + option.getName() + "' to be specified");
+            }
+            for (final Option dependentOption : option.getRelatedRequiredOptions()) {
+                addOption("Option " + option.getName(), target, dependentOption, options);
             }
         }
-
-         */
     }
 
     /**
@@ -132,21 +145,6 @@ public class CmdLineParser {
                 .map(Option::getName)
                 .filter(option -> !usedOptions.contains(option))
                 .collect(Collectors.toSet());
-    }
-
-    /**
-     * Gets an action by its name.
-     *
-     * @param actionName the action name.
-     * @return the action.
-     * @throws CmdLineException if no such action is in the API.
-     */
-    private Action getAction(final String actionName) throws CmdLineException {
-        final Action action = api.getAction(actionName);
-        if (action == null) {
-            throw new CmdLineException("Unknown action: '" + actionName +  "'.");
-        }
-        return action;
     }
 
     /**
