@@ -31,6 +31,7 @@ public final class Patternika {
         } catch (final CmdLineException ex) {
             System.err.print("Invalid command-line format. Error: ");
             System.err.println(ex.getMessage());
+            System.out.println("Try one of:");
             System.out.println(api.getReadme());
         }
     }
