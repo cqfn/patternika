@@ -116,15 +116,16 @@ public class CmdLineParser {
             final Map<String, List<String>> target,
             final Option option,
             final Map<Option, List<String>> options) throws CmdLineException {
-        if (!target.containsKey(option.getName())) {
+        final String optionName = option.getName();
+        if (!target.containsKey(optionName)) {
             final List<String> optionValues = options.get(option);
             if (optionValues == null) {
-                throw new CmdLineException(
-                        dependency + "' requires option '--"
-                                + option.getName() + "' to be specified");
+                throw new CmdLineException(dependency + "' requires option '--"
+                        + optionName + "' to be specified");
             }
+            target.put(optionName, optionValues);
             for (final Option dependentOption : option.getRelatedRequiredOptions()) {
-                addOption("Option " + option.getName(), target, dependentOption, options);
+                addOption("Option " + optionName, target, dependentOption, options);
             }
         }
     }

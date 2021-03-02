@@ -73,7 +73,7 @@ public class CmdLineApi {
     public Handler getHandler(final Action action) {
         final Handler handler = handlers.get(Objects.requireNonNull(action));
         if (handler == null) {
-            throw new IllegalStateException("No handler fpr action '" + action.getName() + "'!");
+            throw new IllegalStateException("No handler for action '" + action.getName() + "'!");
         }
         return handler;
     }
