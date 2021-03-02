@@ -79,7 +79,6 @@ public class CmdLineParserTest {
         final CmdLine commandLine = parser.parse(
                 "test", "hello", "bye", "--opt1", "aaa", "--opt2", "bbb", "ccc", "--opt3", "--opt4"
             );
-
         commandLine.execute();
         Assert.assertEquals("hello", commandLine.getArgument("first"));
         Assert.assertEquals("bye", commandLine.getArgument("second"));
