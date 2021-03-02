@@ -16,8 +16,8 @@ public class Option {
     private final int argumentCount;
     /** Flag that states the option is global. */
     private final boolean global;
-    /** Thr list of related options. */
-    private final List<Option> relatedOptions;
+    /** The list of required related options. */
+    private final List<Option> requiredOptions;
 
     /**
      * Constructor.
@@ -25,17 +25,17 @@ public class Option {
      * @param name the option name.
      * @param argumentCount the option argument count.
      * @param global the flag that states whether the option is global.
-     * @param relatedOptions the list of related options.
+     * @param requiredOptions the list of required related options.
      */
     public Option(
             final String name,
             final int argumentCount,
             final boolean global,
-            final List<Option> relatedOptions) {
+            final List<Option> requiredOptions) {
         this.name = Objects.requireNonNull(name);
         this.argumentCount = argumentCount;
         this.global = global;
-        this.relatedOptions = Objects.requireNonNull(relatedOptions);
+        this.requiredOptions = Objects.requireNonNull(requiredOptions);
     }
 
     /**
@@ -89,7 +89,7 @@ public class Option {
      * @return the list of options that must be specified together with this option.
      */
     public List<Option> getRelatedRequiredOptions() {
-        return relatedOptions;
+        return requiredOptions;
     }
 
 }
