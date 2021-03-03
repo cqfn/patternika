@@ -44,9 +44,30 @@ public class CmdLineParserTest {
     }
 
     /**
-     * Test that checks that an exception is generated on an unknown action.
+     * Test that a trivial command line (action without options) is correctly parsed.
      *
-     * @throws CmdLineException because the action is unknown.
+     * @throws CmdLineException must not happen in this test.
+     */
+    @Test
+    public void testTrivialAction() throws CmdLineException {
+        final CmdLineApi api = new CmdLineApi();
+        final Action action = new Action(
+                "test",
+                "test",
+                Collections.singletonList("arg1"),
+                Collections.emptyList()
+            );
+        api.registerAction(action, (arguments, options) -> { });
+        final CmdLineParser parser = new CmdLineParser(api);
+        final CmdLine commandLine = parser.parse("test", "hello");
+        Assert.assertEquals("hello", commandLine.getArgument("arg1"));
+        Assert.assertEquals("", commandLine.getIgnoredOptions());
+    }
+
+    /**
+     * Test that a simple command line (action + several options) is correctly parsed.
+     *
+     * @throws CmdLineException must not happen in this test.
      */
     @Test
     public void testSimpleAction() throws CmdLineException {
