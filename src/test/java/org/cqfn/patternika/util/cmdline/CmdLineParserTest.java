@@ -44,6 +44,46 @@ public class CmdLineParserTest {
     }
 
     /**
+     * Test that checks that an exception is generated when there is not enough arguments.
+     *
+     * @throws CmdLineException because not enough arguments for an action.
+     */
+    @Test(expected = CmdLineException.class)
+    public void testNotEnoughArguments() throws CmdLineException {
+        final CmdLineApi api = new CmdLineApi();
+        final Action action =
+                new Action(
+                        "test",
+                        "test",
+                        Collections.singletonList("arg1"),
+                        Collections.emptyList()
+                    );
+        api.registerAction(action, (arguments, options) -> { });
+        final CmdLineParser parser = new CmdLineParser(api);
+        parser.parse("test");
+    }
+
+    /**
+     * Test that checks that an exception is generated when there is too many arguments.
+     *
+     * @throws CmdLineException because too many arguments for an action.
+     */
+    @Test(expected = CmdLineException.class)
+    public void testTooManyArguments() throws CmdLineException {
+        final CmdLineApi api = new CmdLineApi();
+        final Action action =
+                new Action(
+                        "test",
+                        "test",
+                        Collections.singletonList("arg1"),
+                        Collections.emptyList()
+                );
+        api.registerAction(action, (arguments, options) -> { });
+        final CmdLineParser parser = new CmdLineParser(api);
+        parser.parse("test", "arg1", "arg2");
+    }
+
+    /**
      * Test that checks that an exception is generated on an unknown option.
      *
      * @throws CmdLineException because the option is unknown.
@@ -78,6 +118,28 @@ public class CmdLineParserTest {
         api.registerAction(action, (arguments, options) -> { });
         final CmdLineParser parser = new CmdLineParser(api);
         parser.parse("test", "--opt1", "val1", "--opt1", "val2");
+    }
+
+    /**
+     * Test that checks that an exception is generated when there is not enough option arguments.
+     *
+     * @throws CmdLineException because not enough option arguments.
+     */
+    @Test(expected = CmdLineException.class)
+    public void testNotEnoughOptionArgs() throws CmdLineException {
+        final CmdLineApi api = new CmdLineApi();
+        final Option option1 = new Option("opt1", 1);
+        final Action action =
+                new Action(
+                        "test",
+                        "test",
+                        Collections.emptyList(),
+                        Collections.singletonList(option1)
+                );
+        api.registerOption(option1);
+        api.registerAction(action, (arguments, options) -> { });
+        final CmdLineParser parser = new CmdLineParser(api);
+        parser.parse("test", "--opt1");
     }
 
     /**
