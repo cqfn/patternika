@@ -170,36 +170,50 @@ public class CmdLineParserTest {
      */
     @Test
     public void testSimpleAction() throws CmdLineException {
+        /** Class to hold a boolean value that can be set from an lambda. */
+        class Bool { /** Boolean value. */ private boolean value; }
+        final Bool handlerExecuted = new Bool();
         final CmdLineApi api = new CmdLineApi();
         final Option option1 = new Option("opt1", 1);
         final Option option2 = new Option("opt2", 2);
         final Option option3 = new Option("opt3", 0);
-        final Option option4 = new Option("opt4", 0);
+        final Option option4 = new Option("opt4", 0, true);
+        final Option option5 = new Option("opt5", 0);
         api.registerOption(option1);
         api.registerOption(option2);
         api.registerOption(option3);
         api.registerOption(option4);
+        api.registerOption(option5);
         final Action action = new Action(
-            "test",
-            "test",
-            Arrays.asList("first", "second"),
-            Arrays.asList(option1, option2)
-        );
+                "test",
+                "test",
+                Arrays.asList("first", "second"),
+                Arrays.asList(option1, option2)
+            );
         final Map<String, String> expectedArguments = new HashMap<>();
         expectedArguments.put("first", "hello");
         expectedArguments.put("second", "bye");
         final Map<String, List<String>> expectedOptions = new HashMap<>();
+        expectedOptions.put("opt4", Collections.emptyList());
         expectedOptions.put("opt1", Collections.singletonList("aaa"));
         expectedOptions.put("opt2", Arrays.asList("bbb", "ccc"));
         api.registerAction(action, (arguments, options) -> {
             Assert.assertEquals(expectedArguments, arguments);
             Assert.assertEquals(expectedOptions, options);
+            handlerExecuted.value = true;
         });
         final CmdLineParser parser = new CmdLineParser(api);
         final CmdLine commandLine = parser.parse(
-                "test", "hello", "bye", "--opt1", "aaa", "--opt2", "bbb", "ccc", "--opt3", "--opt4"
+                "test",
+                "hello",
+                "bye",
+                "--opt1", "aaa",
+                "--opt2", "bbb",
+                "ccc", "--opt3",
+                "--opt4", "--opt5"
             );
         commandLine.execute();
+        Assert.assertTrue(handlerExecuted.value);
         Assert.assertEquals("hello", commandLine.getArgument("first"));
         Assert.assertEquals("bye", commandLine.getArgument("second"));
         Assert.assertTrue(commandLine.hasOption("opt1"));
@@ -208,7 +222,7 @@ public class CmdLineParserTest {
         Assert.assertEquals(Collections.singletonList("aaa"), commandLine.getOption("opt1"));
         Assert.assertEquals(Arrays.asList("bbb", "ccc"), commandLine.getOption("opt2"));
         Assert.assertEquals(
-                "The following options are ignored: '--opt3', '--opt4'",
+                "The following options are ignored: '--opt3', '--opt5'",
                 commandLine.getIgnoredOptions()
             );
         Assert.assertEquals(
