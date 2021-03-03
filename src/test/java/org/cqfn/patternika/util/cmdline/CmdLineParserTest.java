@@ -44,6 +44,43 @@ public class CmdLineParserTest {
     }
 
     /**
+     * Test that checks that an exception is generated on an unknown option.
+     *
+     * @throws CmdLineException because the option is unknown.
+     */
+    @Test(expected = CmdLineException.class)
+    public void testUnknownOption() throws CmdLineException {
+        final CmdLineApi api = new CmdLineApi();
+        final Action action =
+                new Action("test", "test", Collections.emptyList(), Collections.emptyList());
+        api.registerAction(action, (arguments, options) -> { });
+        final CmdLineParser parser = new CmdLineParser(api);
+        parser.parse("test", "--opt1");
+    }
+
+    /**
+     * Test that checks that an exception is generated on a duplicated option.
+     *
+     * @throws CmdLineException because the option is duplicated.
+     */
+    @Test(expected = CmdLineException.class)
+    public void testDuplicatedOption() throws CmdLineException {
+        final CmdLineApi api = new CmdLineApi();
+        final Option option1 = new Option("opt1", 1);
+        final Action action =
+                new Action(
+                        "test",
+                        "test",
+                        Collections.emptyList(),
+                        Collections.singletonList(option1)
+                );
+        api.registerOption(option1);
+        api.registerAction(action, (arguments, options) -> { });
+        final CmdLineParser parser = new CmdLineParser(api);
+        parser.parse("test", "--opt1", "val1", "--opt1", "val2");
+    }
+
+    /**
      * Test that a trivial command line (action without options) is correctly parsed.
      *
      * @throws CmdLineException must not happen in this test.
