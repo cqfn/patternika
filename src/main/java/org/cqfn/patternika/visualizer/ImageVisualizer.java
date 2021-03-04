@@ -21,10 +21,13 @@ import java.util.Objects;
 public class ImageVisualizer implements Visualizer {
     /** Path to the Graphviz that performs rendering. */
     private final String graphvizPath;
+
     /** Name of the file to save the image.*/
     private final String imagePath;
+
     /** The action tree to be visualized. */
     private final ActionTree tree;
+
     /** Markers to highlight nodes. */
     private final Map<Node, List<Integer>> markers;
 

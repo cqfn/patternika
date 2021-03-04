@@ -8,7 +8,6 @@ import org.cqfn.patternika.ast.Node;
  * @since 2019/12/05
 */
 public interface Hash {
-
     /**
      * Return hash for the given node tree.
      *
@@ -27,5 +26,4 @@ public interface Hash {
     default boolean isHashEqual(final Node node1, final Node node2) {
         return getHash(node1) == getHash(node2);
     }
-
 }
