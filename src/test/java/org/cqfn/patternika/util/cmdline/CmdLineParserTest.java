@@ -14,6 +14,7 @@ import java.util.Map;
  *
  * @since 2021/03/02
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public class CmdLineParserTest {
 
     /**
@@ -87,6 +88,44 @@ public class CmdLineParserTest {
         api.registerAction(action, (arguments, options) -> { });
         final CmdLineParser parser = new CmdLineParser(api);
         parser.parse("test", "arg1", "arg2");
+    }
+
+    /**
+     * Tests that a command line with an unlimited number of arguments is correctly parsed.
+     *
+     * @throws CmdLineException must not happen in this test.
+     */
+    @Test
+    public void testUnlimitedArguments() throws CmdLineException {
+        final Bool handlerExecuted = new Bool();
+        final CmdLineApi api = new CmdLineApi();
+        final Action action = new Action(
+                "test",
+                "test",
+                2,
+                -1,
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList()
+            );
+        final Map<String, String> expectedArguments = new HashMap<>();
+        expectedArguments.put("0", "zero");
+        expectedArguments.put("1", "one");
+        expectedArguments.put("2", "two");
+        expectedArguments.put("3", "three");
+        expectedArguments.put("4", "four");
+        expectedArguments.put("5", "five");
+        expectedArguments.put("6", "six");
+        api.registerAction(action, (arguments, options) -> {
+            Assert.assertEquals(expectedArguments, arguments);
+            handlerExecuted.value = true;
+        });
+        final CmdLineParser parser = new CmdLineParser(api);
+        final CmdLine commandLine = parser.parse(
+                "test", "zero", "one", "two", "three", "four", "five", "six"
+            );
+        commandLine.execute();
+        Assert.assertTrue(handlerExecuted.value);
     }
 
     /**
