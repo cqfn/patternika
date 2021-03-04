@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Data class tha describes an action with or without parameters.
+ * Data class that describes an action with or without parameters.
  *
  * @since 2020/11/18
  */
