@@ -12,10 +12,13 @@ import java.util.Objects;
 public class DotNode implements DotWriter {
     /** The node index. */
     private final int index;
+
     /** The node type. */
     private final String type;
+
     /** The node data. */
     private final String data;
+
     /** The writer for the node style. */
     private final DotWriter styleWriter;
 

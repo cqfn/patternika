@@ -13,10 +13,13 @@ import java.util.Set;
 public class CmdLine {
     /** The handler of the action specified in the command line. */
     private final Handler handler;
+
     /** Command-line argument by names. */
     private final Map<String, String> arguments;
+
     /** Command-line options by names. */
     private final Map<String, List<String>> options;
+
     /** Set of ignored option names. */
     private final Set<String> ignoredOptions;
 

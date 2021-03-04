@@ -11,10 +11,13 @@ import java.util.Objects;
 public class DotMultiLink implements DotWriter {
     /** The "from" node name. */
     private final String fromName;
+
     /** The "from" node index. */
     private final int fromIndex;
+
     /** The "to" node name. */
     private final String toName;
+
     /** The "to" node indexes. */
     private final List<Integer> toIndexes;
 

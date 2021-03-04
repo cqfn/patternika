@@ -13,16 +13,22 @@ import java.util.Objects;
 public class Action {
     /** The action name. */
     private final String name;
+
     /** The action description. */
     private final String description;
+
     /** The minimum number of arguments required for this action. */
     private final int minArgumentsCount;
+
     /** The maximum number of arguments required for this action (-1 if no limit). */
     private final int maxArgumentsCount;
+
     /** The list of argument names. */
     private final List<String> argumentNames;
+
     /** The list of required related options. */
     private final List<Option> requiredOptions;
+
     /** The list of additional related options. */
     private final List<Option> additionalOptions;
 

@@ -14,8 +14,10 @@ import java.util.TreeMap;
 public class CmdLineApi {
     /** Actions sorted alphabetically. */
     private final Map<String, Action> actions = new TreeMap<>();
+
     /** Options sorted alphabetically. */
     private final Map<String, Option> options = new TreeMap<>();
+
     /** Handlers for actions. */
     private final Map<Action, Handler> handlers = new IdentityHashMap<>();
 

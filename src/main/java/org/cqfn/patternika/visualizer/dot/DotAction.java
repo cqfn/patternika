@@ -12,6 +12,7 @@ import java.util.Objects;
 public class DotAction implements DotWriter {
     /** The action node index. */
     private final int index;
+
     /** The action type. */
     private final ActionType type;
 
