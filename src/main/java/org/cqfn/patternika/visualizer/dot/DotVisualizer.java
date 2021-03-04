@@ -24,14 +24,19 @@ public class DotVisualizer implements Visualizer {
     /** Stores the generated DOT text and stores the result. */
     @SuppressWarnings("PMD.AvoidStringBufferField")
     private final StringBuilder builder;
+
     /** Action tree to be visualized. */
     private final ActionTree tree;
+
     /** Markers to highlight certain nodes (possibly with multiple colors). */
     private final Map<Node, List<Integer>> markers;
+
     /** Stores indices of nodes. */
     private final Map<Node, Integer> nodeIndexes;
+
     /** Stores indices of actions. */
     private final Map<Action, Integer> actionIndexes;
+
     /** Last index used for a node or an action. */
     private int lastIndex;
 
@@ -227,8 +232,9 @@ public class DotVisualizer implements Visualizer {
      * Appends graph start.
      */
     private void appendStart() {
-        builder.append("digraph AST {\n")
-               .append("  node [shape=box style=rounded];\n");
+        builder
+            .append("digraph AST {\n")
+            .append("  node [shape=box style=rounded];\n");
     }
 
     /**

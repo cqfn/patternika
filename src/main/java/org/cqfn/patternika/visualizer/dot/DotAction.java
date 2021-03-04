@@ -33,12 +33,13 @@ public class DotAction implements DotWriter {
      */
     @Override
     public void write(final StringBuilder builder) {
-        builder.append("  action_").append(index)
-               .append(" [shape=note color=")
-               .append(getColor())
-               .append(" label=<")
-               .append(type)
-               .append(">];\n");
+        builder
+            .append("  action_").append(index)
+            .append(" [shape=note color=")
+            .append(getColor())
+            .append(" label=<")
+            .append(type)
+            .append(">];\n");
     }
 
     /**

@@ -60,29 +60,33 @@ public class DotMultiLink implements DotWriter {
         final int toCount = toIndexes.size();
         final boolean isMultipleTargets = toCount > 1;
         if (isMultipleTargets) {
-            builder.append("  ")
-                   .append(toName)
-                   .append('_')
-                   .append(toIndexes.get(0));
+            builder
+                .append("  ")
+                .append(toName)
+                .append('_')
+                .append(toIndexes.get(0));
             for (int i = 1; i < toCount; i++) {
-                builder.append(" -> ")
-                       .append(toName)
-                       .append('_')
-                       .append(toIndexes.get(i));
+                builder
+                    .append(" -> ")
+                    .append(toName)
+                    .append('_')
+                    .append(toIndexes.get(i));
             }
             builder.append('\n');
         }
-        builder.append("  { rank=same; ")
-               .append(fromName)
-               .append('_')
-               .append(fromIndex)
-               .append(";");
+        builder
+            .append("  { rank=same; ")
+            .append(fromName)
+            .append('_')
+            .append(fromIndex)
+            .append(";");
         for (final int toIndex : toIndexes) {
-            builder.append(' ')
-                   .append(toName)
-                   .append('_')
-                   .append(toIndex)
-                   .append(';');
+            builder
+                .append(' ')
+                .append(toName)
+                .append('_')
+                .append(toIndex)
+                .append(';');
         }
         builder.append(" }\n");
     }
