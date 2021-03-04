@@ -12,10 +12,13 @@ import java.util.Objects;
 public class Option {
     /** The option name. */
     private final String name;
+
     /** The argument count. */
     private final int argumentCount;
+
     /** Flag that states the option is global. */
     private final boolean global;
+
     /** The list of required related options. */
     private final List<Option> requiredOptions;
 
