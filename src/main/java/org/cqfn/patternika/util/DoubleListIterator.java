@@ -14,8 +14,10 @@ import java.util.function.Function;
 public final class DoubleListIterator<T> implements Iterator<T> {
     /** Creates an iterator over items of an item list. */
     private final Function<List<T>, Iterator<T>> iterFactory;
+
     /** Iterator over item lists. */
     private final Iterator<List<T>> listIter;
+
     /** Iterator over items in the current item list. */
     private Iterator<T> itemIter;
 

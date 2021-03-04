@@ -22,6 +22,7 @@ import java.util.function.Function;
 public class NodeIterable<T extends Node> implements Iterable<T> {
     /** Root of the node tree to be iterated. */
     private final T root;
+
     /** Factory function to create an iterator for the node tree. */
     private final Function<T, Iterator<T>> iteratorFactory;
 

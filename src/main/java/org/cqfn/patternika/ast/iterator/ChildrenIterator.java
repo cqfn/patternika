@@ -15,8 +15,10 @@ import java.util.NoSuchElementException;
 public class ChildrenIterator<T extends Node> implements Iterator<T> {
     /** Parent node with children. */
     private final T parent;
+
     /** Current index for the iterator. */
     private int index;
+
     /** End index for the iterator. */
     private final int endIndex;
 

@@ -24,6 +24,7 @@ import java.util.List;
 public class DepthSorted<T extends Node> implements Iterable<T> {
     /** List of depths containing nodes having these depths. All depths have at least one node. */
     private final List<List<T>> nodesByDepth;
+
     /** Total count of nodes in the tree. */
     private int nodeCount;
 

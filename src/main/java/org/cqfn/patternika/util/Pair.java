@@ -11,6 +11,7 @@ package org.cqfn.patternika.util;
 public final class Pair<K, V> {
     /** The key. */
     private final K key;
+
     /** The value. */
     private final V val;
 
