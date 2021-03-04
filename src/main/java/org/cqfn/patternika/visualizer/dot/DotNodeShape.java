@@ -29,9 +29,10 @@ public class DotNodeShape implements DotWriter {
     public void write(final StringBuilder builder) {
         final String shape = getShape();
         if (shape != null) {
-            builder.append("shape=")
-                   .append(shape)
-                   .append(' ');
+            builder
+                .append("shape=")
+                .append(shape)
+                .append(' ');
         }
     }
 

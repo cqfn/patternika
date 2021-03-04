@@ -10,16 +10,22 @@ import java.util.Objects;
 public class DotLink implements DotWriter {
     /** Constant name for a node. */
     private static final String NODE = "node";
+
     /** Constant name for an action node. */
     private static final String ACTION = "action";
+
     /** The "from" node name. */
     private final String fromName;
+
     /** The "from" node index. */
     private final int fromIndex;
+
     /** The "to" node name. */
     private final String toName;
+
     /** The "to" node index. */
     private final int toIndex;
+
     /** The label for the link. */
     private final Object label;
 

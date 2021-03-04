@@ -19,6 +19,7 @@ import java.util.function.BiPredicate;
 public class Downstairs {
     /** Mapping to be extended. */
     private final Mapping<NodeExt> mapping;
+
     /** Calculates a similarity hash for nodes. */
     private final Hash similarity;
 

@@ -14,8 +14,10 @@ import java.util.Map;
 public class PositionMetric {
     /** Cache of scores. */
     private final Map<NodeExt, Map<NodeExt, Integer>> scores = new HashMap<>();
+
     /** Points added to the score for matching nodes (heuristics). */
     private static final int MATCH_POINTS = 8;
+
     /** Points added to the score for nodes that have the same order (heuristics). */
     private static final int SAME_ORDER_POINTS = 4;
 

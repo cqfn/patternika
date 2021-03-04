@@ -26,8 +26,10 @@ import java.util.Optional;
 public class ParserJava implements Parser {
     /** Java parser. */
     private final JavaParser parser;
+
     /** Adapts the AST build by JavaParser to the Patternika format. */
     private final Adapter<Node> adapter;
+
     /** Variants of parse starts in the order of likelihood (needed to parse snippets). */
     private final List<ParseStart<? extends Node>> parseStarts;
 
