@@ -22,12 +22,16 @@ import java.util.Objects;
 public class NodeExt implements Node {
     /** Original node (Node object). */
     private final Node node;
+
     /** Order of the node in the list of children of its parent. */
     private final int order;
+
     /** Node depth, the distance from the node to the tree root. */
     private final int depth;
+
     /** Parent of the node. */
     private final NodeExt parent;
+
     /** Lazy list of node's children (initialized on the first access). */
     private List<NodeExt> children;
 
