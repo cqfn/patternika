@@ -12,14 +12,14 @@ import java.util.Map;
  * @since 2019/10/31
  */
 public class PositionMetric {
-    /** Cache of scores. */
-    private final Map<NodeExt, Map<NodeExt, Integer>> scores = new HashMap<>();
-
     /** Points added to the score for matching nodes (heuristics). */
     private static final int MATCH_POINTS = 8;
 
     /** Points added to the score for nodes that have the same order (heuristics). */
     private static final int SAME_ORDER_POINTS = 4;
+
+    /** Cache of scores. */
+    private final Map<NodeExt, Map<NodeExt, Integer>> scores = new HashMap<>();
 
     /**
      * Count metric of how similar are positions of the given subtrees

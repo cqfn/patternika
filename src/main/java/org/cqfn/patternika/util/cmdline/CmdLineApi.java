@@ -122,10 +122,11 @@ public class CmdLineApi {
             final char prefix,
             final char suffix) {
         for (final Option option : options) {
-            builder.append(' ')
-                   .append(prefix)
-                   .append("--")
-                   .append(option.getName());
+            builder
+                .append(' ')
+                .append(prefix)
+                .append("--")
+                .append(option.getName());
             if (option.getArgumentCount() > 0) {
                 builder.append(" ...");
             }

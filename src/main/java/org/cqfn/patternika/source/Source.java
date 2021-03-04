@@ -6,7 +6,6 @@ package org.cqfn.patternika.source;
  * @since 2019/10/28
 **/
 public interface Source {
-
     /**
      * Returns iterator over this source code.
      *
@@ -22,5 +21,4 @@ public interface Source {
      * @return text for the fragment.
      */
     String getFragmentAsString(Position start, Position end);
-
 }
