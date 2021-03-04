@@ -11,12 +11,11 @@ import java.util.Set;
  * @since 2019/10/31
  */
 public interface Mapping<T> {
-
     /**
      * Gets an element to which the given one is mapped.
      *
      * @param element the given one element.
-     * @return        element to which the given one is mapped.
+     * @return the element to which the given one is mapped.
      */
     T get(T element);
 
@@ -34,7 +33,7 @@ public interface Mapping<T> {
      * Checks whether the given element is mapped to any other element.
      *
      * @param element the given element.
-     * @return        {@code true} if it is mapped or {@code false} otherwise.
+     * @return {@code true} if it is mapped or {@code false} otherwise.
      */
     boolean contains(T element);
 
@@ -90,5 +89,4 @@ public interface Mapping<T> {
      * @return a new mapping container.
      */
     Mapping<T> redirect(Mapping<T> mapping);
-
 }

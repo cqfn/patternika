@@ -23,8 +23,10 @@ import java.util.function.BiPredicate;
 public class MatchFinder<T extends Node> {
     /** Root of the first node tree to compare. */
     private final T firstRoot;
+
     /** Root of the second node tree to compare. */
     private final T secondRoot;
+
     /** Predicate for checking that two node trees recursively match. */
     private final BiPredicate<Node, Node> deepMatches;
 

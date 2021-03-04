@@ -27,7 +27,7 @@ public class SimilarityHash implements Hash {
      * Previously calculated hashes are cached.
      *
      * @param root root of the tree.
-     * @return     hash of the tree.
+     * @return the hash of the tree.
      */
     @Override
     public int getHash(final Node root) {
@@ -39,6 +39,6 @@ public class SimilarityHash implements Hash {
             }
             return result;
         });
-     }
+    }
 
 }

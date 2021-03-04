@@ -25,7 +25,6 @@ import java.util.function.Supplier;
  * @since 2021/01/26
  */
 public class JavaParserAdapter implements Adapter<Node> {
-
     /**
      * Adapts the AST build by JavaParser to the Patternika format.
      *
@@ -96,5 +95,4 @@ public class JavaParserAdapter implements Adapter<Node> {
                 || node instanceof NodeWithStatements
                 || node instanceof ArrayInitializerExpr;
     }
-
 }

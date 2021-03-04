@@ -101,18 +101,20 @@ public class DotLink implements DotWriter {
      */
     @Override
     public void write(final StringBuilder builder) {
-        builder.append("  ")
-               .append(fromName)
-               .append('_')
-               .append(fromIndex)
-               .append(" -> ")
-               .append(toName)
-               .append('_')
-               .append(toIndex);
+        builder
+            .append("  ")
+            .append(fromName)
+            .append('_')
+            .append(fromIndex)
+            .append(" -> ")
+            .append(toName)
+            .append('_')
+            .append(toIndex);
         if (label != null) {
-               builder.append(" [label=\" ")
-                      .append(label)
-                      .append("\"]");
+            builder
+                .append(" [label=\" ")
+                .append(label)
+                .append("\"]");
         }
         builder.append(";\n");
     }

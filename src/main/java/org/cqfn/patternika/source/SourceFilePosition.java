@@ -10,8 +10,10 @@ import java.util.Objects;
 public class SourceFilePosition implements Position {
     /** Character index. */
     private final int index;
+
     /** Row index. */
     private final int row;
+
     /** Column index. */
     private final int column;
 

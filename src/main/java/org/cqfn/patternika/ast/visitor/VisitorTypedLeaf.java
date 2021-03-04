@@ -13,12 +13,12 @@ import org.cqfn.patternika.ast.Node;
  * @since 2020/5/12
  */
 public abstract class VisitorTypedLeaf<T extends Node> implements Visitor {
-
     /**
      * Converts node to class T and visits it.
      * Node must be convertible to type T or an exception will occur.
      * Child nodes (if there are any) are not visited.
      *
+     * @param node the node, not {@code null}.
      * @return {@code false}, it is a leaf node and no child nodes are not visited.
      * @throws ClassCastException if node cannot be case to type T.
      * @see Visitor#enter(Node)
@@ -33,6 +33,7 @@ public abstract class VisitorTypedLeaf<T extends Node> implements Visitor {
     /**
      * Does nothing because all useful action is done in {@link #enter(Node)} for leaf nodes.
      *
+     * @param node the node.
      * @see Visitor#leave(Node)
      */
     @Override
