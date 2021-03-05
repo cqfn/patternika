@@ -11,10 +11,13 @@ import java.util.Objects;
 public class Action {
     /** Action type. */
     private final ActionType type;
+
     /** Parent node for the reference node (children of this node are updated on action). */
     private final Node parent;
+
     /** Reference node for the action. */
     private final Node ref;
+
     /** Accept node tree for the action. */
     private final Node accept;
 

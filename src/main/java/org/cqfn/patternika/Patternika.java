@@ -23,7 +23,7 @@ public final class Patternika {
      */
     @SuppressWarnings("PMD.SystemPrintln")
     public static void main(final String[] args) {
-        final CmdLineApi api = createApi();
+        final CmdLineApi api = new PatternikaApi().getCmdLineApi();
         final CmdLineParser parser = new CmdLineParser(api);
         try {
             final CmdLine cmdLine = parser.parse(args);
@@ -34,15 +34,6 @@ public final class Patternika {
             System.out.println("Try one of:");
             System.out.println(api.getReadme());
         }
-    }
-
-    /**
-     * Creates the command-line API for Patternika.
-     *
-     * @return the command-line API for Patternika.
-     */
-    private static CmdLineApi createApi() {
-        return new CmdLineApi();
     }
 
 }

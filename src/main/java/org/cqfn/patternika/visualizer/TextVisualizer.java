@@ -21,8 +21,10 @@ import java.util.Objects;
 public class TextVisualizer implements Visualizer {
     /** Name of the file to save the image.*/
     private final String fileName;
+
     /** The action tree to be visualized. */
     private final ActionTree tree;
+
     /** Markers to highlight nodes. */
     private final Map<Node, List<Integer>> markers;
 

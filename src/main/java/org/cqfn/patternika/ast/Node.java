@@ -9,7 +9,6 @@ import org.cqfn.patternika.source.Fragment;
  * @since 2020/11/2
  */
 public interface Node {
-
     /**
      * Returns node type identifier that uniquely identifies node type.
      *
@@ -83,5 +82,4 @@ public interface Node {
      * @return {@code true} if the nodes match or {@code false} otherwise.
      */
     boolean matches(Node other);
-
 }

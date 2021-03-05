@@ -13,7 +13,6 @@ import java.util.Objects;
  * @since 2020/5/12
  */
 public class VisitorComposite implements Visitor {
-
     /** Visitors for specific node types. Key: node class, value: visitor for this class. */
     private final Map<Class<? extends Node>, Visitor> visitors = new IdentityHashMap<>();
 

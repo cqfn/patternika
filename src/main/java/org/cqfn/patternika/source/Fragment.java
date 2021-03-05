@@ -116,7 +116,7 @@ public class Fragment {
     }
 
     /**
-     * Returns a fragment for the end position of the current fragment.
+     * Returns a fragment for the start position of the current fragment.
      *
      * @return start fragment or {@code null} if there is no start.
      */
@@ -125,7 +125,7 @@ public class Fragment {
     }
 
     /**
-     *
+     * Returns a fragment for the end position of the current fragment.
      *
      * @return end fragment or {@code null} if there is no end.
      */

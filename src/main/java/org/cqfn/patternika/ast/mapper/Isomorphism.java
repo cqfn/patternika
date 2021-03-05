@@ -19,6 +19,7 @@ import java.util.Set;
 public class Isomorphism {
     /** Calculates hashes (indices) used to identify isomorphic groups. */
     private final Hash hash;
+
     /** Isomorphic groups identified by indices. */
     private final Map<Integer, Set<Node>> groups;
 

@@ -13,6 +13,7 @@ import java.util.Objects;
  */
 public class JavaParserException extends ParserException {
     private static final long serialVersionUID = -7054849309442589653L;
+
     /** The list of problems JavaParser encountered during parsing. */
     private final List<Problem> problems;
 

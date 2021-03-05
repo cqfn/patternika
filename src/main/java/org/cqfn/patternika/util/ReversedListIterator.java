@@ -16,6 +16,7 @@ import java.util.Objects;
 public final class ReversedListIterator<T> implements Iterator<T> {
     /** Iterated list. */
     private final List<T> list;
+
     /** Current element index. */
     private int index;
 

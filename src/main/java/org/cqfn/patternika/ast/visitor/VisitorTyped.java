@@ -12,7 +12,6 @@ import org.cqfn.patternika.ast.Node;
  * @since 2020/5/12
  */
 public abstract class VisitorTyped<T extends Node> implements Visitor {
-
     /**
      * Converts node to class T and start visiting it.
      * Node must be convertible to type T or an exception will occur.
@@ -60,5 +59,4 @@ public abstract class VisitorTyped<T extends Node> implements Visitor {
      * @param node Node, not {@code null}.
      */
     public abstract void leaveNode(T node);
-
 }

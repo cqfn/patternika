@@ -22,8 +22,10 @@ import java.util.Objects;
 public class LinkedSet<T> implements Collection<T> {
     /** Maps values to their entries. */
     private final Map<T, Entry<T>> entries = new IdentityHashMap<>();
+
     /** First entry. */
     private Entry<T> first;
+
     /** Last entry. */
     private Entry<T> last;
 

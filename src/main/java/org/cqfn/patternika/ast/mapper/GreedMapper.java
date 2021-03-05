@@ -15,6 +15,7 @@ c*/
 public class GreedMapper implements Mapper<NodeExt> {
     /** First node tree root. */
     private final NodeExt root1;
+
     /** Second node tree root. */
     private final NodeExt root2;
 

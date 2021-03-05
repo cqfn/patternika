@@ -9,14 +9,13 @@ import org.cqfn.patternika.ast.Node;
  * @since 2020/5/8
  */
 public interface Visitor {
-
     /**
      * Starts visiting a node.
      *
      * <p>Depending on the result visiting of the node and its children
      * can be continued or not.
      *
-     * @param node Node, not {@code null}.
+     * @param node the node, not {@code null}.
      * @return {@code true} if visiting the node and its children must be continued or
      *         {@code false} otherwise.
      */
@@ -28,8 +27,7 @@ public interface Visitor {
      * <p>If the {@link #enter(Node)} method returns {@code false},
      * this method should not be called.
      *
-     * @param node Node, not {@code null}.
+     * @param node the node, not {@code null}.
      */
     void leave(Node node);
-
 }

@@ -25,8 +25,9 @@ public class DotNullNode implements DotWriter {
      */
     @Override
     public void write(final StringBuilder builder) {
-        builder.append("  node_")
-               .append(nodeIndex)
-               .append(" [label=<<b>NULL</b>>]; // NODE\n");
+        builder
+            .append("  node_")
+            .append(nodeIndex)
+            .append(" [label=<<b>NULL</b>>]; // NODE\n");
     }
 }

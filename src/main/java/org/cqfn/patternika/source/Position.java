@@ -6,7 +6,6 @@ package org.cqfn.patternika.source;
  * @since 2019/10/28
  **/
 public interface Position extends Comparable<Position> {
-
     /**
      * Index of the position (character index).
      *
@@ -53,5 +52,4 @@ public interface Position extends Comparable<Position> {
     static Position max(final Position first, final Position second) {
         return second == null || first != null && first.compareTo(second) > 0 ? first : second;
     }
-
 }

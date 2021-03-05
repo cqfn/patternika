@@ -14,8 +14,10 @@ import java.util.TreeMap;
 public class CmdLineApi {
     /** Actions sorted alphabetically. */
     private final Map<String, Action> actions = new TreeMap<>();
+
     /** Options sorted alphabetically. */
     private final Map<String, Option> options = new TreeMap<>();
+
     /** Handlers for actions. */
     private final Map<Action, Handler> handlers = new IdentityHashMap<>();
 
@@ -120,10 +122,11 @@ public class CmdLineApi {
             final char prefix,
             final char suffix) {
         for (final Option option : options) {
-            builder.append(' ')
-                   .append(prefix)
-                   .append("--")
-                   .append(option.getName());
+            builder
+                .append(' ')
+                .append(prefix)
+                .append("--")
+                .append(option.getName());
             if (option.getArgumentCount() > 0) {
                 builder.append(" ...");
             }

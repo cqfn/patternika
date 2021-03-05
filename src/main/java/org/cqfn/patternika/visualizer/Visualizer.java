@@ -9,12 +9,10 @@ import java.io.IOException;
  * @since 2021/02/08
  */
 public interface Visualizer {
-
     /**
      * Renders data a graphical format.
      *
      * @throws IOException if fails to save rendered data.
      */
     void visualize() throws IOException;
-
 }

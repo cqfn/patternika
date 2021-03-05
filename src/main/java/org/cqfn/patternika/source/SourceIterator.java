@@ -6,7 +6,6 @@ package org.cqfn.patternika.source;
  * @since 2019/10/28
  */
 public interface SourceIterator {
-
     /**
      * Returns the next character and moves current position forward by one step.
      *
@@ -47,5 +46,4 @@ public interface SourceIterator {
      * @return position.
      */
     Position getPosition(int offset);
-
 }

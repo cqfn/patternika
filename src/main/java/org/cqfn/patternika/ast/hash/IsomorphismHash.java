@@ -28,7 +28,7 @@ public class IsomorphismHash implements Hash {
      * Previously calculated hashes are cached.
      *
      * @param root the root of the tree.
-     * @return     the hash of the tree's isomorphic group.
+     * @return the hash of the tree's isomorphic group.
      */
     @Override
     public int getHash(final Node root) {

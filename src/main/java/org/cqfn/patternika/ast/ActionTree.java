@@ -15,12 +15,16 @@ import java.util.Objects;
 public class ActionTree {
     /** Language of the code represented by the node tree. */
     private final String language;
+
     /** Root of the AST tree. */
     private final Node root;
+
     /** List of actions related to the AST. */
     private final List<Action> actions;
+
     /** Actions grouped by the parent node. */
     private final Map<Node, List<Action>> actionsByParent;
+
     /** Actions grouped by the reference node. */
     private final Map<Node, List<Action>> actionsByRef;
 

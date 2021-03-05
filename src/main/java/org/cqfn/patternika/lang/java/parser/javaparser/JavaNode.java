@@ -18,14 +18,19 @@ import java.util.function.Supplier;
 public class JavaNode implements org.cqfn.patternika.ast.Node {
     /** JavaParser node to be wrapped. */
     private final Node node;
+
     /** Factory that creates nodes for children of the JavaParser node. */
     private final Function<Node, JavaNode> nodeFactory;
+
     /** Data associated with this node. */
     private final String data;
+
     /** Flag that sates that the node has no limits on the number of its children. */
     private final boolean limitlessChildren;
+
     /** Supplier of the source code fragment associated with this node. */
     private final Supplier<Fragment> fragment;
+
     /** Lazy list of node's children (initialized on the first access). */
     private List<JavaNode> children;
 

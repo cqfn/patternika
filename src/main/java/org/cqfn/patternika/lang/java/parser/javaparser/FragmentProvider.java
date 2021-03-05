@@ -18,6 +18,7 @@ import java.util.function.Function;
 public class FragmentProvider implements Function<Optional<Range>, Fragment> {
     /** Source of code fragments. */
     private final Source source;
+
     /** Function that converts JavaParser positions to positions in the Patternika format. */
     private final PositionConverter converter;
 

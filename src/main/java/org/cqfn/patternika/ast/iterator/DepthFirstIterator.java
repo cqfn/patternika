@@ -66,6 +66,7 @@ public class DepthFirstIterator<T extends Node> implements Iterator<T> {
     private static final class Entry<T extends Node> implements Iterator<Entry<T>> {
         /** Node. */
         private final T node;
+
         /** Iterator over the node's children. */
         private final Iterator<T> children;
 

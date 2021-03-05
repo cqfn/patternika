@@ -13,7 +13,6 @@ import java.util.List;
  */
 @FunctionalInterface
 public interface NodeCreator {
-
     /**
      * Creates a new node from the specified parameters.
      *
@@ -23,5 +22,4 @@ public interface NodeCreator {
      * @return new node.
      */
     Node create(Fragment fragment, String data, List<Node> children);
-
 }

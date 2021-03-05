@@ -16,10 +16,13 @@ c*/
 public class HashMapper implements Mapper<NodeExt> {
     /** First node tree root. */
     private final NodeExt root1;
+
     /** Second node tree root. */
     private final NodeExt root2;
+
     /** Calculates a similarity hash for nodes. */
     private final Hash similarity;
+
     /** Mapping to be built. */
     private final Mapping<NodeExt> mapping;
 

@@ -18,8 +18,10 @@ import java.util.function.Supplier;
 public class FragmentSupplier implements Supplier<Fragment> {
     /** JavaParser node associated with the code fragment. */
     private final Node node;
+
     /** Function that provides code fragments for JavaParser ranges. */
     private final Function<Optional<Range>, Fragment> provider;
+
     /** Source code fragment (lazy). */
     private Fragment fragment;
 

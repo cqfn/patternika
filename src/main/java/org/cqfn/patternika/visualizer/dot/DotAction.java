@@ -12,6 +12,7 @@ import java.util.Objects;
 public class DotAction implements DotWriter {
     /** The action node index. */
     private final int index;
+
     /** The action type. */
     private final ActionType type;
 
@@ -33,12 +34,13 @@ public class DotAction implements DotWriter {
      */
     @Override
     public void write(final StringBuilder builder) {
-        builder.append("  action_").append(index)
-               .append(" [shape=note color=")
-               .append(getColor())
-               .append(" label=<")
-               .append(type)
-               .append(">];\n");
+        builder
+            .append("  action_").append(index)
+            .append(" [shape=note color=")
+            .append(getColor())
+            .append(" label=<")
+            .append(type)
+            .append(">];\n");
     }
 
     /**

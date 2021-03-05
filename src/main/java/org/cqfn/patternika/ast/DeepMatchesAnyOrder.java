@@ -9,7 +9,6 @@ import java.util.function.BiPredicate;
  * @since 2020/11/12
  */
 public class DeepMatchesAnyOrder implements BiPredicate<Node, Node> {
-
     /**
      * Detects if two nodes are deep matched (recursively) without considering
      * indexes of their child nodes.

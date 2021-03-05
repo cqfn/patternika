@@ -17,10 +17,13 @@ import java.util.function.Function;
 public class PositionConverter implements Function<Position, org.cqfn.patternika.source.Position> {
     /** Source for positions. */
     private final Source source;
+
     /** Iterator for the source. */
     private SourceIterator iterator;
+
     /** Current line. */
     private int line;
+
     /** Current column. */
     private int column;
 

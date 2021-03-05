@@ -215,8 +215,10 @@ public class CmdLineParser {
         }
         final Map<String, String> result = new LinkedHashMap<>();
         final List<String> argumentNames = action.getArgumentNames();
+        final int nameCount = argumentNames.size();
         for (int i = 0; i < count; ++i) {
-            result.put(argumentNames.get(i), arguments.get(i));
+            final String name = i < nameCount ? argumentNames.get(i) : Integer.toString(i);
+            result.put(name, arguments.get(i));
         }
         return result;
     }

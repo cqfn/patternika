@@ -10,10 +10,13 @@ import java.util.Objects;
 class SourceFileIterator implements SourceIterator {
     /** Source file text. */
     private final String data;
+
     /** Current position (character index), starts from 0. */
     private int index;
+
     /** Row index, starts from 1. */
     private int row;
+
     /** Column index, starts from 1. */
     private int column;
 
@@ -54,5 +57,4 @@ class SourceFileIterator implements SourceIterator {
     public Position getPosition(final int offset) {
         return new SourceFilePosition(index + offset, row, column + offset);
     }
-
 }
