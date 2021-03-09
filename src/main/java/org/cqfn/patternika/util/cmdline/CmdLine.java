@@ -46,8 +46,9 @@ public class CmdLine {
      * Runs the handler with the specified arguments and options.
      *
      * @throws CmdLineException if the handler detects that come arguments or options are invalid.
+     * @throws HandlerException if the handler failed does to some error.
      */
-    public void execute() throws CmdLineException {
+    public void execute() throws CmdLineException, HandlerException {
         handler.handle(arguments, options);
     }
 

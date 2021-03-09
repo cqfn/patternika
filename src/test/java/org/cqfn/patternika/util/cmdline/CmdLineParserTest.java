@@ -94,9 +94,10 @@ public class CmdLineParserTest {
      * Tests that a command line with an unlimited number of arguments is correctly parsed.
      *
      * @throws CmdLineException must not happen in this test.
+     * @throws HandlerException must not happen in this test.
      */
     @Test
-    public void testUnlimitedArguments() throws CmdLineException {
+    public void testUnlimitedArguments() throws CmdLineException, HandlerException {
         final Bool handlerExecuted = new Bool();
         final CmdLineApi api = new CmdLineApi();
         final Action action = new Action(
@@ -214,9 +215,10 @@ public class CmdLineParserTest {
      * Test that a simple command line (action + several options) is correctly parsed.
      *
      * @throws CmdLineException must not happen in this test.
+     * @throws HandlerException must not happen in this test.
      */
     @Test
-    public void testSimpleAction() throws CmdLineException {
+    public void testSimpleAction() throws CmdLineException, HandlerException {
         final Bool handlerExecuted = new Bool();
         final CmdLineApi api = new CmdLineApi();
         final Option option1 = new Option("opt1", 1);
@@ -280,9 +282,10 @@ public class CmdLineParserTest {
      * Tests that a command-line for an API, which contains dependent options, is correctly parsed.
      *
      * @throws CmdLineException must not happen in this test.
+     * @throws HandlerException must not happen in this test.
      */
     @Test
-    public void testRelatedRequiredOptions() throws CmdLineException {
+    public void testRelatedRequiredOptions() throws CmdLineException, HandlerException {
         final Bool handlerExecuted = new Bool();
         final CmdLineApi api = new CmdLineApi();
         final Option option1 =

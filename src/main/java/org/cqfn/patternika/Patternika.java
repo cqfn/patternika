@@ -4,6 +4,7 @@ import org.cqfn.patternika.util.cmdline.CmdLine;
 import org.cqfn.patternika.util.cmdline.CmdLineApi;
 import org.cqfn.patternika.util.cmdline.CmdLineException;
 import org.cqfn.patternika.util.cmdline.CmdLineParser;
+import org.cqfn.patternika.util.cmdline.HandlerException;
 
 /**
  * The main class (entry point) for the tool.
@@ -33,6 +34,9 @@ public final class Patternika {
             System.err.println(ex.getMessage());
             System.out.println("Try one of:");
             System.out.println(api.getReadme());
+        } catch (final HandlerException ex) {
+            System.err.println("Action failed due to an error.");
+            System.err.println(ex.getMessage());
         }
     }
 
