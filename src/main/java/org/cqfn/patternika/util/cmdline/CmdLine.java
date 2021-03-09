@@ -44,8 +44,10 @@ public class CmdLine {
 
     /**
      * Runs the handler with the specified arguments and options.
+     *
+     * @throws CmdLineException if the handler detects that come arguments or options are invalid.
      */
-    public void execute() {
+    public void execute() throws CmdLineException {
         handler.handle(arguments, options);
     }
 

@@ -14,8 +14,9 @@ public interface Handler {
      *
      * @param arguments the argument by names.
      * @param options the options by names (one option can have multiple values).
+     * @throws CmdLineException if arguments or options are invalid.
      */
-    void handle(Map<String, String> arguments, Map<String, List<String>> options);
+    void handle(
+            Map<String, String> arguments,
+            Map<String, List<String>> options) throws CmdLineException;
 }
-
-
