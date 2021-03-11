@@ -87,6 +87,16 @@ public class Parsers {
     }
 
     /**
+     * Checks whether the language is supported.
+     *
+     * @param lang the language.
+     * @return {@code true} or {@code false}.
+     */
+    public boolean isLanguageSupported(final String lang) {
+        return parsersByLang.containsKey(lang);
+    }
+
+    /**
      * Gets a parser for the specified language.
      *
      * @param lang the language identifier.
