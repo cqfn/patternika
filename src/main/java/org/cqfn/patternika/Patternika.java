@@ -18,7 +18,18 @@ public final class Patternika {
     private Patternika() { }
 
     /**
-     * The entry point.
+     * The entry point. Parses the command line and runs actions.
+     * <p>
+     * Error handling policy:
+     * <p>
+     * 1. Exceptions caused by programming errors (invariant violations) to be fixed
+     * must cause the tool to fail and must not be suppressed.
+     * <p>
+     * 2. Exceptions caused by unrecoverable errors (especially related to invalid user input)
+     * must be propagated to the main function.
+     * <p>
+     * 3. Exceptions caused by recoverable errors must be reported to the log and
+     * should not be propagated.
      *
      * @param args the command-line arguments.
      */

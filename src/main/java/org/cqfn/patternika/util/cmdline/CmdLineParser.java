@@ -65,11 +65,11 @@ public class CmdLineParser {
                 arguments.add(argument);
             }
         }
-        final Handler handler = api.getHandler(action);
+        final CmdLineHandler handler = api.getHandler(action);
         final Map<String, String> argumentMap = getArgumentMap(action, arguments);
         final Map<String, List<String>> optionMap = getOptionMap(action, options);
         final Set<String> ignoredOptions = getIgnoredOptions(options.keySet(), optionMap.keySet());
-        return new CmdLine(handler, argumentMap, optionMap, ignoredOptions);
+        return new CmdLine(actionName, handler, argumentMap, optionMap, ignoredOptions);
     }
 
     /**

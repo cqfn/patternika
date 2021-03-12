@@ -54,8 +54,8 @@ public class CmdLineApiTest {
                 Collections.singletonList(opt0),
                 Collections.singletonList(opt1)
             );
-        api.registerAction(action1, (arguments, options) -> { });
-        api.registerAction(action2, (arguments, options) -> { });
+        api.registerAction(action1, (cmdLine) -> { });
+        api.registerAction(action2, (cmdLine) -> { });
         Assert.assertSame(action1, api.getAction("test"));
         Assert.assertSame(action2, api.getAction("test1"));
         Assert.assertSame(opt0, api.getOption("opt0"));

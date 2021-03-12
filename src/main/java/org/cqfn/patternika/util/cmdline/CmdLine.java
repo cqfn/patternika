@@ -1,18 +1,22 @@
 package org.cqfn.patternika.util.cmdline;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 /**
- * The parsed command line (arguments, options, and relevant action handler).
+ * Describes as parsed command line (action name, arguments, options, and relevant handler).
  *
  * @since 2020/11/18
  */
 public class CmdLine {
+    /** The action name. */
+    private final String actionName;
+
     /** The handler of the action specified in the command line. */
-    private final Handler handler;
+    private final CmdLineHandler handler;
 
     /** Command-line argument by names. */
     private final Map<String, String> arguments;
@@ -26,16 +30,19 @@ public class CmdLine {
     /**
      * Constructor.
      *
+     * @param actionName the action name.
      * @param handler the handler of the action specified in the command line.
      * @param arguments the command-line argument by names.
      * @param options the command-line options by names.
      * @param ignoredOptions the set of names of ignored options.
      */
     public CmdLine(
-            final Handler handler,
+            final String actionName,
+            final CmdLineHandler handler,
             final Map<String, String> arguments,
             final Map<String, List<String>> options,
             final Set<String> ignoredOptions) {
+        this.actionName = Objects.requireNonNull(actionName);
         this.handler = Objects.requireNonNull(handler);
         this.arguments = Objects.requireNonNull(arguments);
         this.options = Objects.requireNonNull(options);
@@ -49,7 +56,16 @@ public class CmdLine {
      * @throws HandlerException if the handler failed does to some error.
      */
     public void execute() throws CmdLineException, HandlerException {
-        handler.handle(arguments, options);
+        handler.handle(this);
+    }
+
+    /**
+     * Returns the action name.
+     *
+     * @return the action name.
+     */
+    public String getActionName() {
+        return actionName;
     }
 
     /**
@@ -63,6 +79,15 @@ public class CmdLine {
     }
 
     /**
+     * Returns a collection of all arguments from the command line.
+     *
+     * @return the collection of all arguments.
+     */
+    public List<String> getArguments() {
+        return new ArrayList<>(arguments.values());
+    }
+
+    /**
      * Checks if command line has the specified option.
      *
      * @param name the option name.
@@ -73,13 +98,24 @@ public class CmdLine {
     }
 
     /**
-     * Returns an option by is name.
+     * Returns the values of an option by is name.
      *
      * @param name the option name.
-     * @return the option value (multi-value).
+     * @return the option value (multi-value) or {@code null}.
      */
     public List<String> getOption(final String name) {
         return options.get(name);
+    }
+
+    /**
+     * Returns the value of an option by is name.
+     *
+     * @param name the option name.
+     * @return the option value (single-value) or {@code null}.
+     */
+    public String getSingleOption(final String name) {
+        final List<String> values = options.get(name);
+        return values == null || values.isEmpty() ? null : values.get(0);
     }
 
     /**

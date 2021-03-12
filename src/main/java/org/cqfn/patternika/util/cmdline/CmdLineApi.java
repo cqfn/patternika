@@ -19,7 +19,7 @@ public class CmdLineApi {
     private final Map<String, Option> options = new TreeMap<>();
 
     /** Handlers for actions. */
-    private final Map<Action, Handler> handlers = new IdentityHashMap<>();
+    private final Map<Action, CmdLineHandler> handlers = new IdentityHashMap<>();
 
     /**
      * Registers the specified action and handler for it.
@@ -28,7 +28,7 @@ public class CmdLineApi {
      * @param handler the handler for the specified action.
      * @return this object.
      */
-    public CmdLineApi registerAction(final Action action, final Handler handler) {
+    public CmdLineApi registerAction(final Action action, final CmdLineHandler handler) {
         actions.put(action.getName(), action);
         handlers.put(action, Objects.requireNonNull(handler));
         return this;
@@ -72,8 +72,8 @@ public class CmdLineApi {
      * @return the handler for the action.
      * @throws IllegalStateException if no handler is registered for this action.
      */
-    public Handler getHandler(final Action action) {
-        final Handler handler = handlers.get(Objects.requireNonNull(action));
+    public CmdLineHandler getHandler(final Action action) {
+        final CmdLineHandler handler = handlers.get(Objects.requireNonNull(action));
         if (handler == null) {
             throw new IllegalStateException("No handler for action '" + action.getName() + "'!");
         }

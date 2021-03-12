@@ -5,9 +5,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Tests for the {@link CmdLineParser} class.
@@ -47,7 +45,7 @@ public class CmdLineParserTest {
         final CmdLineApi api = new CmdLineApi();
         final Action action =
                 new Action("test", "test", Collections.emptyList(), Collections.emptyList());
-        api.registerAction(action, (arguments, options) -> { });
+        api.registerAction(action, cmdLine -> { });
         final CmdLineParser parser = new CmdLineParser(api);
         parser.parse("hello");
     }
@@ -66,7 +64,7 @@ public class CmdLineParserTest {
                 Collections.singletonList("arg1"),
                 Collections.emptyList()
             );
-        api.registerAction(action, (arguments, options) -> { });
+        api.registerAction(action, cmdLine -> { });
         final CmdLineParser parser = new CmdLineParser(api);
         parser.parse("test");
     }
@@ -85,7 +83,7 @@ public class CmdLineParserTest {
                 Collections.singletonList("arg1"),
                 Collections.emptyList()
             );
-        api.registerAction(action, (arguments, options) -> { });
+        api.registerAction(action, cmdLine -> { });
         final CmdLineParser parser = new CmdLineParser(api);
         parser.parse("test", "arg1", "arg2");
     }
@@ -109,16 +107,17 @@ public class CmdLineParserTest {
                 Collections.emptyList(),
                 Collections.emptyList()
             );
-        final Map<String, String> expectedArguments = new HashMap<>();
-        expectedArguments.put("0", "zero");
-        expectedArguments.put("1", "one");
-        expectedArguments.put("2", "two");
-        expectedArguments.put("3", "three");
-        expectedArguments.put("4", "four");
-        expectedArguments.put("5", "five");
-        expectedArguments.put("6", "six");
-        api.registerAction(action, (arguments, options) -> {
-            Assert.assertEquals(expectedArguments, arguments);
+        api.registerAction(action, cmdLine -> {
+            Assert.assertEquals("zero", cmdLine.getArgument("0"));
+            Assert.assertEquals("one", cmdLine.getArgument("1"));
+            Assert.assertEquals("two", cmdLine.getArgument("2"));
+            Assert.assertEquals("three", cmdLine.getArgument("3"));
+            Assert.assertEquals("four", cmdLine.getArgument("4"));
+            Assert.assertEquals("five", cmdLine.getArgument("5"));
+            Assert.assertEquals("six", cmdLine.getArgument("6"));
+            final List<String> arguments =
+                    Arrays.asList("zero", "one", "two", "three", "four", "five", "six");
+            Assert.assertEquals(arguments, cmdLine.getArguments());
             handlerExecuted.value = true;
         });
         final CmdLineParser parser = new CmdLineParser(api);
@@ -143,7 +142,7 @@ public class CmdLineParserTest {
                 Collections.emptyList(),
                 Collections.emptyList()
             );
-        api.registerAction(action, (arguments, options) -> { });
+        api.registerAction(action, cmdLine -> { });
         final CmdLineParser parser = new CmdLineParser(api);
         parser.parse("test", "--opt1");
     }
@@ -164,7 +163,7 @@ public class CmdLineParserTest {
                 Collections.singletonList(option1)
             );
         api.registerOption(option1);
-        api.registerAction(action, (arguments, options) -> { });
+        api.registerAction(action, cmdLine -> { });
         final CmdLineParser parser = new CmdLineParser(api);
         parser.parse("test", "--opt1", "val1", "--opt1", "val2");
     }
@@ -185,7 +184,7 @@ public class CmdLineParserTest {
                 Collections.singletonList(option1)
         );
         api.registerOption(option1);
-        api.registerAction(action, (arguments, options) -> { });
+        api.registerAction(action, cmdLine -> { });
         final CmdLineParser parser = new CmdLineParser(api);
         parser.parse("test");
     }
@@ -206,7 +205,7 @@ public class CmdLineParserTest {
                 Collections.singletonList(option1)
             );
         api.registerOption(option1);
-        api.registerAction(action, (arguments, options) -> { });
+        api.registerAction(action, cmdLine -> { });
         final CmdLineParser parser = new CmdLineParser(api);
         parser.parse("test", "--opt1");
     }
@@ -237,16 +236,13 @@ public class CmdLineParserTest {
                 Arrays.asList("first", "second"),
                 Arrays.asList(option1, option2)
             );
-        final Map<String, String> expectedArguments = new HashMap<>();
-        expectedArguments.put("first", "hello");
-        expectedArguments.put("second", "bye");
-        final Map<String, List<String>> expectedOptions = new HashMap<>();
-        expectedOptions.put("opt4", Collections.emptyList());
-        expectedOptions.put("opt1", Collections.singletonList("aaa"));
-        expectedOptions.put("opt2", Arrays.asList("bbb", "ccc"));
-        api.registerAction(action, (arguments, options) -> {
-            Assert.assertEquals(expectedArguments, arguments);
-            Assert.assertEquals(expectedOptions, options);
+        api.registerAction(action, cmdLine -> {
+            Assert.assertEquals(Arrays.asList("hello", "bye"), cmdLine.getArguments());
+            Assert.assertEquals("hello", cmdLine.getArgument("first"));
+            Assert.assertEquals("bye", cmdLine.getArgument("second"));
+            Assert.assertEquals(Collections.emptyList(), cmdLine.getOption("opt4"));
+            Assert.assertEquals(Collections.singletonList("aaa"), cmdLine.getOption("opt1"));
+            Assert.assertEquals(Arrays.asList("bbb", "ccc"), cmdLine.getOption("opt2"));
             handlerExecuted.value = true;
         });
         final CmdLineParser parser = new CmdLineParser(api);
@@ -307,7 +303,7 @@ public class CmdLineParserTest {
                 Collections.singletonList(option2),
                 Arrays.asList(option3, option4)
             );
-        api.registerAction(action, (arguments, options) -> {
+        api.registerAction(action, cmdLine -> {
             handlerExecuted.value = true;
         });
         final CmdLineParser parser = new CmdLineParser(api);

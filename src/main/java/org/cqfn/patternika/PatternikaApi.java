@@ -30,6 +30,9 @@ public class PatternikaApi {
     /** Option that specifies that the AST must be saved to a JSON file. */
     private final Option dumpJson = new Option("dump-json", 0);
 
+    /** Option that specifies working directory. */
+    private final Option workdir = new Option("workdir", 1);
+
     /**
      * Constructor.
      */
@@ -37,6 +40,7 @@ public class PatternikaApi {
         api.registerOption(dot);
         api.registerOption(dumpAst);
         api.registerOption(dumpJson);
+        api.registerOption(workdir);
         registerParse();
     }
 
@@ -55,7 +59,7 @@ public class PatternikaApi {
                 "Parse a file or a folder",
                 Collections.singletonList("source"),
                 Collections.emptyList(),
-                Arrays.asList(dumpAst, dumpJson)
+                Arrays.asList(dumpAst, dumpJson, workdir)
             );
         api.registerAction(action, new ParseHandler(parsers));
     }
